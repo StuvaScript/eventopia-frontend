@@ -1,27 +1,26 @@
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { TextField } from "@mui/material";
+import { DateRangePicker } from '@mui/x-date-pickers-pro';
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useState } from "react";
 
-const CustomDatePicker = ({ selectedDate, onDateChange }) => {
-  const [date, setDate] = useState(selectedDate || null);
+const CustomDatePicker = ({ selectedDateRange, onRangeChange }) => {
+  const [dateRange, setDateRange] = useState(selectedDateRange || [null, null]);
 
-  const handleChange = (newDate) => {
-    setDate(newDate);
-    onDateChange(newDate); //callback func to pass the date to the parent comp
+  const handleChange = (newDateRange) => {
+    setDateRange(newDateRange);
+    onRangeChange(newDateRange); //callback func to pass the date to the parent comp
   };
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <DatePicker
-        value={date}
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DateRangePicker
+        value={dateRange}
+        localeText={{ start: "Start Date", end: "End Date" }}
         onChange={handleChange}
-        dateFormat={"MM/DD/YYYY"}
-        renderInput={(params) => (
-          <TextField value={date} placeholder={"Select a date"} fullWidth />
-        )}
+        format={"MM/DD/YYYY"}
+        slotProps={{ textField: { variant: "outlined" } }}
       />
     </LocalizationProvider>
   );
 };
-export default DatePicker;
+export default CustomDatePicker;
