@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import CustomDatePicker from './DatePicker'; 
 import { getAllData } from './util/index';
 
 const URL = 'http://localhost:8000/api/v1/';
@@ -6,6 +7,12 @@ const URL = 'http://localhost:8000/api/v1/';
 function App() {
   
   const [message, setMessage] = useState(''); 
+  const [range, setRange] = useState([null, null]);
+
+  const handleDateRangeChange = (newDateRange) => {
+    setRange(newDateRange);
+  };
+
 
   useEffect(() => {
 
@@ -21,9 +28,10 @@ function App() {
   }, []);
 
   return (
-    <>
-      <h1>{message}</h1>
-    </>
+      <CustomDatePicker
+        onRangeChange={handleDateRangeChange}
+        selectedDateRange={range}
+      />
   );
 
 }
