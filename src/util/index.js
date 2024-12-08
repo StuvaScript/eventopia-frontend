@@ -56,7 +56,7 @@ const postData = async (url, requestBody, headers) => {
     let data = await res.data;
     return data;
   } catch (error) {
-    console.log(error, `error - getData in ${url} route`);
+    console.log(error, `error - postData in ${url} route`);
   }
 };
 
@@ -68,7 +68,7 @@ const deleteData = async (url, requestBody, headers) => {
     let data = await res.data;
     return data;
   } catch (error) {
-    console.log(error, `error - getData in ${url} route`);
+    console.log(error, `error - deleteData in ${url} route`);
   }
 };
 
