@@ -50,7 +50,7 @@ function Forgot() {
           sx={{
             display: "flex",
             flexWrap: "wrap",
-            justifyContent: "center",
+            justifycontent: "center",
             alignItems: "center",
             "& > :not(style) ~ :not(style)": {
               ml: 2,
