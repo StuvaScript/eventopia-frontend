@@ -23,6 +23,11 @@ const getData = async (url, params) => {
 const getAllData = async (url) => {
   try {
     let res = await axios.get(url);
+    // let res = await axios({
+    //   method: "get",
+    //   baseURL: "http://localhost:8000",
+    //   url: url,
+    // });
     let data = await res.data;
     return data;
   } catch (error) {

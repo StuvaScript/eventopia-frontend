@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { getAllData } from "./util/index";
+import axios from "axios";
 
-// const URL = "http://localhost:8000/api/v1/";
-const URL = "/api/v1/";
+const city = "Seattle";
+const stateCode = "WA";
+const startDate = "";
+const endDate = "2025-02-22";
+
+// const URL = "/api/v1/";
+const URL = `/api/events/${city}/${stateCode}/${startDate}/${endDate}`;
 
 function App() {
   const [message, setMessage] = useState("");
@@ -10,7 +16,8 @@ function App() {
   useEffect(() => {
     (async () => {
       const myData = await getAllData(URL);
-      setMessage(myData.data);
+      // setMessage(myData.data);
+      console.log(myData);
     })();
 
     return () => {
