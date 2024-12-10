@@ -185,7 +185,7 @@ function Login() {
             <Typography color="white" textAlign="center">
               {" "}
               Not a member yet?{"    "}
-              <Link href="/" variant="body2" style={{ color: "white" }}>
+              <Link href="/signup" variant="body2" style={{ color: "white" }}>
                 Sign Up
               </Link>
             </Typography>
