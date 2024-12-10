@@ -21,9 +21,9 @@ const CustomLocationPicker = ({ onLocationChange }) => {
       <TextField
         value={city}
         onChange={handleCityChange}
-        placeholder="Enter City"
         fullWidth
         variant="outlined"
+        label="City"
       />
       <FormControl fullWidth>
         <InputLabel>State</InputLabel>
