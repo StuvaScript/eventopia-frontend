@@ -2,18 +2,24 @@ import axios from "axios";
 
 // ``** GET **``
 
-// GET params example
-const params = {
+// Config with headers and params example
+const config = {
   params: {
     ID: 12345,
+  },
+  headers: {
+    myCustomHeader1: "value1",
+    myCustomHeader2: "value2",
+    "content-type": "application/json",
+    authorization: "Bearer your_token",
   },
 };
 
 // note: not used, but could be used with GET with params
-const getData = async (url, params) => {
+const getData = async (url, config) => {
   try {
-    let res = await axios.get(url, params);
-    let data = await res.data;
+    let res = await axios.get(url, config);
+    let data = res.data;
     return data;
   } catch (error) {
     console.log(error, `error - getData in ${url} route`);
@@ -23,12 +29,7 @@ const getData = async (url, params) => {
 const getAllData = async (url) => {
   try {
     let res = await axios.get(url);
-    // let res = await axios({
-    //   method: "get",
-    //   baseURL: "http://localhost:8000",
-    //   url: url,
-    // });
-    let data = await res.data;
+    let data = res.data;
     return data;
   } catch (error) {
     console.log(error, `error - getAllData in ${url} route`);
@@ -45,20 +46,10 @@ const requestBody = {
   },
 };
 
-// headers example
-const headers = {
-  headers: {
-    myCustomHeader1: "value1",
-    myCustomHeader2: "value2",
-    "content-type": "application/json",
-    authorization: "Bearer your_token",
-  },
-};
-
-const postData = async (url, requestBody, headers) => {
+const postData = async (url, requestBody, config) => {
   try {
-    let res = await axios.post(url, requestBody, headers);
-    let data = await res.data;
+    let res = await axios.post(url, requestBody, config);
+    let data = res.data;
     return data;
   } catch (error) {
     console.log(error, `error - postData in ${url} route`);
@@ -67,10 +58,10 @@ const postData = async (url, requestBody, headers) => {
 
 // ``** DELETE **``
 
-const deleteData = async (url, requestBody, headers) => {
+const deleteData = async (url, config) => {
   try {
-    let res = await axios.delete(url, requestBody, headers);
-    let data = await res.data;
+    let res = await axios.delete(url, config);
+    let data = res.data;
     return data;
   } catch (error) {
     console.log(error, `error - deleteData in ${url} route`);
