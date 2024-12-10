@@ -4,12 +4,11 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Box } from '@mui/material';
 import { useState } from "react";
 
-const CustomDatePicker = ({ selectedDateRange, onRangeChange }) => {
-  const [dateRange, setDateRange] = useState(selectedDateRange || [null, null]);
+const CustomDatePicker = () => {
+  const [dateRange, setDateRange] = useState([]);
 
   const handleChange = (newDateRange) => {
     setDateRange(newDateRange);
-    onRangeChange(newDateRange); //callback func to pass the date to the parent comp
   };
 
   return (
