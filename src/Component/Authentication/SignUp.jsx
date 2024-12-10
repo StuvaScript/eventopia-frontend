@@ -249,7 +249,17 @@ function SignUp() {
             },
           }}
         >
-          <SvgIcon>
+          <SvgIcon
+            style={{
+              margin: ".5rem",
+              width: "30rem",
+              height: "3rem",
+              //display: "flex",
+              //flexWrap: "wrap",
+              //justifyContent: "center",
+              //alignItems: "center",
+            }}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="#FFFFFF"
@@ -264,14 +274,24 @@ function SignUp() {
               />
             </svg>
           </SvgIcon>
-          <DialogTitle sx={{ textAlign: "center", color: "white" }}>
+          <DialogTitle
+            sx={{
+              padding: ".2rem",
+              textAlign: "center",
+              color: "white",
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             SignUp
             <IconButton
               onClick={handleClose}
               sx={{
                 position: "absolute",
-                right: 8,
-                top: 8,
+                right: 5,
+                top: 10,
                 color: "white",
               }}
             >
@@ -287,13 +307,13 @@ function SignUp() {
               flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
-              gap: 2,
+              gap: 1,
               width: 400,
+              height: 1,
             }}
           >
             <Typography color="white" textAlign="center">
-              {" "}
-              Already a member?{"    "}
+              Already a member?
               <Link href="/login" variant="body2" style={{ color: "white" }}>
                 Login
               </Link>
@@ -324,6 +344,7 @@ function SignUp() {
               onBlur={handleFirstname}
               variant="filled"
               fullWidth
+              size="small"
             />
 
             <TextField
@@ -351,6 +372,7 @@ function SignUp() {
               onBlur={handleLastname}
               variant="filled"
               fullWidth
+              size="small"
             />
 
             <TextField
@@ -378,6 +400,7 @@ function SignUp() {
               onBlur={handleEmail}
               variant="filled"
               fullWidth
+              size="small"
             />
 
             {/* <FormControl
@@ -414,7 +437,6 @@ function SignUp() {
                 border: "white",
                 backgroundColor: "white",
                 borderRadius: "1rem",
-                borderBottom: "0 0 black",
 
                 "& .MuiInputBase-root": {
                   "&:before": {
@@ -436,6 +458,7 @@ function SignUp() {
               onChange={(event) => setPasswordInput(event.target.value)}
               onBlur={handlePassword}
               fullWidth
+              size="small"
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -475,9 +498,11 @@ function SignUp() {
               onBlur={handleCity}
               variant="filled"
               fullWidth
+              size="small"
             />
             <FormControl
               fullWidth
+              size="small"
               variant="filled"
               style={{
                 backgroundColor: "white",
