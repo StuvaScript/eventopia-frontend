@@ -8,8 +8,6 @@ const URL = 'http://localhost:8000/api/v1/';
 
 function App() {
 
-  const [location, setLocation] = useState({city: "", state: ""})
-
   const handleLocationChange = (city, state) => {
     console.log(`City: ${city}, State: ${state}`);
   };
