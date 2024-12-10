@@ -1,31 +1,26 @@
+
 import React, { useState, useEffect } from 'react';
+import CustomLocationPicker from "./LocationPicker";
+import { Box } from "@mui/material";  
 import { getAllData } from './util/index';
 
 const URL = 'http://localhost:8000/api/v1/';
 
 function App() {
-  
-  const [message, setMessage] = useState(''); 
 
-  useEffect(() => {
+  const [location, setLocation] = useState({city: "", state: ""})
 
-    (async () => {
-      const myData = await getAllData(URL)
-      setMessage(myData.data);
-    })();
-      
-    return () => {
-      console.log('unmounting');
-    }
-
-  }, []);
+  const handleLocationChange = (city, state) => {
+    console.log(`City: ${city}, State: ${state}`);
+  };
 
   return (
-    <>
-      <h1>{message}</h1>
-    </>
+    <Box display="flex" alignItems="center" gap="10px">
+      <CustomLocationPicker onLocationChange={handleLocationChange} />
+    </Box>
   );
 
 }
 
 export default App
+
