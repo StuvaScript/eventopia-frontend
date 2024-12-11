@@ -2,18 +2,20 @@ import { useState } from "react";
 import states from "./util/states";
 import { TextField, Select, FormControl, MenuItem, InputLabel, Box, OutlinedInput } from "@mui/material";
 
-const CustomLocationPicker = ({ onLocationChange }) => {
+const CustomLocationPicker = ({onLocationChange}) => {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
 
   const handleCityChange = (event) => {
-    setCity(event.target.value);
-    onLocationChange(event.target.value, state); //sends both city and state to parent
+    const selectedCity = event.target.value; 
+    setCity(selectedCity);
+    onLocationChange(selectedCity, state); 
   };
 
   const handleStateChange = (event) => {
-    setState(event.target.value);
-    onLocationChange(city, event.target.value);
+    const selectedStateCode = event.target.value; //value is the stateCode 
+    setState(selectedStateCode);
+    onLocationChange(city, selectedStateCode);
   };
 
   return (
@@ -32,10 +34,8 @@ const CustomLocationPicker = ({ onLocationChange }) => {
           onChange={handleStateChange}
           input={<OutlinedInput label="State" />}
         >
-          {states.map((stateName, index) => (
-            <MenuItem key={index} value={stateName}>
-              {stateName}
-            </MenuItem>
+          {states.map((stateItem) => (
+            <MenuItem key={stateItem.code} value={stateItem.code}>{stateItem.name}</MenuItem> //value(stateCode) will be sent to backend
           ))}
         </Select>
       </FormControl>

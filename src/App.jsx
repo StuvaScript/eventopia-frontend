@@ -8,13 +8,9 @@ const URL = 'http://localhost:8000/api/v1/';
 
 function App() {
 
-  const handleLocationChange = (city, state) => {
-    console.log(`City: ${city}, State: ${state}`);
-  };
-
   return (
     <Box display="flex" alignItems="center" gap="10px">
-      <CustomLocationPicker onLocationChange={handleLocationChange} />
+      <CustomLocationPicker />
     </Box>
   );
 
