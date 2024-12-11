@@ -5,7 +5,7 @@ const city = "Seattle";
 const stateCode = "WA";
 
 // Ticketmaster search Url
-const URL = `/api/events/${city}/${stateCode}`;
+const URL = `/api/v1/ticketmaster/events/${city}/${stateCode}`;
 
 // Optional config
 const config = {
