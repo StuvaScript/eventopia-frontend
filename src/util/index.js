@@ -15,7 +15,6 @@ const config = {
   },
 };
 
-// note: not used, but could be used with GET with params
 const getData = async (url, config) => {
   try {
     let res = await axios.get(url, config);
