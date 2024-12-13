@@ -3,8 +3,12 @@ const URL = "http://localhost:8000/api/v1/";
 import SignUp from "./Component/Authentication/SignUp";
 import Login from "./Component/Authentication/Login";
 import Forgot from "./Component/Authentication/Forgot";
-import Home from "./Component/Authentication/Home";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { getAllData } from "./util/index";
+import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "./Theme";
+import HomePage from "./pages/HomePage";
 
 // import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -16,10 +20,16 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
           <Route path="/forgot" element={<Forgot />} />
-          <Route path="" element={<Home />} />
+          <Route path="" element={<HomePage />} />
         </Routes>
       </BrowserRouter>
     </div>
+    {/* <>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <HomePage />
+      </ThemeProvider>
+    </>*/}
   );
 }
 
