@@ -4,7 +4,6 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import LoginIcon from "@mui/icons-material/Login";
 import {
-  Container,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -14,16 +13,14 @@ import {
 import Box from "@mui/material/Box";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
-import Paper from "@mui/material/Paper";
-import Chip from "@mui/material/Chip";
 import Link from "@mui/material/Link";
-import { TypeSpecimenOutlined } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 const isEmail = (email) =>
   /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email);
 
 function Forgot() {
-  const [emailInput, setEmailInput] = useState();
+  const [emailInput, setEmailInput] = useState("");
 
   const [emailError, setEmailError] = useState(false);
 
@@ -31,9 +28,10 @@ function Forgot() {
   const [success, setSuccess] = useState();
 
   const [open, setOpen] = useState(true);
+  const navigate = useNavigate();
 
   const handleClose = () => {
-    setOpen(false);
+    navigate("/login");
   };
 
   const handleLoginEmail = () => {
@@ -73,7 +71,7 @@ function Forgot() {
       >
         <Dialog
           open={open}
-          onClose={handleClose}
+          onClose={null}
           sx={{
             background: "#000",
             "& .MuiPaper-root": {
@@ -91,15 +89,15 @@ function Forgot() {
               margin: ".5rem",
               width: "30rem",
               height: "3rem",
-              //display: "flex",
-              //flexWrap: "wrap",
-              //justifyContent: "center",
-              //alignItems: "center",
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              fill="#FFFFFF"
+              fill="FFF"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
@@ -202,62 +200,6 @@ function Forgot() {
           </DialogContent>
         </Dialog>
       </Box>
-      {/* <Container>
-        <Box
-          sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            justifycontent: "center",
-            alignItems: "center",
-            "& > :not(style) ~ :not(style)": {
-              ml: 2,
-            },
-          }}
-        >
-          <Paper elevation={3} style={{ padding: "2rem" }}>
-            <Chip
-              label="Forgot Password ?"
-              color="primary"
-              variant="outlined"
-              justifyContent="center"
-            />
-            <span>
-              <p>
-                Enter your email to get a password reset link
-                <TextField
-                  id="standard-basic"
-                  error={emailError}
-                  label="Email"
-                  value={emailInput}
-                  onChange={(event) => setEmailInput(event.target.value)}
-                  onBlur={handleLoginEmail}
-                  variant="standard"
-                  fullWidth
-                />
-              </p>
-
-              <p>
-                <Button
-                  onClick={handleLoginSubmit}
-                  fullWidth
-                  variant="contained"
-                  startIcon={<LoginIcon />}
-                >
-                  Send reset Link
-                </Button>
-              </p>
-              <p>
-                <Link href="/login" variant="body2">
-                  Back to Login
-                </Link>
-              </p>
-
-              <p>{formValid && <Alert severity="error">{formValid}</Alert>}</p>
-              <p>{success && <Alert severity="success">{success}</Alert>}</p>
-            </span>
-          </Paper>
-        </Box>
-      </Container> */}
     </>
   );
 }

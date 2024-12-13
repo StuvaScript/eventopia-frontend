@@ -3,7 +3,6 @@ import Alert from "@mui/material/Alert";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
 import InputAdornment from "@mui/material/InputAdornment";
 import FormControl from "@mui/material/FormControl";
@@ -11,25 +10,19 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import LoginIcon from "@mui/icons-material/Login";
 import {
-  Container,
   Typography,
   Dialog,
   DialogContent,
   DialogTitle,
-  colors,
   Select,
   MenuItem,
   SvgIcon,
 } from "@mui/material";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import Chip from "@mui/material/Chip";
 import CloseIcon from "@mui/icons-material/Close";
 import Link from "@mui/material/Link";
-import { Route, Routes } from "react-router-dom";
-import { Link as RouterLink } from "react-router-dom";
-import Grid from "@mui/material/Grid2";
 import styled from "@emotion/styled";
+import { useNavigate } from "react-router-dom";
 
 const isEmail = (email) =>
   /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email);
@@ -164,9 +157,10 @@ function SignUp() {
   };
 
   const [open, setOpen] = useState(true);
+  const navigate = useNavigate();
 
   const handleClose = () => {
-    setOpen(false);
+    navigate("/home");
   };
 
   const states = [
@@ -236,7 +230,7 @@ function SignUp() {
       >
         <Dialog
           open={open}
-          onClose={handleClose}
+          onClose={null}
           sx={{
             background: "#000",
             "& .MuiPaper-root": {
@@ -254,15 +248,15 @@ function SignUp() {
               margin: ".5rem",
               width: "30rem",
               height: "3rem",
-              //display: "flex",
-              //flexWrap: "wrap",
-              //justifyContent: "center",
-              //alignItems: "center",
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              fill="#FFFFFF"
+              fill="#FFF"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
@@ -290,8 +284,8 @@ function SignUp() {
               onClick={handleClose}
               sx={{
                 position: "absolute",
-                right: 5,
-                top: 10,
+                right: 0,
+                top: 5,
                 color: "white",
               }}
             >
@@ -321,7 +315,6 @@ function SignUp() {
 
             <TextField
               sx={{
-                border: "white",
                 backgroundColor: "white",
                 borderRadius: "1rem",
                 "& .MuiInputBase-root": {
@@ -349,7 +342,6 @@ function SignUp() {
 
             <TextField
               sx={{
-                border: "white",
                 backgroundColor: "white",
                 borderRadius: "1rem",
                 "& .MuiInputBase-root": {
@@ -377,7 +369,6 @@ function SignUp() {
 
             <TextField
               sx={{
-                border: "white",
                 backgroundColor: "white",
                 borderRadius: "1rem",
                 "& .MuiInputBase-root": {
@@ -403,41 +394,10 @@ function SignUp() {
               size="small"
             />
 
-            {/* <FormControl
-              style={{ marginTop: "16px" }}
-              variant="outlined"
-              fullWidth
-            >
-              <InputLabel id="password-label" htmlFor="password">
-                Password
-              </InputLabel>
-              <Input
-                error={passwordError}
-                id="password"
-                type={showPassword ? "text" : "password"}
-                value={passwordInput}
-                onChange={(event) => setPasswordInput(event.target.value)}
-                onBlur={handlePassword}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl> */}
-
             <TextField
               sx={{
-                border: "white",
                 backgroundColor: "white",
                 borderRadius: "1rem",
-
                 "& .MuiInputBase-root": {
                   "&:before": {
                     borderBottom: "none",
@@ -475,7 +435,6 @@ function SignUp() {
 
             <TextField
               sx={{
-                borderColor: "white",
                 backgroundColor: "white",
                 borderRadius: "1rem",
                 "& .MuiInputBase-root": {
@@ -507,6 +466,7 @@ function SignUp() {
               style={{
                 backgroundColor: "white",
                 borderRadius: "1rem",
+
                 "& .MuiInputBase-root": {
                   "&:before": {
                     borderBottom: "none",
@@ -526,6 +486,7 @@ function SignUp() {
                 value={selectedState}
                 onChange={handleState}
                 label="State"
+                disableUnderline
               >
                 {states.map((state) => (
                   <MenuItem key={state} value={state}>
@@ -543,132 +504,27 @@ function SignUp() {
             >
               SIGN UP
             </Button>
-            <Typography>
-              {formValid && <Alert severity="error">{formValid} </Alert>}
+            <Typography component={"div"}>
+              {formValid && (
+                <Alert
+                  severity="error"
+                  sx={{
+                    "& .MuiAlert-standardError": {
+                      backgroundColor: "white",
+                      color: "#d32f2f",
+                    },
+                  }}
+                >
+                  {formValid}{" "}
+                </Alert>
+              )}
             </Typography>
-            <Typography>
+            <Typography component={"div"}>
               {success && <Alert severity="success">{success}</Alert>}
             </Typography>
           </DialogContent>
         </Dialog>
       </Box>
-      {/* <Container>
-        <Box
-          sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            justifycontent: "center",
-            alignItems: "center",
-            "& > :not(style) ~ :not(style)": {
-              ml: 2,
-            },
-          }}
-        >
-          <Paper
-            style={{ padding: "2rem" }}
-            sx={{
-              margin: 15,
-              borderRadius: ".8rem",
-              border: "3px solid blue",
-              backgroundColor: "black",
-            }}
-          >
-            <Chip
-              icon={<FaceIcon />}
-              label="Sign Up"
-              color="primary"
-              variant="standard"
-            />
-            <Typography color="white">
-              {" "}
-              Already a member?{"    "}
-              <Link href="/login" variant="body2">
-                Login
-              </Link>
-            </Typography>
-            <span>
-              <p>
-                <TextField
-                  sx={{
-                    label: { color: "white" },
-                  }}
-                  id="firstname"
-                  error={firstnameError}
-                  label="First Name"
-                  value={firstnameInput}
-                  onChange={(event) => setFirstnameInput(event.target.value)}
-                  onBlur={handleFirstname}
-                  variant="outlined"
-                  fullWidth
-                />
-              </p>
-              <p>
-                <TextField
-                  id="lastname"
-                  error={lastnameError}
-                  label="Last Name"
-                  value={lastnameInput}
-                  onChange={(event) => setLastnameInput(event.target.value)}
-                  onBlur={handleLastname}
-                  variant="standard"
-                  fullWidth
-                />
-              </p>
-              <p>
-                <TextField
-                  id="email"
-                  error={emailError}
-                  label="Email Address"
-                  value={emailInput}
-                  onChange={(event) => setEmailInput(event.target.value)}
-                  onBlur={handleEmail}
-                  variant="standard"
-                  fullWidth
-                />
-              </p>
-              <p>
-                <FormControl sx={{ width: "100%" }} variant="standard">
-                  <InputLabel error={passwordError} htmlFor="password">
-                    Password
-                  </InputLabel>
-                  <Input
-                    fullWidth
-                    error={passwordError}
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    value={passwordInput}
-                    onChange={(event) => setPasswordInput(event.target.value)}
-                    onBlur={handlePassword}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                        >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                  />
-                </FormControl>
-              </p>
-              <p>
-                <Button
-                  onClick={handleSubmit}
-                  fullWidth
-                  variant="contained"
-                  startIcon={<LoginIcon />}
-                >
-                  SIGN UP
-                </Button>
-              </p>
-              <p>{formValid && <Alert severity="error">{formValid}</Alert>}</p>
-              <p>{success && <Alert severity="success">{success}</Alert>}</p>
-            </span>
-          </Paper>
-        </Box>
-      </Container> */}
     </>
   );
 }

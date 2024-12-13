@@ -3,15 +3,11 @@ import Alert from "@mui/material/Alert";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import Input from "@mui/material/Input";
-import InputLabel from "@mui/material/InputLabel";
 import InputAdornment from "@mui/material/InputAdornment";
-import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import LoginIcon from "@mui/icons-material/Login";
 import {
-  Container,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -20,10 +16,8 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import Chip from "@mui/material/Chip";
-import LockIcon from "@mui/icons-material/Lock";
 import Link from "@mui/material/Link";
+import { useNavigate } from "react-router-dom";
 
 const isEmail = (email) =>
   /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email);
@@ -41,9 +35,10 @@ function Login() {
   const [success, setSuccess] = useState();
 
   const [open, setOpen] = useState(true);
+  const navigate = useNavigate();
 
   const handleClose = () => {
-    setOpen(false);
+    navigate("/home");
   };
 
   const handleLoginEmail = () => {
@@ -107,8 +102,13 @@ function Login() {
       >
         <Dialog
           open={open}
-          onClose={handleClose}
+          onClose={null}
           sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
             background: "#000",
             "& .MuiPaper-root": {
               background: "#000",
@@ -125,15 +125,15 @@ function Login() {
               margin: ".5rem",
               width: "30rem",
               height: "3rem",
-              //display: "flex",
-              //flexWrap: "wrap",
-              //justifyContent: "center",
-              //alignItems: "center",
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              fill="#FFFFFF"
+              fill="#FFF"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
@@ -216,11 +216,12 @@ function Login() {
               fullWidth
               size="small"
             />
-            <FormControl
+            <TextField
               sx={{
                 border: "white",
                 backgroundColor: "white",
                 borderRadius: "1rem",
+
                 "& .MuiInputBase-root": {
                   "&:before": {
                     borderBottom: "none",
@@ -233,37 +234,34 @@ function Login() {
                   },
                 },
               }}
+              error={passwordError}
+              label="Password"
               variant="filled"
+              type={showPassword ? "text" : "password"}
+              value={passwordInput}
+              onChange={(event) => setPasswordInput(event.target.value)}
+              onBlur={handleLoginPassword}
               fullWidth
               size="small"
-            >
-              <InputLabel
-                error={passwordError}
-                htmlFor="filled-adornment-password"
-              >
-                Password
-              </InputLabel>
-              <Input
-                error={passwordError}
-                type={showPassword ? "text" : "password"}
-                value={passwordInput}
-                onChange={(event) => setPasswordInput(event.target.value)}
-                onBlur={handleLoginPassword}
-                endAdornment={
+              InputProps={{
+                endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
-                      aria-label="toggle password visibility"
                       onClick={handleLoginClickShowPassword}
                       onMouseDown={handleLoginMouseDownPassword}
                     >
                       {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
-                }
-              />
-            </FormControl>
+                ),
+              }}
+            />
             <Typography>
-              <Link href="/forgot" variant="body2" style={{ color: "white" }}>
+              <Link
+                href="/forgotpassword"
+                variant="body2"
+                style={{ color: "white" }}
+              >
                 Forgot Password
               </Link>
             </Typography>
@@ -286,93 +284,6 @@ function Login() {
           </DialogContent>
         </Dialog>
       </Box>
-      {/* <Box
-        sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifycontent: "center",
-          alignItems: "center",
-          "& > :not(style) ~ :not(style)": {
-            ml: 2,
-          },
-        }}
-      >
-        <Paper elevation={3} style={{ padding: "2rem" }}>
-          <Chip
-            icon={<LockIcon />}
-            label="Login"
-            color="primary"
-            variant="outlined"
-            justifyContent="center"
-          />
-          <span>
-            <p>
-              {" "}
-              Not a member yet?{"    "}
-              <Link href="/" variant="body2">
-                Sign Up
-              </Link>
-              <TextField
-                id="email"
-                error={emailError}
-                label="Email"
-                value={emailInput}
-                onChange={(event) => setEmailInput(event.target.value)}
-                onBlur={handleLoginEmail}
-                variant="standard"
-                fullWidth
-              />
-            </p>
-            <p>
-              <FormControl sx={{ width: "100%" }} variant="standard">
-                <InputLabel
-                  error={passwordError}
-                  htmlFor="standard-adornment-password"
-                >
-                  Password
-                </InputLabel>
-                <Input
-                  fullWidth
-                  error={passwordError}
-                  type={showPassword ? "text" : "password"}
-                  value={passwordInput}
-                  onChange={(event) => setPasswordInput(event.target.value)}
-                  onBlur={handleLoginPassword}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleLoginClickShowPassword}
-                        onMouseDown={handleLoginMouseDownPassword}
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                />
-              </FormControl>
-            </p>
-            <p>
-              <Link href="/forgot" variant="body2">
-                Forgot Password
-              </Link>
-            </p>
-
-            <p>
-              <Button
-                onClick={handleLoginSubmit}
-                fullWidth
-                variant="contained"
-                startIcon={<LoginIcon />}
-              >
-                Login
-              </Button>
-            </p>
-            <p>{formValid && <Alert severity="error">{formValid}</Alert>}</p>
-            <p>{success && <Alert severity="success">{success}</Alert>}</p>
-          </span>
-        </Paper>
-      </Box>*/}
     </>
   );
 }

@@ -14,6 +14,7 @@ import EventIcon from "@mui/icons-material/Event";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import theme from "../Theme"; // Ensure this path correctly points to your theme file
+import Link from "@mui/material/Link";
 
 const Header = () => {
   return (
@@ -133,7 +134,9 @@ const Header = () => {
                 paddingLeft: "1rem",
               }}
             >
-              Login
+              <Link href="/login" variant="body2" style={{ color: "white" }}>
+                Login
+              </Link>
             </Typography>
             <Button
               variant="contained"
@@ -147,7 +150,9 @@ const Header = () => {
                 "&:hover": { backgroundColor: "#323232" },
               }}
             >
-              Sign Up
+              <Link href="/signup" variant="body2" style={{ color: "white" }}>
+                Sign Up
+              </Link>
             </Button>
           </Box>
         </Toolbar>

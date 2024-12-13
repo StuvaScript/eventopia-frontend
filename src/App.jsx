@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 const URL = "http://localhost:8000/api/v1/";
-import SignUp from "./Component/Authentication/SignUp";
-import Login from "./Component/Authentication/Login";
-import Forgot from "./Component/Authentication/Forgot";
+import SignUp from "./components/authentication/SignUp";
+import Login from "./components/authentication/Login";
+import Forgot from "./components/authentication/ForgotPassword";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { getAllData } from "./util/index";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -19,17 +19,17 @@ function App() {
         <Routes>
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/forgot" element={<Forgot />} />
-          <Route path="" element={<HomePage />} />
+          <Route path="/forgotpassword" element={<Forgot />} />
+          <Route path="/home" element={<HomePage />} />
         </Routes>
       </BrowserRouter>
     </div>
-    {/* <>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <HomePage />
-      </ThemeProvider>
-    </>*/}
+    //  <>
+    //     <ThemeProvider theme={theme}>
+    //       <CssBaseline />
+    //       <HomePage />
+    //     </ThemeProvider>
+    //   </>
   );
 }
 
