@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { getData } from "./util/index";
+import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "./Theme";
+import HomePage from "./pages/HomePage";
 
 const city = "Seattle";
 const stateCode = "WA";
@@ -32,7 +36,10 @@ function App() {
 
   return (
     <>
-      <h1>{message}</h1>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <HomePage />
+      </ThemeProvider>
     </>
   );
 }
