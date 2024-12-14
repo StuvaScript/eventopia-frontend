@@ -74,6 +74,7 @@ const Header = () => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-around",
+                width: "100%",
               }}
             >
               <LocationOnIcon

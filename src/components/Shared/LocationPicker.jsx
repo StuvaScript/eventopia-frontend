@@ -1,6 +1,6 @@
 import { useState } from "react";
 import states from "../../util/states";
-import { TextField, Select, FormControl, MenuItem, InputLabel, Box, OutlinedInput, createMuiTheme } from "@mui/material";
+import { TextField, Select, FormControl, MenuItem, InputLabel, Box, OutlinedInput, createTheme } from "@mui/material";
 
 const CustomLocationPicker = ({onLocationChange}) => {
   const [city, setCity] = useState("");
@@ -40,6 +40,7 @@ const CustomLocationPicker = ({onLocationChange}) => {
           MenuProps={{
             PaperProps: {
               sx: {
+                maxHeight: "220px",
                 scrollbarWidth: "none", // hide scroll bar
               },
             },
