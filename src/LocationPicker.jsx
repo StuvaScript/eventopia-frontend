@@ -1,6 +1,6 @@
 import { useState } from "react";
 import states from "./util/states";
-import { TextField, Select, FormControl, MenuItem, InputLabel, Box, OutlinedInput } from "@mui/material";
+import { TextField, Select, FormControl, MenuItem, InputLabel, Box, OutlinedInput, createMuiTheme } from "@mui/material";
 
 const CustomLocationPicker = ({onLocationChange}) => {
   const [city, setCity] = useState("");
@@ -19,23 +19,41 @@ const CustomLocationPicker = ({onLocationChange}) => {
   };
 
   return (
-    <Box display="flex" alignItems="Box" width="25%">
+    <Box display="flex" alignItems="center" margin="3px" width="100%" >
       <TextField
         value={city}
         onChange={handleCityChange}
         fullWidth
         variant="outlined"
         label="City"
+        sx={{
+          "& .MuiInputLabel-root": { fontSize: "0.9rem" },
+          "& .MuiInputBase-input": { fontSize: "0.9rem" },
+        }}
       />
       <FormControl fullWidth>
-        <InputLabel>State</InputLabel>
+        <InputLabel sx={{ fontSize: "0.9rem" }}>State</InputLabel>
         <Select
           value={state}
           onChange={handleStateChange}
           input={<OutlinedInput label="State" />}
+          MenuProps={{
+            PaperProps: {
+              sx: {
+                scrollbarWidth: "none", // hide scroll bar
+              },
+            },
+          }}
+          sx={{ fontSize: "0.9rem"}}
         >
           {states.map((stateItem) => (
-            <MenuItem key={stateItem.code} value={stateItem.code}>{stateItem.name}</MenuItem> //value(stateCode) will be sent to backend
+            <MenuItem
+              key={stateItem.code}
+              value={stateItem.code}
+              sx={{ fontSize: "0.9rem" }}
+            >
+              {stateItem.name}
+            </MenuItem> //value(stateCode) will be sent to backend
           ))}
         </Select>
       </FormControl>
@@ -44,3 +62,14 @@ const CustomLocationPicker = ({onLocationChange}) => {
 };
 
 export default CustomLocationPicker;
+   // variant="standard"
+                // InputProps={{
+                //   disableUnderline: true,
+                //   sx: { color: "text.primary", fontSize: "1rem" },
+                // }}
+                // sx={{
+                //   flexGrow: 1,
+                //   backgroundColor: "background.default",
+                //   borderRadius: "5px",
+                //   padding: "5px 10px",
+                // }}
