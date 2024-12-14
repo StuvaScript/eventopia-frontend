@@ -13,7 +13,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import EventIcon from "@mui/icons-material/Event";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import CustomLocationPicker from "../LocationPicker";
+import CustomLocationPicker from "../components/Shared/LocationPicker";
 import theme from "../Theme"; // Ensure this path correctly points to your theme file
 
 const Header = () => {

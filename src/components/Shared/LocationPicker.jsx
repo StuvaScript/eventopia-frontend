@@ -1,5 +1,5 @@
 import { useState } from "react";
-import states from "./util/states";
+import states from "../../util/states";
 import { TextField, Select, FormControl, MenuItem, InputLabel, Box, OutlinedInput, createMuiTheme } from "@mui/material";
 
 const CustomLocationPicker = ({onLocationChange}) => {
@@ -62,14 +62,3 @@ const CustomLocationPicker = ({onLocationChange}) => {
 };
 
 export default CustomLocationPicker;
-   // variant="standard"
-                // InputProps={{
-                //   disableUnderline: true,
-                //   sx: { color: "text.primary", fontSize: "1rem" },
-                // }}
-                // sx={{
-                //   flexGrow: 1,
-                //   backgroundColor: "background.default",
-                //   borderRadius: "5px",
-                //   padding: "5px 10px",
-                // }}
