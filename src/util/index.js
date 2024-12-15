@@ -3,17 +3,17 @@ import axios from "axios";
 // ``** GET **``
 
 // Config with headers and params example
-const config = {
-  params: {
-    ID: 12345,
-  },
-  headers: {
-    myCustomHeader1: "value1",
-    myCustomHeader2: "value2",
-    "content-type": "application/json",
-    authorization: "Bearer your_token",
-  },
-};
+// const config = {
+//   params: {
+//     ID: 12345,
+//   },
+//   headers: {
+//     myCustomHeader1: "value1",
+//     myCustomHeader2: "value2",
+//     "content-type": "application/json",
+//     authorization: "Bearer your_token",
+//   },
+// };
 
 const getData = async (url, config) => {
   try {
@@ -38,12 +38,12 @@ const getAllData = async (url) => {
 // ``** POST **``
 
 // requestBody example
-const requestBody = {
-  data: {
-    firstName: "Finn",
-    lastName: "Williams",
-  },
-};
+// const requestBody = {
+//   data: {
+//     firstName: "Finn",
+//     lastName: "Williams",
+//   },
+// };
 
 const postData = async (url, requestBody, config) => {
   try {
