@@ -3,7 +3,7 @@ const URL = "http://localhost:8000/api/v1/";
 import SignUp from "./components/authentication/SignUp";
 import Login from "./components/authentication/Login";
 import Forgot from "./components/authentication/ForgotPassword";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { getAllData } from "./util/index";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
@@ -20,6 +20,7 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
           <Route path="/forgotpassword" element={<Forgot />} />
+          <Route path="/" element={<Navigate to="/home" />} />
           <Route path="/home" element={<HomePage />} />
         </Routes>
       </BrowserRouter>

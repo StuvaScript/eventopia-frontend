@@ -16,9 +16,32 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CustomLocationPicker from "../components/Shared/LocationPicker";
 import theme from "../Theme"; // Ensure this path correctly points to your theme file
 import Link from "@mui/material/Link";
+import { getData } from "../util";
+
+// Location variables
+const city = "Seattle";
+const stateCode = "WA";
+
+// Ticketmaster search Url
+const URL = `/api/v1/ticketmaster/events/${city}/${stateCode}`;
+
+// Optional config
+const config = {
+  params: {
+    startDateTime: "",
+    endDateTime: "",
+  },
+};
 
 const Header = () => {
   const [location, setLocation] = React.useState({ city: "", state: "" });
+
+  // Fetch code
+  (async () => {
+    const myData = await getData(URL, config);
+    // setMessage(myData.data);
+    console.log(myData);
+  })();
 
   const handleLocationChange = (city, state) => {
     setLocation({ city, state });
