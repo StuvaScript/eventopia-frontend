@@ -467,7 +467,7 @@ function SignUp() {
                 backgroundColor: "white",
                 borderRadius: "1rem",
 
-                "& .MuiInputBase-root": {
+                /*"& .MuiInputBase-root": {
                   "&:before": {
                     borderBottom: "none",
                   },
@@ -477,7 +477,7 @@ function SignUp() {
                   "&:after": {
                     borderBottom: "none",
                   },
-                },
+                },*/
               }}
             >
               <InputLabel id="state-select-label">State</InputLabel>
