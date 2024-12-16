@@ -13,10 +13,24 @@ import SearchIcon from "@mui/icons-material/Search";
 import EventIcon from "@mui/icons-material/Event";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import CustomLocationPicker from "../components/Shared/LocationPicker";
 import theme from "../Theme"; // Ensure this path correctly points to your theme file
 import Link from "@mui/material/Link";
 
 const Header = () => {
+  const [location, setLocation] = React.useState({ city: "", state: "" });
+
+  const handleLocationChange = (city, state) => {
+    setLocation({ city, state });
+    console.log("Selected City:", city);
+    console.log("Selected State:", state);
+  };
+
+  const handleSearch = () => {
+    console.log("Searching with location:", location);
+    // Add API call to execute the search
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <AppBar position="static" color="primary" sx={{ padding: "0 2rem" }}>
@@ -45,23 +59,33 @@ const Header = () => {
             sx={{
               display: "flex",
               alignItems: "center",
+              justifyContent: "space-around",
               backgroundColor: "background.paper",
               borderRadius: "25px",
               px: 2,
-              py: 0.5,
+              py: 0.6,
               flexGrow: 1,
+              margin: "3px",
               maxWidth: "500px",
             }}
           >
             {/* Location Picker */}
-            <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
-              <LocationOnIcon sx={{ color: "primary.main", mr: 1 }} />
-              <TextField
-                variant="standard"
-                placeholder="Enter Location"
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-around",
+                width: "100%",
+              }}
+            >
+              <LocationOnIcon
+                sx={{ color: "primary.main", mr: 1, width: "10%" }}
+              />
+              <CustomLocationPicker
+                onLocationChange={handleLocationChange}
                 InputProps={{
                   disableUnderline: true,
-                  sx: { color: "text.primary", fontSize: "1rem" },
+                  // sx: { color: "text.primary", fontSize: "0.5rem" },
                 }}
                 sx={{
                   flexGrow: 1,
