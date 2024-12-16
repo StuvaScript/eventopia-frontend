@@ -1,20 +1,5 @@
 import axios from "axios";
 
-// ``** GET **``
-
-// Config with headers and params example
-// const config = {
-//   params: {
-//     ID: 12345,
-//   },
-//   headers: {
-//     myCustomHeader1: "value1",
-//     myCustomHeader2: "value2",
-//     "content-type": "application/json",
-//     authorization: "Bearer your_token",
-//   },
-// };
-
 const getData = async (url, config) => {
   try {
     let res = await axios.get(url, config);
@@ -34,6 +19,7 @@ const getAllData = async (url) => {
     console.log(error, `error - getAllData in ${url} route`);
   }
 };
+
 
 // ``** POST **``
 
