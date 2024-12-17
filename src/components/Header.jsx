@@ -14,34 +14,16 @@ import EventIcon from "@mui/icons-material/Event";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CustomLocationPicker from "../components/Shared/LocationPicker";
+import CustomDatePicker from "../components/Shared/DatePicker"
 import theme from "../Theme"; // Ensure this path correctly points to your theme file
 import Link from "@mui/material/Link";
+import { useState } from "react";
 import { getData } from "../util";
 
-// Location variables
-const city = "Seattle";
-const stateCode = "WA";
-
-// Ticketmaster search Url
-const URL = `/api/v1/ticketmaster/events/${city}/${stateCode}`;
-
-// Optional config
-const config = {
-  params: {
-    startDateTime: "",
-    endDateTime: "",
-  },
-};
 
 const Header = () => {
   const [location, setLocation] = React.useState({ city: "", state: "" });
-
-  // Fetch code
-  (async () => {
-    const myData = await getData(URL, config);
-    // setMessage(myData.data);
-    console.log(myData);
-  })();
+  const [dateRange, setDateRange] = useState([]);
 
   const handleLocationChange = (city, state) => {
     setLocation({ city, state });
@@ -49,9 +31,29 @@ const Header = () => {
     console.log("Selected State:", state);
   };
 
-  const handleSearch = () => {
-    console.log("Searching with location:", location);
+  const handleDateRangeChange = (startDate, endDate) => {
+    setDateRange([startDate, endDate]);
+  };
+
+  const handleSearch = async() => {
+    // Ticketmaster search Url
+    const URL = `/api/v1/ticketmaster/events/${location.city}/${location.state}`;
+
+    // Optional config
+    const config = {
+      params: {
+        startDateTime: dateRange[0],
+        endDateTime: dateRange[1],
+      },
+    };
+
     // Add API call to execute the search
+    try {
+      const myData = await getData(URL, config); 
+      console.log(myData); 
+    } catch (error) {
+      console.error("Error fetching data:", error); 
+    }
   };
 
   return (
@@ -89,7 +91,7 @@ const Header = () => {
               py: 0.6,
               flexGrow: 1,
               margin: "3px",
-              maxWidth: "500px",
+              maxWidth: "50%",
             }}
           >
             {/* Location Picker */}
@@ -108,7 +110,6 @@ const Header = () => {
                 onLocationChange={handleLocationChange}
                 InputProps={{
                   disableUnderline: true,
-                  // sx: { color: "text.primary", fontSize: "0.5rem" },
                 }}
                 sx={{
                   flexGrow: 1,
@@ -126,20 +127,13 @@ const Header = () => {
                 mx: 1,
               }}
             />
-            {/* Calendar Icon */}
-            <IconButton sx={{ color: "primary.main", mx: 0.5 }}>
-              <EventIcon />
-            </IconButton>
-            <Box
-              sx={{
-                width: "1px",
-                backgroundColor: "primary.main",
-                height: "24px",
-                mx: 1,
-              }}
+            <CustomDatePicker
+              startDate={dateRange[0]}
+              endDate={dateRange[1]}
+              onDateRangeChange={handleDateRangeChange}
             />
             {/* Search Icon */}
-            <IconButton sx={{ color: "primary.main", mx: 0.5 }}>
+            <IconButton onClick={handleSearch} sx={{ color: "primary.main", mx: 0.5 }}>
               <SearchIcon />
             </IconButton>
           </Box>
