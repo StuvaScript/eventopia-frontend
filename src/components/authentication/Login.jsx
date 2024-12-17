@@ -19,6 +19,22 @@ import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import { useNavigate } from "react-router-dom";
 
+// User login Url
+const URL = `/api/v1/user/login`;
+
+//  login requestBody example
+// const requestBody = {
+//   email: "example@gmail.com",
+//   password: "Password129",
+// };
+
+// Fetch code
+async function logInUser(URL, requestBody) {
+  const myData = await postData(URL, requestBody);
+  // setMessage(myData.data);
+  console.log(myData);
+}
+
 const isEmail = (email) =>
   /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email);
 

@@ -20,7 +20,6 @@ const getAllData = async (url) => {
   }
 };
 
-
 // ``** POST **``
 
 // requestBody example
@@ -37,6 +36,7 @@ const postData = async (url, requestBody, config) => {
     let data = res.data;
     return data;
   } catch (error) {
+    console.error("Error details:", error.response?.data || error.message);
     console.log(error, `error - postData in ${url} route`);
   }
 };

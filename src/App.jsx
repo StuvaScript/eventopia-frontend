@@ -5,9 +5,6 @@ import Login from "./components/authentication/Login";
 import Forgot from "./components/authentication/ForgotPassword";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { getAllData } from "./util/index";
-import CssBaseline from "@mui/material/CssBaseline";
-import { ThemeProvider } from "@mui/material/styles";
-import theme from "./Theme";
 import HomePage from "./pages/HomePage";
 
 // import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -25,12 +22,6 @@ function App() {
         </Routes>
       </BrowserRouter>
     </div>
-    //  <>
-    //     <ThemeProvider theme={theme}>
-    //       <CssBaseline />
-    //       <HomePage />
-    //     </ThemeProvider>
-    //   </>
   );
 }
 

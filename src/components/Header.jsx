@@ -37,11 +37,11 @@ const Header = () => {
   const [location, setLocation] = React.useState({ city: "", state: "" });
 
   // Fetch code
-  (async () => {
-    const myData = await getData(URL, config);
-    // setMessage(myData.data);
-    console.log(myData);
-  })();
+  // (async () => {
+  //   const myData = await getData(URL, config);
+  //   // setMessage(myData.data);
+  //   console.log(myData);
+  // })();
 
   const handleLocationChange = (city, state) => {
     setLocation({ city, state });

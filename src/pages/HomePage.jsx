@@ -3,6 +3,7 @@ import AppAppBar from "../components/Header";
 import Hero from "../components/Hero";
 import Testimonials from "../components/Testimonials";
 import Footer from "../components/Footer";
+import { getData, postData } from "../util";
 
 const HomePage = () => {
   return (
