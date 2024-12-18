@@ -20,7 +20,6 @@ import Link from "@mui/material/Link";
 import { useState } from "react";
 import { getData } from "../util";
 
-
 const Header = () => {
   const [location, setLocation] = React.useState({ city: "", state: "" });
   const [dateRange, setDateRange] = useState([]);
@@ -31,12 +30,11 @@ const Header = () => {
     console.log("Selected State:", state);
   };
 
-  const handleDateRangeChange = (startDate, endDate) => {
-    setDateRange([startDate, endDate]);
+  const handleDateRangeChange = (newDateRange) => {
+    setDateRange(newDateRange);
   };
 
-  const handleSearch = async() => {
-    // Ticketmaster search Url
+  const handleSearch = async () => {
     const URL = `/api/v1/ticketmaster/events/${location.city}/${location.state}`;
 
     // Optional config
@@ -47,12 +45,15 @@ const Header = () => {
       },
     };
 
+    console.log("Request URL:", URL);
+    console.log("Request Config:", config);
+
     // Add API call to execute the search
     try {
-      const myData = await getData(URL, config); 
-      console.log(myData); 
+      const response = await getData(URL, config);
+      console.log(response);
     } catch (error) {
-      console.error("Error fetching data:", error); 
+      console.error("Error fetching data:", error);
     }
   };
 
@@ -133,7 +134,10 @@ const Header = () => {
               onDateRangeChange={handleDateRangeChange}
             />
             {/* Search Icon */}
-            <IconButton onClick={handleSearch} sx={{ color: "primary.main", mx: 0.5 }}>
+            <IconButton
+              onClick={handleSearch}
+              sx={{ color: "primary.main", mx: 0.5 }}
+            >
               <SearchIcon />
             </IconButton>
           </Box>

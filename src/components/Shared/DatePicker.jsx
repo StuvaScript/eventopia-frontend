@@ -5,13 +5,15 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { Box, InputAdornment, TextField } from "@mui/material";
 import { useState } from "react";
 
-const CustomDatePicker = (onDateRangeChange) => {
+const CustomDatePicker = ({onDateRangeChange}) => {
   const [dateRange, setDateRange] = useState([]);
 
   const handleChange = (newDateRange) => {
+    const [startDate, endDate] = newDateRange;
+    const formattedStartDate = startDate ? startDate.format("YYYY-MM-DD"): "";
+    const formattedEndDate = endDate ? endDate.format("YYYY-MM-DD"): "";
     setDateRange(newDateRange);
-
-    console.log("Start Date:", newDateRange[0]?.format("MM/DD/YYYY"));
+    onDateRangeChange([formattedStartDate, formattedEndDate]);
   };
 
   return (
