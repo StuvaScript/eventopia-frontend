@@ -3,6 +3,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { Box, InputAdornment, TextField } from "@mui/material";
+import dayjs from "dayjs"; 
 import { useState } from "react";
 
 const CustomDatePicker = ({onDateRangeChange}) => {
@@ -61,6 +62,7 @@ const CustomDatePicker = ({onDateRangeChange}) => {
         }}
         onChange={handleChange}
         format={"MM/DD/YYYY"}
+        minDate={dayjs()} // Disable past dates
         slotProps={{
           textField: {
             variant: "outlined",
