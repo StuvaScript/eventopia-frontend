@@ -18,12 +18,14 @@ import theme from "../Theme"; // Ensure this path correctly points to your theme
 import Link from "@mui/material/Link";
 import { getData } from "../util";
 
+const apiBaseURL = import.meta.env.VITE_API_BASE_URL;
+
 // Location variables
 const city = "Seattle";
 const stateCode = "WA";
 
 // Ticketmaster search Url
-const URL = `/api/v1/ticketmaster/events/${city}/${stateCode}`;
+const URL = `${apiBaseURL}/api/v1/ticketmaster/events/${city}/${stateCode}`;
 
 // Optional config
 const config = {
