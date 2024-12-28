@@ -5,17 +5,15 @@ import Login from "./components/authentication/Login";
 import Forgot from "./components/authentication/ForgotPassword";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { getAllData } from "./util/index";
-import CssBaseline from "@mui/material/CssBaseline";
-import { ThemeProvider } from "@mui/material/styles";
-import theme from "./Theme";
 import HomePage from "./pages/HomePage";
-
-// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import NavBar from "./components/NavBar";
+import Footer from "./components/Footer";
 
 function App() {
   return (
     <div className="app">
       <BrowserRouter>
+        <NavBar />
         <Routes>
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
@@ -23,14 +21,9 @@ function App() {
           <Route path="/" element={<Navigate to="/home" />} />
           <Route path="/home" element={<HomePage />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
     </div>
-    //  <>
-    //     <ThemeProvider theme={theme}>
-    //       <CssBaseline />
-    //       <HomePage />
-    //     </ThemeProvider>
-    //   </>
   );
 }
 
