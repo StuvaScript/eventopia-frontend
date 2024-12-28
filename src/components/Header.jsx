@@ -40,8 +40,8 @@ const Header = () => {
     // Optional config
     const config = {
       params: {
-        startDateTime: dateRange[0],
-        endDateTime: dateRange[1],
+        startDateTime: dateRange[0] || "",
+        endDateTime: dateRange[1] || "",
       },
     };
 

@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import CssBaseline from "@mui/material/CssBaseline";
-import { ThemeProvider } from "@mui/material/styles";
-import theme from "./Theme";
-import HomePage from "./pages/HomePage";
 import SignUp from "./components/authentication/SignUp";
 import Login from "./components/authentication/Login";
 import Forgot from "./components/authentication/ForgotPassword";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import NavBar from "./components/NavBar";
+import Footer from "./components/Footer";
 import { getAllData } from "./util/index";
 
-const URL = "/api/v1/";
+// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
   const [message, setMessage] = useState("");
@@ -26,9 +25,9 @@ function App() {
   }, []);
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
+    <div className="app">
       <BrowserRouter>
+        <NavBar />
         <Routes>
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
@@ -36,8 +35,15 @@ function App() {
           <Route path="/" element={<Navigate to="/home" />} />
           <Route path="/home" element={<HomePage />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
-    </ThemeProvider>
+    </div>
+    //  <>
+    //     <ThemeProvider theme={theme}>
+    //       <CssBaseline />
+    //       <HomePage />
+    //     </ThemeProvider>
+    //   </>
   );
 }
 

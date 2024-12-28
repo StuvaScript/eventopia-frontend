@@ -1,16 +1,17 @@
-import * as React from "react";
-import AppAppBar from "../components/Header";
+import React, { useEffect } from "react";
 import Hero from "../components/Hero";
 import Testimonials from "../components/Testimonials";
-import Footer from "../components/Footer";
 
-const HomePage = () => {
+const HomePage = ({ setHeaderTitle }) => {
+  // console.log(setHeaderTitle);
+  // useEffect(() => {
+  //   setHeaderTitle(""); //Do we need Title on the home page?
+  // }, [setHeaderTitle]);
+
   return (
     <div>
-      <AppAppBar />
       <Hero />
       <Testimonials />
-      <Footer />
     </div>
   );
 };
