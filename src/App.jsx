@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import SignUp from "./components/authentication/SignUp";
-import Login from "./components/authentication/Login";
-import Forgot from "./components/authentication/ForgotPassword";
+import SignUp from "./Components/Authentication/SignUp";
+import Login from "./Components/Authentication/Login";
+import Forgot from "./Components/Authentication/ForgotPassword";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import NavBar from "./components/NavBar";
-import Footer from "./components/Footer";
+import HomePage from "./Components/Pages/HomePage";
+import NavBar from "./Components/NavBar";
+import Footer from "./Components/Footer";
 import { getAllData } from "./util/index";
 
 // import { BrowserRouter as Router, Routes, Route } from "react-router-dom";

@@ -13,8 +13,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import EventIcon from "@mui/icons-material/Event";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import CustomLocationPicker from "../components/Shared/LocationPicker";
-import CustomDatePicker from "../components/Shared/DatePicker";
+import CustomLocationPicker from "./Shared/LocationPicker";
+import CustomDatePicker from "./Shared/DatePicker";
 import Link from "@mui/material/Link";
 import { useState } from "react";
 import { getData } from "../util";
@@ -37,7 +37,7 @@ const NavBar = ({ title }) => {
     const URL = `/api/v1/ticketmaster/events/${location.city}/${location.state}`;
 
     // Optional config
-     const config = {
+    const config = {
       params: {
         startDateTime: dateRange[0],
         endDateTime: dateRange[1],
@@ -76,44 +76,44 @@ const NavBar = ({ title }) => {
         }}
       >
         <Typography variant="h6">{title || getTitle()}</Typography>
-        <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}/>
-          <IconButton
-            sx={{
-              backgroundColor: "background.paper",
-              p: 1,
-              borderRadius: "50%",
-              mx: 2,
-            }}
-          >
-            <MusicNoteIcon
-              sx={{ color: "primary.contrastText", fontSize: "1.5rem" }}
-            />
-          </IconButton>
+        <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }} />
+        <IconButton
+          sx={{
+            backgroundColor: "background.paper",
+            p: 1,
+            borderRadius: "50%",
+            mx: 2,
+          }}
+        >
+          <MusicNoteIcon
+            sx={{ color: "primary.contrastText", fontSize: "1.5rem" }}
+          />
+        </IconButton>
 
-          {/* Middle Icons and Location Picker */}
+        {/* Middle Icons and Location Picker */}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-around",
+            backgroundColor: "background.paper",
+            borderRadius: "25px",
+            px: 2,
+            py: 0.6,
+            flexGrow: 1,
+            margin: "3px",
+            maxWidth: "55%",
+          }}
+        >
+          {/* Location Picker */}
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
               justifyContent: "space-around",
-              backgroundColor: "background.paper",
-              borderRadius: "25px",
-              px: 2,
-              py: 0.6,
-              flexGrow: 1,
-              margin: "3px",
-              maxWidth: "55%",
+              width: "100%",
             }}
           >
-             {/* Location Picker */}
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-around",
-                width: "100%",
-              }}
-            >
             <LocationOnIcon
               sx={{ color: "primary.main", mr: 1, width: "7%" }}
             />
