@@ -13,42 +13,47 @@ import SearchIcon from "@mui/icons-material/Search";
 import EventIcon from "@mui/icons-material/Event";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import CustomLocationPicker from "../components/Shared/LocationPicker";
+import CustomLocationPicker from "./Shared/LocationPicker";
+import CustomDatePicker from "./Shared/DatePicker";
 import Link from "@mui/material/Link";
+import { useState } from "react";
 import { getData } from "../util";
-
-// Location variables
-const city = "Seattle";
-const stateCode = "WA";
-
-// Ticketmaster search Url
-const URL = `/api/v1/ticketmaster/events/${city}/${stateCode}`;
-
-// Optional config
-const config = {
-  params: {
-    startDateTime: "",
-    endDateTime: "",
-  },
-};
 
 const NavBar = ({ title }) => {
   const [location, setLocation] = React.useState({ city: "", state: "" });
+  const [dateRange, setDateRange] = useState([]);
 
-  // Fetch code
-  (async () => {
-    const myData = await getData(URL, config);
-    // setMessage(myData.data);
-    console.log(myData);
-  })();
   const handleLocationChange = (city, state) => {
     setLocation({ city, state });
     console.log("Selected City:", city);
     console.log("Selected State:", state);
   };
-  const handleSearch = () => {
-    console.log("Searching with location:", location);
+
+  const handleDateRangeChange = (newDateRange) => {
+    setDateRange(newDateRange);
+  };
+
+  const handleSearch = async () => {
+    const URL = `/api/v1/ticketmaster/events/${location.city}/${location.state}`;
+
+    // Optional config
+    const config = {
+      params: {
+        startDateTime: dateRange[0],
+        endDateTime: dateRange[1],
+      },
+    };
+
+    console.log("Request URL:", URL);
+    console.log("Request Config:", config);
+
     // Add API call to execute the search
+    try {
+      const response = await getData(URL, config);
+      console.log(response);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
 
   const getTitle = () => {
@@ -59,6 +64,7 @@ const NavBar = ({ title }) => {
         return "App Name"; //What is our app's name
     }
   };
+
   return (
     <AppBar position="fixed" color="primary" sx={{ padding: 0, top: 0 }}>
       <Toolbar
@@ -70,37 +76,47 @@ const NavBar = ({ title }) => {
         }}
       >
         <Typography variant="h6">{title || getTitle()}</Typography>
-        <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
-          <IconButton
-            sx={{
-              backgroundColor: "background.paper",
-              p: 1,
-              borderRadius: "50%",
-              mx: 2,
-            }}
-          >
-            <MusicNoteIcon
-              sx={{ color: "primary.contrastText", fontSize: "1.5rem" }}
-            />
-          </IconButton>
+        <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }} />
+        <IconButton
+          sx={{
+            backgroundColor: "background.paper",
+            p: 1,
+            borderRadius: "50%",
+            mx: 2,
+          }}
+        >
+          <MusicNoteIcon
+            sx={{ color: "primary.contrastText", fontSize: "1.5rem" }}
+          />
+        </IconButton>
 
-          {/* Middle Icons and Location Picker */}
+        {/* Middle Icons and Location Picker */}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-around",
+            backgroundColor: "background.paper",
+            borderRadius: "25px",
+            px: 2,
+            py: 0.6,
+            flexGrow: 1,
+            margin: "3px",
+            maxWidth: "55%",
+          }}
+        >
+          {/* Location Picker */}
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
-              backgroundColor: "background.paper",
-              borderRadius: "40px",
-              px: 2,
-              py: 0.5,
-              maxWidth: "500px",
-              justifyContent: "flex-start",
-              ml: 2,
-              my: 1,
+              justifyContent: "space-around",
+              width: "100%",
             }}
           >
-            {/* Location Picker */}
-            <LocationOnIcon sx={{ color: "primary.main", mr: 1 }} />
+            <LocationOnIcon
+              sx={{ color: "primary.main", mr: 1, width: "7%" }}
+            />
             <CustomLocationPicker
               onLocationChange={handleLocationChange}
               InputProps={{ disableUnderline: true }}
@@ -111,17 +127,29 @@ const NavBar = ({ title }) => {
                 padding: "5px 10px",
               }}
             />
-
-            {/* Calendar Icon */}
-            <IconButton sx={{ color: "primary.main", mx: 1 }}>
-              <EventIcon />
-            </IconButton>
-            {/* Search Icon */}
-            <IconButton sx={{ color: "primary.main", mx: 0.5 }}>
-              <SearchIcon />
-            </IconButton>
           </Box>
+          <Box
+            sx={{
+              width: "1px",
+              backgroundColor: "primary.main",
+              height: "24px",
+              mx: 1,
+            }}
+          />
+          <CustomDatePicker
+            startDate={dateRange[0]}
+            endDate={dateRange[1]}
+            onDateRangeChange={handleDateRangeChange}
+          />
+          {/* Search Icon */}
+          <IconButton
+            onClick={handleSearch}
+            sx={{ color: "primary.main", mx: 0.5 }}
+          >
+            <SearchIcon />
+          </IconButton>
         </Box>
+
         {/* Navigation Links */}
         <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
           <Typography

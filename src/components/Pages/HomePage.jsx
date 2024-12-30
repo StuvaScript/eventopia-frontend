@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import Hero from "../components/Hero";
-import Testimonials from "../components/Testimonials";
+import Hero from "../Hero";
+import Testimonials from "../Testimonials";
 
 const HomePage = ({ setHeaderTitle }) => {
   // console.log(setHeaderTitle);
