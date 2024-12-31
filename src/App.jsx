@@ -38,12 +38,6 @@ function App() {
         <Footer />
       </BrowserRouter>
     </div>
-    //  <>
-    //     <ThemeProvider theme={theme}>
-    //       <CssBaseline />
-    //       <HomePage />
-    //     </ThemeProvider>
-    //   </>
   );
 }
 
