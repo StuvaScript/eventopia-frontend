@@ -41,6 +41,27 @@ const postData = async (url, requestBody, config) => {
   }
 };
 
+// ``** Patch **``
+
+// requestBody example
+// const requestBody = {
+//   data: {
+//     firstName: "Finn",
+//     lastName: "Williams",
+//   },
+// };
+
+const patchData = async (url, requestBody, config) => {
+  try {
+    let res = await axios.patch(url, requestBody, config);
+    let data = res.data;
+    return data;
+  } catch (error) {
+    console.error("Error details:", error.response?.data || error.message);
+    console.log(error, `error - patchData in ${url} route`);
+  }
+};
+
 // ``** DELETE **``
 
 const deleteData = async (url, config) => {
@@ -53,4 +74,4 @@ const deleteData = async (url, config) => {
   }
 };
 
-export { getData, getAllData, postData, deleteData };
+export { getData, getAllData, postData, patchData, deleteData };
