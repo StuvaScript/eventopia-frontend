@@ -4,7 +4,7 @@ import { deleteData, getData, patchData, postData } from ".";
 // ``** SIGN UP/REGISTER **``
 
 // User register Url
-// const URL = `/api/v1/user/register`;
+// const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/user/register`;
 
 //  register requestBody example
 // const requestBody = {
@@ -28,7 +28,7 @@ import { deleteData, getData, patchData, postData } from ".";
 // ``** LOGIN **``
 
 // User login Url
-// const URL = `/api/v1/user/login`;
+// const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/user/login`;
 
 //  login requestBody example
 // const requestBody = {
@@ -48,7 +48,7 @@ import { deleteData, getData, patchData, postData } from ".";
 // ``** CREATE ITINERARY **``
 
 // Itinerary Url
-// const URL = `/api/v1/itinerary`;
+// const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/itinerary`;
 
 //  Itinerary requestBody example
 // const requestBody = {
@@ -87,7 +87,7 @@ import { deleteData, getData, patchData, postData } from ".";
 // ``** GET ALL ITINERARIES **``
 
 // Itinerary Url
-// const URL = `/api/v1/itinerary`;
+// const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/itinerary`;
 
 // Token example (comes from "register" and "login" responses)
 // const token =
@@ -112,7 +112,7 @@ import { deleteData, getData, patchData, postData } from ".";
 // const eventID = "6764c22ecdb6bebff7ab9e5d";
 
 // Single itinerary Url
-// const URL = `/api/v1/itinerary/${eventID}`;
+// const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/itinerary/${eventID}`;
 
 // Token example (comes from "register" and "login" responses)
 // const token =
@@ -137,7 +137,7 @@ import { deleteData, getData, patchData, postData } from ".";
 // const eventID = "6764c22ecdb6bebff7ab9e5d";
 
 // Single itinerary Url
-// const URL = `/api/v1/itinerary/${eventID}`;
+// const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/itinerary/${eventID}`;
 
 //  Itinerary update requestBody example
 // const requestBody = {
@@ -179,7 +179,7 @@ import { deleteData, getData, patchData, postData } from ".";
 // const eventID = "6764c22ecdb6bebff7ab9e5d";
 
 // Single itinerary Url
-// const URL = `/api/v1/itinerary/${eventID}`;
+// const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/itinerary/${eventID}`;
 
 // async function deleteItinerary(URL) {
 //   const myData = await deleteData(URL, {
