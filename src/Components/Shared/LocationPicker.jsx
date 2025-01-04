@@ -19,7 +19,7 @@ const CustomLocationPicker = ({onLocationChange}) => {
   };
 
   return (
-    <Box display="flex" alignItems="center" margin="3px" width="100%" >
+    <Box display="flex" alignItems="center" margin="3px" width="100%">
       <TextField
         value={city}
         onChange={handleCityChange}
@@ -29,6 +29,10 @@ const CustomLocationPicker = ({onLocationChange}) => {
         sx={{
           "& .MuiInputLabel-root": { fontSize: "0.9rem" },
           "& .MuiInputBase-input": { fontSize: "0.9rem" },
+          "& input:-webkit-autofill": {
+            WebkitBoxShadow: "0 0 0px 100px #23252C inset", // background color of the autofilled input
+            WebkitTextFillColor: "#FFFFFF",
+          },
         }}
       />
       <FormControl fullWidth>
@@ -45,7 +49,7 @@ const CustomLocationPicker = ({onLocationChange}) => {
               },
             },
           }}
-          sx={{ fontSize: "0.9rem"}}
+          sx={{ fontSize: "0.9rem" }}
         >
           {states.map((stateItem) => (
             <MenuItem
