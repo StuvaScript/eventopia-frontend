@@ -34,7 +34,9 @@ const NavBar = ({ title }) => {
   };
 
   const handleSearch = async () => {
-    const URL = `/api/v1/ticketmaster/events/${location.city}/${location.state}`;
+    const URL = `${
+      import.meta.env.VITE_API_BASE_URL
+    }/api/v1/ticketmaster/events/${location.city}/${location.state}`;
 
     // Optional config
     const config = {

@@ -25,7 +25,7 @@ import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
 
 // User register Url
-const URL = `/api/v1/user/register`;
+const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/user/register`;
 
 //  register requestBody example
 // const requestBody = {

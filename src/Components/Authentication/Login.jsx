@@ -20,7 +20,7 @@ import Link from "@mui/material/Link";
 import { useNavigate } from "react-router-dom";
 
 // User login Url
-const URL = `/api/v1/user/login`;
+const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/user/login`;
 
 //  login requestBody example
 // const requestBody = {
