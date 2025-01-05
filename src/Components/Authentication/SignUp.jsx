@@ -24,6 +24,26 @@ import Link from "@mui/material/Link";
 import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
 
+// User register Url
+const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/user/register`;
+
+//  register requestBody example
+// const requestBody = {
+//   firstName: "Jim",
+//   lastName: "Brown",
+//   email: "jb100@gmail.com",
+//   password: "Password129",
+//   city: "Austin",
+//   state: "TX",
+// };
+
+// Fetch code
+async function registerUser(URL, requestBody) {
+  const myData = await postData(URL, requestBody);
+  // setMessage(myData.data);
+  console.log(myData);
+}
+
 const isEmail = (email) =>
   /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email);
 
