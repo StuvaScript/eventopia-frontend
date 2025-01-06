@@ -41,8 +41,8 @@ const NavBar = ({ title }) => {
     // Optional config
     const config = {
       params: {
-        startDateTime: dateRange[0],
-        endDateTime: dateRange[1],
+        dateRangeStart: dateRange[0],
+        dateRangeEnd: dateRange[1],
       },
     };
 
