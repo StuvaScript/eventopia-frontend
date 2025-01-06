@@ -43,7 +43,7 @@ const CustomLocationPicker = ({ onLocationChange, error }) => {
         }}
       />
       <FormControl fullWidth>
-        <InputLabel sx={{ fontSize: "0.9rem" }} required>State</InputLabel>
+        <InputLabel sx={{ fontSize: "0.9rem", color: error.state ? "error.main" : "text.paper"}} required>State</InputLabel>
         <Select
           required
           value={state}
