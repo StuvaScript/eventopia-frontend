@@ -40,6 +40,10 @@ const CustomLocationPicker = ({ onLocationChange, error }) => {
         sx={{
           "& .MuiInputLabel-root": { fontSize: "0.9rem" },
           "& .MuiInputBase-input": { fontSize: "0.9rem" },
+          "& input:-webkit-autofill": {
+            WebkitBoxShadow: "0 0 0px 100px #23252C inset", // background color of the autofilled input
+            WebkitTextFillColor: "#FFFFFF",
+          },
         }}
       />
       <FormControl fullWidth>
