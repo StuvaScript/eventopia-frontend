@@ -17,32 +17,15 @@ import {
   Select,
   MenuItem,
   SvgIcon,
+  OutlinedInput,
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import CloseIcon from "@mui/icons-material/Close";
 import Link from "@mui/material/Link";
 import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
-
-// User register Url
-const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/user/register`;
-
-//  register requestBody example
-// const requestBody = {
-//   firstName: "Jim",
-//   lastName: "Brown",
-//   email: "jb100@gmail.com",
-//   password: "Password129",
-//   city: "Austin",
-//   state: "TX",
-// };
-
-// Fetch code
-async function registerUser(URL, requestBody) {
-  const myData = await postData(URL, requestBody);
-  // setMessage(myData.data);
-  console.log(myData);
-}
+import { postData } from "../../util/index";
+import states from "../../util/states";
 
 const isEmail = (email) =>
   /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email);
@@ -55,6 +38,17 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
     borderRadius: theme.shape.borderRadius,
   },
 }));
+
+// User login Url
+const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/user/login`;
+
+// Optional config
+const config = {
+  params: {
+    startDateTime: "",
+    endDateTime: "",
+  },
+};
 
 function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
@@ -160,7 +154,6 @@ function SignUp() {
       return;
     }
     setFormValid(null);
-    setSuccess("Form submitted successfully");
 
     console.log("First Name:" + firstnameInput);
     console.log("Last Name:" + lastnameInput);
@@ -168,7 +161,26 @@ function SignUp() {
     console.log("Password:" + passwordInput);
     console.log("City:" + cityInput);
     console.log("State:" + selectedState);
+    // Call to server to post the data
+    const requestBody = {
+      data: {
+        firstName: firstnameInput,
+        lastName: lastnameInput,
+        email: emailInput,
+        password: passwordInput,
+        city: cityInput,
+        state: selectedState,
+      },
+    };
+    registerUser(URL, requestBody);
+    setSuccess("Form submitted successfully");
   };
+
+  async function registerUser(URL, requestBody) {
+    const myData = await postData(URL, requestBody);
+    // setMessage(myData.data);
+    console.log(myData);
+  }
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -183,58 +195,58 @@ function SignUp() {
     navigate("/home");
   };
 
-  const states = [
-    "Alabama",
-    "Alaska",
-    "Arizona",
-    "Arkansas",
-    "California",
-    "Colorado",
-    "Connecticut",
-    "Delaware",
-    "Florida",
-    "Georgia",
-    "Hawaii",
-    "Idaho",
-    "Illinois",
-    "Indiana",
-    "Iowa",
-    "Kansas",
-    "Kentucky",
-    "Louisiana",
-    "Maine",
-    "Maryland",
-    "Massachusetts",
-    "Michigan",
-    "Minnesota",
-    "Mississippi",
-    "Missouri",
-    "Montana",
-    "Nebraska",
-    "Nevada",
-    "New Hampshire",
-    "New Jersey",
-    "New Mexico",
-    "New York",
-    "North Carolina",
-    "North Dakota",
-    "Ohio",
-    "Oklahoma",
-    "Oregon",
-    "Pennsylvania",
-    "Rhode Island",
-    "South Carolina",
-    "South Dakota",
-    "Tennessee",
-    "Texas",
-    "Utah",
-    "Vermont",
-    "Virginia",
-    "Washington",
-    "West Virginia",
-    "Wisconsin",
-    "Wyoming",
-  ];
+  // const states = [
+  //   "Alabama",
+  //   "Alaska",
+  //   "Arizona",
+  //   "Arkansas",
+  //   "California",
+  //   "Colorado",
+  //   "Connecticut",
+  //   "Delaware",
+  //   "Florida",
+  //   "Georgia",
+  //   "Hawaii",
+  //   "Idaho",
+  //   "Illinois",
+  //   "Indiana",
+  //   "Iowa",
+  //   "Kansas",
+  //   "Kentucky",
+  //   "Louisiana",
+  //   "Maine",
+  //   "Maryland",
+  //   "Massachusetts",
+  //   "Michigan",
+  //   "Minnesota",
+  //   "Mississippi",
+  //   "Missouri",
+  //   "Montana",
+  //   "Nebraska",
+  //   "Nevada",
+  //   "New Hampshire",
+  //   "New Jersey",
+  //   "New Mexico",
+  //   "New York",
+  //   "North Carolina",
+  //   "North Dakota",
+  //   "Ohio",
+  //   "Oklahoma",
+  //   "Oregon",
+  //   "Pennsylvania",
+  //   "Rhode Island",
+  //   "South Carolina",
+  //   "South Dakota",
+  //   "Tennessee",
+  //   "Texas",
+  //   "Utah",
+  //   "Vermont",
+  //   "Virginia",
+  //   "Washington",
+  //   "West Virginia",
+  //   "Wisconsin",
+  //   "Wyoming",
+  // ];
 
   return (
     <>
@@ -266,7 +278,7 @@ function SignUp() {
           <SvgIcon
             style={{
               margin: ".5rem",
-              width: "30rem",
+              width: "initial",
               height: "3rem",
               display: "flex",
               flexWrap: "wrap",
@@ -276,7 +288,7 @@ function SignUp() {
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              fill="#FFF"
+              fill="#000"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
@@ -289,6 +301,7 @@ function SignUp() {
             </svg>
           </SvgIcon>
           <DialogTitle
+            variant="h5"
             sx={{
               padding: ".2rem",
               textAlign: "center",
@@ -318,7 +331,7 @@ function SignUp() {
               color: "white",
               display: "flex",
               flexWrap: "wrap",
-              flexDirection: "column",
+
               justifyContent: "center",
               alignItems: "center",
               gap: 1,
@@ -326,28 +339,42 @@ function SignUp() {
               height: 1,
             }}
           >
-            <Typography color="white" textAlign="center">
+            <Typography
+              sx={{
+                color: "white",
+                variant: "h6",
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               Already a member?
-              <Link href="/login" variant="body2" style={{ color: "white" }}>
+              <Link href="/login" variant="h6" style={{ color: "white" }}>
                 Login
               </Link>
             </Typography>
 
             <TextField
               sx={{
+                "& .MuiInputBase-input": {
+                  color: "#000000",
+                  fontSize: "20px",
+                  height: "1em",
+                },
+                "& .MuiFormLabel-root": {
+                  fontSize: "18px",
+                  fontWeight: "100",
+                  lineHeight: "1em",
+                },
+
                 backgroundColor: "white",
                 borderRadius: "1rem",
-                "& .MuiInputBase-root": {
-                  "&:before": {
-                    borderBottom: "none",
-                  },
-                  "&:hover:before": {
-                    borderBottom: "none",
-                  },
-                  "&:after": {
-                    borderBottom: "none",
-                  },
-                },
+                display: "flex",
+                flexWrap: "wrap",
+
+                justifyContent: "center",
+                alignItems: "center",
               }}
               id="firstname"
               error={firstnameError}
@@ -358,13 +385,26 @@ function SignUp() {
               variant="filled"
               fullWidth
               size="small"
+              InputProps={{ disableUnderline: true }}
             />
 
             <TextField
               sx={{
+                fontSize: ".2rem",
                 backgroundColor: "white",
                 borderRadius: "1rem",
-                "& .MuiInputBase-root": {
+                "& .MuiInputBase-input": {
+                  color: "#000000",
+                  fontSize: "20px",
+                  height: "1em",
+                },
+                "& .MuiFormLabel-root": {
+                  fontSize: "18px",
+                  fontWeight: "100",
+                  lineHeight: "1em",
+                },
+
+                /* "& .MuiInputBase-root": {
                   "&:before": {
                     borderBottom: "none",
                   },
@@ -374,7 +414,7 @@ function SignUp() {
                   "&:after": {
                     borderBottom: "none",
                   },
-                },
+                },*/
               }}
               id="lastname"
               error={lastnameError}
@@ -385,13 +425,26 @@ function SignUp() {
               variant="filled"
               fullWidth
               size="small"
+              InputProps={{ disableUnderline: true }}
             />
 
             <TextField
               sx={{
+                color: "text.tertiary",
                 backgroundColor: "white",
                 borderRadius: "1rem",
-                "& .MuiInputBase-root": {
+                "& .MuiInputBase-input": {
+                  color: "#000000",
+                  fontSize: "20px",
+                  height: "1em",
+                },
+                "& .MuiFormLabel-root": {
+                  fontSize: "18px",
+                  fontWeight: "100",
+                  lineHeight: "1em",
+                },
+
+                /*"& .MuiInputBase-root": {
                   "&:before": {
                     borderBottom: "none",
                   },
@@ -401,7 +454,7 @@ function SignUp() {
                   "&:after": {
                     borderBottom: "none",
                   },
-                },
+                },*/
               }}
               id="email"
               error={emailError}
@@ -412,23 +465,13 @@ function SignUp() {
               variant="filled"
               fullWidth
               size="small"
+              InputProps={{ disableUnderline: true }}
             />
 
             <TextField
               sx={{
                 backgroundColor: "white",
                 borderRadius: "1rem",
-                "& .MuiInputBase-root": {
-                  "&:before": {
-                    borderBottom: "none",
-                  },
-                  "&:hover:before": {
-                    borderBottom: "none",
-                  },
-                  "&:after": {
-                    borderBottom: "none",
-                  },
-                },
               }}
               error={passwordError}
               label="Password"
@@ -450,6 +493,7 @@ function SignUp() {
                     </IconButton>
                   </InputAdornment>
                 ),
+                disableUnderline: true,
               }}
             />
 
@@ -457,37 +501,18 @@ function SignUp() {
               sx={{
                 backgroundColor: "white",
                 borderRadius: "1rem",
-                "& .MuiInputBase-root": {
-                  "&:before": {
-                    borderBottom: "none",
-                  },
-                  "&:hover:before": {
-                    borderBottom: "none",
-                  },
-                  "&:after": {
-                    borderBottom: "none",
-                  },
+                "& .MuiInputBase-input": {
+                  color: "#000000",
+                  fontSize: "20px",
+                  height: "1em",
                 },
-              }}
-              id="city"
-              error={cityError}
-              label="City"
-              value={cityInput}
-              onChange={(event) => setCityInput(event.target.value)}
-              onBlur={handleCity}
-              variant="filled"
-              fullWidth
-              size="small"
-            />
-            <FormControl
-              fullWidth
-              size="small"
-              variant="filled"
-              style={{
-                backgroundColor: "white",
-                borderRadius: "1rem",
+                "& .MuiFormLabel-root": {
+                  fontSize: "18px",
+                  fontWeight: "100",
+                  lineHeight: "1em",
+                },
 
-                /*"& .MuiInputBase-root": {
+                /* "& .MuiInputBase-root": {
                   "&:before": {
                     borderBottom: "none",
                   },
@@ -498,6 +523,25 @@ function SignUp() {
                     borderBottom: "none",
                   },
                 },*/
+              }}
+              id="city"
+              error={cityError}
+              label="City"
+              value={cityInput}
+              onChange={(event) => setCityInput(event.target.value)}
+              onBlur={handleCity}
+              variant="filled"
+              fullWidth
+              size="small"
+              InputProps={{ disableUnderline: true }}
+            />
+            {/* <FormControl
+              fullWidth
+              size="small"
+              variant="filled"
+              style={{
+                backgroundColor: "white",
+                borderRadius: "1rem",
               }}
             >
               <InputLabel id="state-select-label">State</InputLabel>
@@ -512,6 +556,35 @@ function SignUp() {
                   <MenuItem key={state} value={state}>
                     {state}
                   </MenuItem>
+                ))}
+              </Select>
+            </FormControl> */}
+
+            <FormControl
+              fullWidth
+              size="small"
+              variant="filled"
+              style={{
+                backgroundColor: "white",
+                borderRadius: "1rem",
+              }}
+            >
+              <InputLabel id="state-select-label">State</InputLabel>
+              <Select
+                labelId="state-select-label"
+                value={selectedState}
+                onChange={handleState}
+                label="State"
+                disableUnderline
+              >
+                {states.map((stateItem) => (
+                  <MenuItem
+                    key={stateItem.code}
+                    value={stateItem.code}
+                    sx={{ fontSize: "0.9rem" }}
+                  >
+                    {stateItem.name}
+                  </MenuItem> //value(stateCode) will be sent to backend
                 ))}
               </Select>
             </FormControl>

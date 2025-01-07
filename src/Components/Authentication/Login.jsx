@@ -22,19 +22,6 @@ import { useNavigate } from "react-router-dom";
 // User login Url
 const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/user/login`;
 
-//  login requestBody example
-// const requestBody = {
-//   email: "example@gmail.com",
-//   password: "Password129",
-// };
-
-// Fetch code
-async function logInUser(URL, requestBody) {
-  const myData = await postData(URL, requestBody);
-  // setMessage(myData.data);
-  console.log(myData);
-}
-
 const isEmail = (email) =>
   /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email);
 
@@ -120,11 +107,6 @@ function Login() {
           open={open}
           onClose={null}
           sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
             background: "#000",
             "& .MuiPaper-root": {
               background: "#000",
@@ -139,7 +121,7 @@ function Login() {
           <SvgIcon
             style={{
               margin: ".5rem",
-              width: "30rem",
+              width: "initial",
               height: "3rem",
               display: "flex",
               flexWrap: "wrap",
@@ -149,7 +131,7 @@ function Login() {
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              fill="#FFF"
+              fill="#000"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
@@ -190,7 +172,6 @@ function Login() {
               color: "white",
               display: "flex",
               flexWrap: "wrap",
-              flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
               gap: 2,
@@ -210,7 +191,11 @@ function Login() {
                 border: "white",
                 backgroundColor: "white",
                 borderRadius: "1rem",
-                "& .MuiInputBase-root": {
+                "& .MuiInputBase-input": {
+                  color: (theme) => theme.palette.text.tertiary,
+                  fontSize: (theme) => theme.typography.body2.fontSize,
+                },
+                /*"& .MuiInputBase-root": {
                   "&:before": {
                     borderBottom: "none",
                   },
@@ -220,7 +205,7 @@ function Login() {
                   "&:after": {
                     borderBottom: "none",
                   },
-                },
+                },*/
               }}
               id="email"
               error={emailError}
@@ -231,6 +216,7 @@ function Login() {
               variant="filled"
               fullWidth
               size="small"
+              InputProps={{ disableUnderline: true }}
             />
             <TextField
               sx={{
@@ -270,6 +256,7 @@ function Login() {
                     </IconButton>
                   </InputAdornment>
                 ),
+                disableUnderline: true,
               }}
             />
             <Typography>
@@ -291,10 +278,10 @@ function Login() {
                 Login
               </Button>
             </Typography>
-            <Typography>
+            <Typography component={"div"}>
               {formValid && <Alert severity="error">{formValid}</Alert>}{" "}
             </Typography>
-            <Typography>
+            <Typography component={"div"}>
               {success && <Alert severity="success">{success}</Alert>}
             </Typography>
           </DialogContent>

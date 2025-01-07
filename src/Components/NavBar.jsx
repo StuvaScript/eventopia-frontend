@@ -22,7 +22,7 @@ import { getData } from "../util";
 const NavBar = ({ title }) => {
   const [location, setLocation] = React.useState({ city: "", state: "" });
   const [dateRange, setDateRange] = useState([]);
-  const [error, setError] = useState({city: false, state: false});
+  const [error, setError] = useState({ city: false, state: false });
 
   const handleLocationChange = (city, state) => {
     setLocation({ city, state });
@@ -57,11 +57,11 @@ const NavBar = ({ title }) => {
         state: !location.state,
       });
       return; //early exit if validation fails
-    }else{
-       setError({
-         city: false,
-         state: false,
-       });
+    } else {
+      setError({
+        city: false,
+        state: false,
+      });
     }
 
     // Add API call to execute the search
@@ -193,7 +193,9 @@ const NavBar = ({ title }) => {
               paddingLeft: "1rem",
             }}
           >
-            Login
+            <Link href="/login" variant="body2" style={{ color: "white" }}>
+              Login
+            </Link>
           </Typography>
           <Button
             variant="contained"
@@ -207,7 +209,9 @@ const NavBar = ({ title }) => {
               "&:hover": { backgroundColor: "#323232" },
             }}
           >
-            Sign Up
+            <Link href="/signup" variant="body2" style={{ color: "white" }}>
+              Sign Up
+            </Link>
           </Button>
         </Box>
       </Toolbar>

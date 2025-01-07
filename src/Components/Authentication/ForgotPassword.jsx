@@ -87,7 +87,7 @@ function Forgot() {
           <SvgIcon
             style={{
               margin: ".5rem",
-              width: "30rem",
+              width: "initial",
               height: "3rem",
               display: "flex",
               flexWrap: "wrap",
@@ -97,7 +97,7 @@ function Forgot() {
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              fill="FFF"
+              fill="000"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
@@ -175,6 +175,7 @@ function Forgot() {
               variant="filled"
               fullWidth
               size="small"
+              InputProps={{ disableUnderline: true }}
             />
             <Typography>
               <Button
@@ -187,14 +188,14 @@ function Forgot() {
               </Button>
             </Typography>
             <Typography>
-              <Link href="/login" variant="body2" style={{ color: "white" }}>
+              <Link href="/login" variant="h6" style={{ color: "white" }}>
                 Back to Login
               </Link>
             </Typography>
-            <Typography>
+            <Typography component={"div"}>
               {formValid && <Alert severity="error">{formValid}</Alert>}
             </Typography>
-            <Typography>
+            <Typography component={"div"}>
               {success && <Alert severity="success">{success}</Alert>}
             </Typography>
           </DialogContent>
