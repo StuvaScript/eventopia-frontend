@@ -22,6 +22,7 @@ import { getData } from "../util";
 const NavBar = ({ title }) => {
   const [location, setLocation] = React.useState({ city: "", state: "" });
   const [dateRange, setDateRange] = useState([]);
+  const [error, setError] = useState({city: false, state: false});
 
   const handleLocationChange = (city, state) => {
     setLocation({ city, state });
@@ -48,6 +49,20 @@ const NavBar = ({ title }) => {
 
     console.log("Request URL:", URL);
     console.log("Request Config:", config);
+
+    // Validate if city and state are filled
+    if (!location.city || !location.state) {
+      setError({
+        city: !location.city,
+        state: !location.state,
+      });
+      return; //early exit if validation fails
+    }else{
+       setError({
+         city: false,
+         state: false,
+       });
+    }
 
     // Add API call to execute the search
     try {
@@ -99,11 +114,11 @@ const NavBar = ({ title }) => {
             alignItems: "center",
             justifyContent: "space-around",
             backgroundColor: "background.paper",
-            borderRadius: "25px",
+            borderRadius: "32px",
             px: 2,
             py: 0.6,
             flexGrow: 1,
-            margin: "3px",
+            margin: "5px",
             maxWidth: "55%",
           }}
         >
@@ -121,6 +136,7 @@ const NavBar = ({ title }) => {
             />
             <CustomLocationPicker
               onLocationChange={handleLocationChange}
+              error={error}
               InputProps={{ disableUnderline: true }}
               sx={{
                 flexGrow: 1,
