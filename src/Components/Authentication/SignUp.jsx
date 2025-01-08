@@ -40,7 +40,7 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 // User login Url
-const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/user/login`;
+const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/user/register`;
 
 // Optional config
 const config = {
@@ -163,14 +163,12 @@ function SignUp() {
     console.log("State:" + selectedState);
     // Call to server to post the data
     const requestBody = {
-      data: {
-        firstName: firstnameInput,
-        lastName: lastnameInput,
-        email: emailInput,
-        password: passwordInput,
-        city: cityInput,
-        state: selectedState,
-      },
+      firstName: firstnameInput,
+      lastName: lastnameInput,
+      email: emailInput,
+      password: passwordInput,
+      city: cityInput,
+      state: selectedState,
     };
     registerUser(URL, requestBody);
     setSuccess("Form submitted successfully");
@@ -194,59 +192,6 @@ function SignUp() {
   const handleClose = () => {
     navigate("/home");
   };
-
-  // const states = [
-  //   "Alabama",
-  //   "Alaska",
-  //   "Arizona",
-  //   "Arkansas",
-  //   "California",
-  //   "Colorado",
-  //   "Connecticut",
-  //   "Delaware",
-  //   "Florida",
-  //   "Georgia",
-  //   "Hawaii",
-  //   "Idaho",
-  //   "Illinois",
-  //   "Indiana",
-  //   "Iowa",
-  //   "Kansas",
-  //   "Kentucky",
-  //   "Louisiana",
-  //   "Maine",
-  //   "Maryland",
-  //   "Massachusetts",
-  //   "Michigan",
-  //   "Minnesota",
-  //   "Mississippi",
-  //   "Missouri",
-  //   "Montana",
-  //   "Nebraska",
-  //   "Nevada",
-  //   "New Hampshire",
-  //   "New Jersey",
-  //   "New Mexico",
-  //   "New York",
-  //   "North Carolina",
-  //   "North Dakota",
-  //   "Ohio",
-  //   "Oklahoma",
-  //   "Oregon",
-  //   "Pennsylvania",
-  //   "Rhode Island",
-  //   "South Carolina",
-  //   "South Dakota",
-  //   "Tennessee",
-  //   "Texas",
-  //   "Utah",
-  //   "Vermont",
-  //   "Virginia",
-  //   "Washington",
-  //   "West Virginia",
-  //   "Wisconsin",
-  //   "Wyoming",
-  // ];
 
   return (
     <>
@@ -334,7 +279,7 @@ function SignUp() {
 
               justifyContent: "center",
               alignItems: "center",
-              gap: 1,
+              gap: 1.2,
               width: 400,
               height: 1,
             }}
@@ -430,18 +375,31 @@ function SignUp() {
 
             <TextField
               sx={{
-                color: "text.tertiary",
-                backgroundColor: "white",
-                borderRadius: "1rem",
-                "& .MuiInputBase-input": {
-                  color: "#000000",
-                  fontSize: "20px",
-                  height: "1em",
-                },
+                //backgroundColor: "white",
+                //borderRadius: "1rem",
+
                 "& .MuiFormLabel-root": {
                   fontSize: "18px",
                   fontWeight: "100",
                   lineHeight: "1em",
+                },
+                "& .MuiInputBase-input": {
+                  backgroundColor: "white",
+                  color: "#000000",
+                  fontSize: "18px",
+                  height: "1em",
+                  borderRadius: "1rem !important",
+                  "&:-webkit-autofill": {
+                    color: "#000000",
+                    //fontSize: "18px",
+                    backgroundColor: "white !important",
+                    borderRadius: "1rem !important",
+                    WebkitBoxShadow: "0 0 0 100px white inset",
+                  },
+                  "& .MuiFilledInput-root": {
+                    backgroundColor: "white !important",
+                    borderRadius: "1rem !important",
+                  },
                 },
 
                 /*"& .MuiInputBase-root": {
@@ -469,9 +427,24 @@ function SignUp() {
             />
 
             <TextField
+              //component={"form"}
               sx={{
                 backgroundColor: "white",
                 borderRadius: "1rem",
+                "& .MuiInputBase-input": {
+                  color: "#000000",
+                  fontSize: "20px",
+                  height: "1em",
+                },
+                "& .MuiFormLabel-root": {
+                  fontSize: "18px",
+                  fontWeight: "100",
+                  lineHeight: "1em",
+                },
+                // "& .MuiInputBase-root": {
+                //   color: "#000",
+                //   fontSize: "18px",
+                // },
               }}
               error={passwordError}
               label="Password"
@@ -564,13 +537,34 @@ function SignUp() {
               fullWidth
               size="small"
               variant="filled"
-              style={{
+              sx={{
                 backgroundColor: "white",
                 borderRadius: "1rem",
+                "& .MuiInputBase-input": {
+                  color: "#000000",
+                  fontSize: "20px",
+                  height: "1em",
+                  minHeight: "0",
+                },
+                "& .MuiFormLabel-root": {
+                  fontSize: "18px",
+                  fontWeight: "100",
+                  //lineHeight: "1em",
+                },
+
+                // "& .MuiInputBase-root": {
+                //   color: "#000",
+                //   fontSize: "20px",
+                // },
               }}
             >
               <InputLabel id="state-select-label">State</InputLabel>
               <Select
+                // sx={{
+                //   "&.MuiSelect-select ": {
+                //     minHeight: "1em",
+                //   },
+                // }}
                 labelId="state-select-label"
                 value={selectedState}
                 onChange={handleState}

@@ -110,6 +110,7 @@ function Forgot() {
             </svg>
           </SvgIcon>
           <DialogTitle
+            variant="h5"
             sx={{
               padding: ".2rem",
               textAlign: "center",
@@ -146,24 +147,22 @@ function Forgot() {
               height: 1,
             }}
           >
-            <Typography color="white" textAlign="center">
+            <Typography color="white" variant="h6" textAlign="center">
               Enter your email to get a password reset link
             </Typography>
             <TextField
               sx={{
-                border: "white",
                 backgroundColor: "white",
                 borderRadius: "1rem",
-                "& .MuiInputBase-root": {
-                  "&:before": {
-                    borderBottom: "none",
-                  },
-                  "&:hover:before": {
-                    borderBottom: "none",
-                  },
-                  "&:after": {
-                    borderBottom: "none",
-                  },
+                "& .MuiInputBase-input": {
+                  color: "#000000",
+                  fontSize: "20px",
+                  height: "1em",
+                },
+                "& .MuiFormLabel-root": {
+                  fontSize: "18px",
+                  fontWeight: "100",
+                  lineHeight: "1em",
                 },
               }}
               id="email"

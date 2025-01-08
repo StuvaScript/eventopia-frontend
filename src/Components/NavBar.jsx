@@ -23,6 +23,12 @@ const NavBar = ({ title }) => {
   const [location, setLocation] = React.useState({ city: "", state: "" });
   const [dateRange, setDateRange] = useState([]);
   const [error, setError] = useState({ city: false, state: false });
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleLogin = () => {
+    // Perform your login logic here
+    setIsLoggedIn(true);
+  };
 
   const handleLocationChange = (city, state) => {
     setLocation({ city, state });
@@ -169,7 +175,7 @@ const NavBar = ({ title }) => {
         </Box>
 
         {/* Navigation Links */}
-        <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
+        {/* <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
           <Typography
             variant="body1"
             sx={{
@@ -213,7 +219,70 @@ const NavBar = ({ title }) => {
               Sign Up
             </Link>
           </Button>
-        </Box>
+        </Box> */}
+        {!isLoggedIn && (
+          <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
+            <Typography
+              variant="body1"
+              sx={{
+                color: "text.primary",
+                mx: 2,
+                fontSize: "1rem",
+                cursor: "pointer",
+                paddingLeft: "1rem",
+              }}
+            >
+              Create Your Event
+            </Typography>
+            <Typography
+              variant="body1"
+              sx={{
+                color: "text.primary",
+                mx: 2,
+                fontSize: "1rem",
+                cursor: "pointer",
+                borderLeft: "1px solid white",
+                paddingLeft: "1rem",
+              }}
+            >
+              <Link href="/login" variant="body2" style={{ color: "white" }}>
+                Login
+              </Link>
+            </Typography>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: "background.paper",
+                color: "text.primary",
+                textTransform: "none",
+                ml: 2,
+                px: 3,
+                borderRadius: "25px",
+                "&:hover": { backgroundColor: "#323232" },
+              }}
+            >
+              <Link href="/signup" variant="body2" style={{ color: "white" }}>
+                Sign Up
+              </Link>
+            </Button>
+          </Box>
+        )}
+        {isLoggedIn && (
+          <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
+            <Typography
+              variant="body1"
+              sx={{
+                color: "text.primary",
+                mx: 2,
+                fontSize: "1rem",
+                cursor: "pointer",
+                paddingLeft: "1rem",
+              }}
+            >
+              Create Your Event
+            </Typography>
+          </Box>
+        )}
       </Toolbar>
     </AppBar>
   );

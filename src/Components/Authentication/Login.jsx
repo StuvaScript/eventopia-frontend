@@ -18,6 +18,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import { useNavigate } from "react-router-dom";
+import { postData } from "../../util/index";
 
 // User login Url
 const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/user/login`;
@@ -80,11 +81,21 @@ function Login() {
       return;
     }
     setFormValid(null);
+    const requestBody = {
+      email: emailInput,
+      password: passwordInput,
+    };
+    loginUser(URL, requestBody);
     setSuccess("Form submitted successfully");
-
-    console.log("Email:" + emailInput);
-    console.log("Password:" + passwordInput);
   };
+
+  async function loginUser(URL, requestBody) {
+    const myData = await postData(URL, requestBody);
+    if (myData) {
+      handleClose();
+    }
+    console.log(myData);
+  }
 
   const handleLoginClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -144,6 +155,7 @@ function Login() {
             </svg>
           </SvgIcon>
           <DialogTitle
+            variant="h5"
             sx={{
               padding: ".2rem",
               textAlign: "center",
@@ -174,27 +186,39 @@ function Login() {
               flexWrap: "wrap",
               justifyContent: "center",
               alignItems: "center",
-              gap: 2,
+              gap: 4,
               width: 400,
               height: 1,
             }}
           >
-            <Typography color="white" textAlign="center">
+            <Typography color="white" variant="h6" textAlign="center">
               {" "}
               Not a member yet?{"    "}
-              <Link href="/signup" variant="body2" style={{ color: "white" }}>
+              <Link href="/signup" variant="h6" style={{ color: "white" }}>
                 Sign Up
               </Link>
             </Typography>
             <TextField
               sx={{
-                border: "white",
                 backgroundColor: "white",
                 borderRadius: "1rem",
                 "& .MuiInputBase-input": {
-                  color: (theme) => theme.palette.text.tertiary,
-                  fontSize: (theme) => theme.typography.body2.fontSize,
+                  color: "#000000",
+                  fontSize: "20px",
+                  height: "1em",
                 },
+                "& .MuiFormLabel-root": {
+                  fontSize: "20px",
+                  fontWeight: "100",
+                  lineHeight: "1em",
+                },
+                //border: "white",
+                // backgroundColor: "white",
+                //borderRadius: "1rem",
+                //"& .MuiInputBase-input": {
+                // color: (theme) => theme.palette.text.tertiary,
+                //fontSize: (theme) => theme.typography.body2.fontSize,
+                //},
                 /*"& .MuiInputBase-root": {
                   "&:before": {
                     borderBottom: "none",
@@ -220,22 +244,30 @@ function Login() {
             />
             <TextField
               sx={{
-                border: "white",
                 backgroundColor: "white",
                 borderRadius: "1rem",
 
                 "& .MuiInputBase-root": {
-                  "&:before": {
-                    borderBottom: "none",
-                  },
-                  "&:hover:before": {
-                    borderBottom: "none",
-                  },
-                  "&:after": {
-                    borderBottom: "none",
-                  },
+                  color: "#000",
+                  fontSize: "18px",
                 },
               }}
+              //border: "white",
+              //backgroundColor: "white",
+              //borderRadius: "1rem",
+
+              //"& .MuiInputBase-root": {
+              // "&:before": {
+              //  borderBottom: "none",
+              //},
+              // "&:hover:before": {
+              // borderBottom: "none",
+              //},
+              //"&:after": {
+              // borderBottom: "none",
+              //},
+              //},
+              //}}
               error={passwordError}
               label="Password"
               variant="filled"
