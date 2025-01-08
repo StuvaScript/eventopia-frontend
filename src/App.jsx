@@ -7,6 +7,7 @@ import HomePage from "./Components/Pages/HomePage";
 import NavBar from "./Components/NavBar";
 import Footer from "./Components/Footer";
 import { getAllData } from "./util/index";
+import EventResultPage from "./Components/Pages/EventResultPage";
 
 // import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -34,6 +35,7 @@ function App() {
           <Route path="/forgotpassword" element={<Forgot />} />
           <Route path="/" element={<Navigate to="/home" />} />
           <Route path="/home" element={<HomePage />} />
+          <Route path="/eventresult" element={<EventResultPage />} />
         </Routes>
         <Footer />
       </BrowserRouter>

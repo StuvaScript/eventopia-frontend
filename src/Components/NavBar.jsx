@@ -18,21 +18,22 @@ import CustomDatePicker from "./Shared/DatePicker";
 import Link from "@mui/material/Link";
 import { useState } from "react";
 import { getData } from "../util";
+import { useNavigate } from "react-router-dom";
 
 const NavBar = ({ title }) => {
   const [location, setLocation] = React.useState({ city: "", state: "" });
   const [dateRange, setDateRange] = useState([]);
-  const [error, setError] = useState({city: false, state: false});
+  const [error, setError] = useState({ city: false, state: false });
 
   const handleLocationChange = (city, state) => {
     setLocation({ city, state });
-    console.log("Selected City:", city);
-    console.log("Selected State:", state);
   };
 
   const handleDateRangeChange = (newDateRange) => {
     setDateRange(newDateRange);
   };
+
+  const navigate = useNavigate();
 
   const handleSearch = async () => {
     const URL = `${import.meta.env.VITE_API_BASE_URL}/api/ticketmaster/events/${
@@ -57,20 +58,24 @@ const NavBar = ({ title }) => {
         state: !location.state,
       });
       return; //early exit if validation fails
-    }else{
-       setError({
-         city: false,
-         state: false,
-       });
+    } else {
+      setError({
+        city: false,
+        state: false,
+      });
     }
 
     // Add API call to execute the search
-    try {
-      const response = await getData(URL, config);
-      console.log(response);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+    // try {
+    //   const response = await getData(URL, config);
+    //   console.log(response);
+    // } catch (error) {
+    //   console.error("Error fetching data:", error);
+    // }
+    // Call to event result page with search criteria
+    const inputData = { city: location.city, state: location.state };
+    // Add API call to execute the search
+    navigate("/eventresult", { state: inputData });
   };
 
   const getTitle = () => {
@@ -193,7 +198,9 @@ const NavBar = ({ title }) => {
               paddingLeft: "1rem",
             }}
           >
-            Login
+            <Link href="/login" variant="body2" style={{ color: "white" }}>
+              Login
+            </Link>
           </Typography>
           <Button
             variant="contained"
@@ -207,7 +214,9 @@ const NavBar = ({ title }) => {
               "&:hover": { backgroundColor: "#323232" },
             }}
           >
-            Sign Up
+            <Link href="/signup" variant="body2" style={{ color: "white" }}>
+              Sign Up
+            </Link>
           </Button>
         </Box>
       </Toolbar>
