@@ -206,6 +206,14 @@ function Login() {
                   color: "#000000",
                   fontSize: "20px",
                   height: "1em",
+                  borderRadius: "1rem !important",
+                  "&:-webkit-autofill": {
+                    color: "#000000",
+                    //fontSize: "18px",
+                    backgroundColor: "white !important",
+                    borderRadius: "1rem !important",
+                    WebkitBoxShadow: "0 0 0 100px white inset",
+                  },
                 },
                 "& .MuiFormLabel-root": {
                   fontSize: "20px",
@@ -246,10 +254,15 @@ function Login() {
               sx={{
                 backgroundColor: "white",
                 borderRadius: "1rem",
-
-                "& .MuiInputBase-root": {
-                  color: "#000",
+                "& .MuiInputBase-input": {
+                  color: "#000000",
+                  fontSize: "20px",
+                  height: "1em",
+                },
+                "& .MuiFormLabel-root": {
                   fontSize: "18px",
+                  fontWeight: "100",
+                  lineHeight: "1em",
                 },
               }}
               //border: "white",

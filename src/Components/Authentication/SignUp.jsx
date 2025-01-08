@@ -306,6 +306,14 @@ function SignUp() {
                   color: "#000000",
                   fontSize: "20px",
                   height: "1em",
+                  borderRadius: "1rem !important",
+                  "&:-webkit-autofill": {
+                    color: "#000000",
+                    //fontSize: "18px",
+                    backgroundColor: "white !important",
+                    borderRadius: "1rem !important",
+                    WebkitBoxShadow: "0 0 0 100px white inset",
+                  },
                 },
                 "& .MuiFormLabel-root": {
                   fontSize: "18px",
@@ -315,11 +323,6 @@ function SignUp() {
 
                 backgroundColor: "white",
                 borderRadius: "1rem",
-                display: "flex",
-                flexWrap: "wrap",
-
-                justifyContent: "center",
-                alignItems: "center",
               }}
               id="firstname"
               error={firstnameError}
@@ -342,24 +345,20 @@ function SignUp() {
                   color: "#000000",
                   fontSize: "20px",
                   height: "1em",
+                  borderRadius: "1rem !important",
+                  "&:-webkit-autofill": {
+                    color: "#000000",
+                    //fontSize: "18px",
+                    backgroundColor: "white !important",
+                    borderRadius: "1rem !important",
+                    WebkitBoxShadow: "0 0 0 100px white inset",
+                  },
                 },
                 "& .MuiFormLabel-root": {
                   fontSize: "18px",
                   fontWeight: "100",
                   lineHeight: "1em",
                 },
-
-                /* "& .MuiInputBase-root": {
-                  "&:before": {
-                    borderBottom: "none",
-                  },
-                  "&:hover:before": {
-                    borderBottom: "none",
-                  },
-                  "&:after": {
-                    borderBottom: "none",
-                  },
-                },*/
               }}
               id="lastname"
               error={lastnameError}
@@ -401,18 +400,6 @@ function SignUp() {
                     borderRadius: "1rem !important",
                   },
                 },
-
-                /*"& .MuiInputBase-root": {
-                  "&:before": {
-                    borderBottom: "none",
-                  },
-                  "&:hover:before": {
-                    borderBottom: "none",
-                  },
-                  "&:after": {
-                    borderBottom: "none",
-                  },
-                },*/
               }}
               id="email"
               error={emailError}
@@ -474,28 +461,25 @@ function SignUp() {
               sx={{
                 backgroundColor: "white",
                 borderRadius: "1rem",
+
                 "& .MuiInputBase-input": {
                   color: "#000000",
                   fontSize: "20px",
                   height: "1em",
+                  borderRadius: "1rem !important",
+                  "&:-webkit-autofill": {
+                    color: "#000000",
+                    //fontSize: "18px",
+                    backgroundColor: "white !important",
+                    borderRadius: "1rem !important",
+                    WebkitBoxShadow: "0 0 0 100px white inset",
+                  },
                 },
                 "& .MuiFormLabel-root": {
                   fontSize: "18px",
                   fontWeight: "100",
                   lineHeight: "1em",
                 },
-
-                /* "& .MuiInputBase-root": {
-                  "&:before": {
-                    borderBottom: "none",
-                  },
-                  "&:hover:before": {
-                    borderBottom: "none",
-                  },
-                  "&:after": {
-                    borderBottom: "none",
-                  },
-                },*/
               }}
               id="city"
               error={cityError}
@@ -544,7 +528,9 @@ function SignUp() {
                   color: "#000000",
                   fontSize: "20px",
                   height: "1em",
-                  minHeight: "0",
+                  minHeight: "1px",
+                  paddingTop: "12px",
+                  paddingBottom: "2px",
                 },
                 "& .MuiFormLabel-root": {
                   fontSize: "18px",

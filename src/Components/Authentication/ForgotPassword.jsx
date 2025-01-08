@@ -158,6 +158,14 @@ function Forgot() {
                   color: "#000000",
                   fontSize: "20px",
                   height: "1em",
+                  borderRadius: "1rem !important",
+                  "&:-webkit-autofill": {
+                    color: "#000000",
+                    //fontSize: "18px",
+                    backgroundColor: "white !important",
+                    borderRadius: "1rem !important",
+                    WebkitBoxShadow: "0 0 0 100px white inset",
+                  },
                 },
                 "& .MuiFormLabel-root": {
                   fontSize: "18px",
