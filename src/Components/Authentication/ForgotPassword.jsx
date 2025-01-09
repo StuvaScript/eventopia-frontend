@@ -47,7 +47,7 @@ function Forgot() {
     setSuccess();
 
     if (emailError || !emailInput) {
-      setFormValid("Email is inValid.Please Re-Enter Email");
+      setFormValid("Email is inValid.Please enter Email");
       return;
     }
 
@@ -181,6 +181,7 @@ function Forgot() {
               onBlur={handleLoginEmail}
               variant="filled"
               fullWidth
+              required
               size="small"
               InputProps={{ disableUnderline: true }}
             />

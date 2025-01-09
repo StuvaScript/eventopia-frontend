@@ -63,6 +63,7 @@ function SignUp() {
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [cityError, setCityError] = useState(false);
+  const [stateError, setStateError] = useState(false);
 
   const [formValid, setFormValid] = useState();
   const [success, setSuccess] = useState();
@@ -129,30 +130,37 @@ function SignUp() {
     e.preventDefault();
     setSuccess();
     if (firstnameError || !firstnameInput) {
-      setFormValid(
-        "Firstname should be in 3-15 characters long.Please Re-Enter Firstname "
-      );
+      setFormValid("Please enter Firstname ");
       return;
     }
 
     if (lastnameError || !lastnameInput) {
-      setFormValid(
-        "Lastname should be in 3-15 characters long.Please Re-Enter Lastname "
-      );
+      setFormValid("Please enter Lastname ");
       return;
     }
 
     if (emailError || !emailInput) {
-      setFormValid("Email is inValid.Please Re-Enter Email");
+      setFormValid("Email is invalid.Please enter Email");
       return;
     }
 
     if (passwordError || !passwordInput) {
       setFormValid(
-        "Password should be in 5-15 characters.Please Re-Enter Password"
+        "Password should be in 5-15 characters.Please enter Password"
       );
       return;
     }
+
+    if (cityError || !cityInput) {
+      setFormValid("City is invalid.Please enter City");
+      return;
+    }
+
+    if (!selectedState) {
+      setFormValid("State is invalid.Please select State");
+      return;
+    }
+
     setFormValid(null);
 
     console.log("First Name:" + firstnameInput);
@@ -170,14 +178,21 @@ function SignUp() {
       city: cityInput,
       state: selectedState,
     };
-    registerUser(URL, requestBody);
-    setSuccess("Form submitted successfully");
+    if (registerUser(URL, requestBody)) {
+      setSuccess("Form submitted successfully");
+    }
   };
 
   async function registerUser(URL, requestBody) {
-    const myData = await postData(URL, requestBody);
-    // setMessage(myData.data);
-    console.log(myData);
+    try {
+      const myData = await postData(URL, requestBody);
+      setMessage(myData.msg);
+      console.log(myData);
+    } catch (error) {
+      setFormValid("Singup failed, please check your input");
+      return false;
+    }
+    return true;
   }
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -333,6 +348,7 @@ function SignUp() {
               variant="filled"
               fullWidth
               size="small"
+              required
               InputProps={{ disableUnderline: true }}
             />
 
@@ -369,6 +385,7 @@ function SignUp() {
               variant="filled"
               fullWidth
               size="small"
+              required
               InputProps={{ disableUnderline: true }}
             />
 
@@ -410,6 +427,7 @@ function SignUp() {
               variant="filled"
               fullWidth
               size="small"
+              required
               InputProps={{ disableUnderline: true }}
             />
 
@@ -441,6 +459,7 @@ function SignUp() {
               onChange={(event) => setPasswordInput(event.target.value)}
               onBlur={handlePassword}
               fullWidth
+              required
               size="small"
               InputProps={{
                 endAdornment: (
@@ -489,6 +508,7 @@ function SignUp() {
               onBlur={handleCity}
               variant="filled"
               fullWidth
+              required
               size="small"
               InputProps={{ disableUnderline: true }}
             />
@@ -551,17 +571,28 @@ function SignUp() {
                 //     minHeight: "1em",
                 //   },
                 // }}
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      maxHeight: "220px",
+                      scrollbarWidth: "none",
+                    },
+                  },
+                }}
                 labelId="state-select-label"
                 value={selectedState}
                 onChange={handleState}
                 label="State"
+                required
                 disableUnderline
               >
                 {states.map((stateItem) => (
                   <MenuItem
                     key={stateItem.code}
                     value={stateItem.code}
-                    sx={{ fontSize: "0.9rem" }}
+                    sx={{
+                      fontSize: "0.9rem",
+                    }}
                   >
                     {stateItem.name}
                   </MenuItem> //value(stateCode) will be sent to backend

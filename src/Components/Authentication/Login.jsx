@@ -70,14 +70,12 @@ function Login() {
     setSuccess();
 
     if (emailError || !emailInput) {
-      setFormValid("Email is inValid.Please Re-Enter Email");
+      setFormValid("Email is invalid.Please enter Email");
       return;
     }
 
     if (passwordError || !passwordInput) {
-      setFormValid(
-        "Password should be in 5-15 characters.Please Re-Enter Password"
-      );
+      setFormValid("Please enter Password");
       return;
     }
     setFormValid(null);
@@ -86,15 +84,21 @@ function Login() {
       password: passwordInput,
     };
     loginUser(URL, requestBody);
-    setSuccess("Form submitted successfully");
   };
 
   async function loginUser(URL, requestBody) {
-    const myData = await postData(URL, requestBody);
-    if (myData) {
-      handleClose();
+    try {
+      const myData = await postData(URL, requestBody);
+      if (myData) {
+        // TODO Set User, City and State
+        handleClose();
+      }
+      console.log(myData);
+      return true;
+    } catch (error) {
+      setFormValid("Invalid email or password, login failed");
+      return false;
     }
-    console.log(myData);
   }
 
   const handleLoginClickShowPassword = () => setShowPassword((show) => !show);
@@ -247,6 +251,7 @@ function Login() {
               onBlur={handleLoginEmail}
               variant="filled"
               fullWidth
+              required
               size="small"
               InputProps={{ disableUnderline: true }}
             />
@@ -289,6 +294,7 @@ function Login() {
               onChange={(event) => setPasswordInput(event.target.value)}
               onBlur={handleLoginPassword}
               fullWidth
+              required
               size="small"
               InputProps={{
                 endAdornment: (
