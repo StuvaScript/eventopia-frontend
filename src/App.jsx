@@ -11,19 +11,6 @@ import { getAllData } from "./util/index";
 // import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
-  const [message, setMessage] = useState("");
-
-  useEffect(() => {
-    (async () => {
-      const myData = await getAllData(URL);
-      setMessage(myData.data);
-    })();
-
-    return () => {
-      console.log("unmounting");
-    };
-  }, []);
-
   return (
     <div className="app">
       <BrowserRouter>
