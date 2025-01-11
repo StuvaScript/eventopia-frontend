@@ -6,34 +6,34 @@ import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import { useState, useEffect } from "react";
 import { getData } from "../../util/index";
 
-const events = [
-  {
-    id: 1,
-    title: "Event 1",
-    date: "Fri, Dec 6th",
-    time: "9:00pm",
-    image: "event1.jpg",
-  },
-  {
-    id: 2,
-    title: "Event 2",
-    date: "Fri, Dec 6th",
-    time: "9:00pm",
-    image: "event2.jpg",
-  },
-  {
-    id: 3,
-    title: "Event 3",
-    date: "Fri, Dec 6th",
-    time: "9:00pm",
-    image: "event3.jpg",
-  },
-];
+// const events = [
+//   {
+//     id: 1,
+//     title: "Event 1",
+//     date: "Fri, Dec 6th",
+//     time: "9:00pm",
+//     image: "event1.jpg",
+//   },
+//   {
+//     id: 2,
+//     title: "Event 2",
+//     date: "Fri, Dec 6th",
+//     time: "9:00pm",
+//     image: "event2.jpg",
+//   },
+//   {
+//     id: 3,
+//     title: "Event 3",
+//     date: "Fri, Dec 6th",
+//     time: "9:00pm",
+//     image: "event3.jpg",
+//   },
+// ];
 
 const name = "Nihal";
 const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/itinerary`;
 const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzdmMmZhYjVhZGE3MjZiMjE2ZDYwMDAiLCJmaXJzdE5hbWUiOiJOaWhhbCIsImxhc3ROYW1lIjoiZWVlZSIsImlhdCI6MTczNjM4ODUyNCwiZXhwIjoxNzM2NDc0OTI0fQ.R5ZqdXbV4mexd7n0urWJWgZXpGTFscex5eo864RdOSM";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzgxYzdjNWZkMjExZWZhZjViMTgzNmUiLCJmaXJzdE5hbWUiOiJBYmNhYmMiLCJsYXN0TmFtZSI6IkFiY2FiYyIsImlhdCI6MTczNjU1ODU1OCwiZXhwIjoxNzM2NjQ0OTU4fQ.3zoXjycPW7BIZxGFgpnbTVyCbxWrgKEtmKjH3ysbWgc";
 const config = "";
 const today = new Date();
 
@@ -97,14 +97,14 @@ const MyPlanner = () => {
        (
         <Typography variant="h6">Loading...</Typography>
       ) 
-      // : (!itineraries || itineraries.length === 0) ? (
-      //   <EmptyList
-      //     icon={<CalendarTodayIcon sx={{ fontSize: 200 }} />}
-      //     message="Your planner is empty right now, but that's okay—it's just waiting for you to fill it with your exciting events!"
-      //     buttonText="Explore Events >>"
-      //     onClick={() => console.log("Explore Events Clicked")} // add logic
-      //   />
-      // ) 
+      : (!itineraries || itineraries.itineraryItems.length === 0) ? (
+        <EmptyList
+          icon={<CalendarTodayIcon sx={{ fontSize: 200 }} />}
+          message="Your planner is empty right now, but that's okay—it's just waiting for you to fill it with your exciting events!"
+          buttonText="Explore Events >>"
+          onClick={() => console.log("Explore Events Clicked")} // add logic
+        />
+      ) 
       : (
         <>
           <Box
@@ -149,7 +149,7 @@ const MyPlanner = () => {
             </Button>
           </Box>
           <Grid container spacing={2}>
-            {events.map((event) => (
+            {filteredItineraries.map((event) => (
               <Grid item xs={12} sm={6} md={4} key={event.id}>
                 <Card sx={{ backgroundColor: "#1A1A1A", color: "#fff" }}>
                   <CardMedia
