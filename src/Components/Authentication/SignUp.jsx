@@ -128,7 +128,7 @@ function SignUp() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSuccess();
+
     if (firstnameError || !firstnameInput) {
       setFormValid("Please enter Firstname ");
       return;
@@ -178,9 +178,7 @@ function SignUp() {
       city: cityInput,
       state: selectedState,
     };
-    if (registerUser(URL, requestBody)) {
-      setSuccess("Form submitted successfully");
-    }
+    registerUser(URL, requestBody);
   };
 
   async function registerUser(URL, requestBody) {
@@ -541,6 +539,7 @@ function SignUp() {
               fullWidth
               size="small"
               variant="filled"
+              required
               sx={{
                 backgroundColor: "white",
                 borderRadius: "1rem",
@@ -583,7 +582,6 @@ function SignUp() {
                 value={selectedState}
                 onChange={handleState}
                 label="State"
-                required
                 disableUnderline
               >
                 {states.map((stateItem) => (

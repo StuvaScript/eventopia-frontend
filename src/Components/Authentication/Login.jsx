@@ -41,8 +41,17 @@ function Login() {
   const [open, setOpen] = useState(true);
   const navigate = useNavigate();
 
-  const handleClose = () => {
-    navigate("/home");
+  const handleClose = (data) => {
+    if (data) {
+      const inputData = {
+        id: data.user.id,
+        name: data.user.name,
+        token: data.token,
+      };
+      navigate("/userhome", { state: inputData });
+    } else {
+      navigate("/home");
+    }
   };
 
   const handleLoginEmail = () => {
@@ -91,7 +100,7 @@ function Login() {
       const myData = await postData(URL, requestBody);
       if (myData) {
         // TODO Set User, City and State
-        handleClose();
+        handleClose(myData);
       }
       console.log(myData);
       return true;
