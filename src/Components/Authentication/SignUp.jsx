@@ -184,7 +184,8 @@ function SignUp() {
   async function registerUser(URL, requestBody) {
     try {
       const myData = await postData(URL, requestBody);
-      setMessage(myData.msg);
+      //setMessage("Signup completed");
+      handleClose(myData);
       console.log(myData);
     } catch (error) {
       setFormValid("Singup failed, please check your input");
@@ -202,8 +203,17 @@ function SignUp() {
   const [open, setOpen] = useState(true);
   const navigate = useNavigate();
 
-  const handleClose = () => {
-    navigate("/home");
+  const handleClose = (data) => {
+    if (data && data.user) {
+      const inputData = {
+        id: data.user.id,
+        name: data.user.name,
+        token: data.token,
+      };
+      navigate("/userhome", { state: inputData });
+    } else {
+      navigate("/home");
+    }
   };
 
   return (
