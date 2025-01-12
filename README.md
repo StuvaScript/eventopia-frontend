@@ -1,28 +1,74 @@
-# Front-End Repo for Node/React Practicum
+# Project Title
 
-This will be the front-end for your team's practicum project.
+Planning a trip and need to keep track of all your vacation activities? Or maybe you just like to be in the know with local entertainment. With {this app} you can search and keep all your fun events in one place!
 
-It is suggested that you run these instructions **after** you setup the back-end server first.
-You can go through these steps during your first group meeting in case you need assistance from your mentors.
+## Getting Started
 
-You will have two folders inside one team folder (one for front-end and one for back-end). Name the parent folder something appropriate (in the below example we title it "Practicum Project").  Then clone directly (do not fork and clone) the front and back repos while inside the parent ("Practicum Project") project folder.
+To deploy this app locally, find our [backend codebase here](https://github.com/Code-the-Dream-School/hh-team1-back).
 
-![folders](images/folder_structure.png)
+type
 
->The front-end app (React) will be running on port 3000. The back-end server will be running on port 8000. You will need to run both the front-end app and the back-end server at the same time to test your app.
+### Prerequisites
 
-### Setting up local development environment
+You will need a few environment variables to get this running. Create a `.env` file in both the backend folder and the frontend folder.
 
-1. Clone this repository to the folder that was already created for both the front-end and back-end repos
-2. Run `npm install` to install dependencies
-3. Pull the latest version of the `main` branch (when needed)
-4. Run `npm start` to start the development server
-5. Open http://localhost:3000 with your browser to see the data received the back-end server.
-6. Now you have your front-end and back-end running locally!
+Here are the required keys:
 
-#### Running the front-end server in Visual Studio Code
-Note: In the below example, the group's front-end repository was named `bb-practicum-team1-front` and the back-end repository was named `bb-practicum-team-1-back`.  Your repository will have a different name, but the rest should look the same.
-![vsc running](images/front-end-running-vsc.png)
+For the backend:
 
-#### Running the front-end server in the browser
-![browser running](images/front-end-running-browser.png)
+```
+TICKETMASTER_API_KEY=YOUR_TICKETMASTER_KEY
+MONGO_URI=YOUR_MONGO_DB_KEY
+JWT_LIFETIME=YOUR_JWT_TOKEN_KEY
+JWT_SECRET=YOUR_JWT_TOKEN_KEY
+PORT=YOUR_LOCAL_PORT_NUMBER
+```
+
+For the frontend:
+
+```
+VITE_API_BASE_URL=YOUR_LOCAL_HOST_AND_PORT_NUMBER_ROUTE
+```
+
+### Installing
+
+In both the backend and the frontend folders you will need to run `npm i` to install the dependencies.
+
+## Deployment
+
+To deploy this app live, you will need to:
+
+1. Deploy your backend folder.
+2. Change the frontend `VITE_API_BASE_URL` key's value to the live backend URL.
+3. Deploy your frontend folder.
+
+## Built With
+
+- [React](https://www.react.dev/) - Frontend Javascript library
+- [Vite](https://www.vite.dev/) - Frontend build tool
+- [MongoDB](https://www.mongodb.com/) - Backend database
+- [Express](https://www.express.js.com/) - Backend framework for Node.js
+
+## Contributing
+
+Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+
+## Versioning
+
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
+
+## Authors
+
+- **Billie Thompson** - _Initial work_ - [PurpleBooth](https://github.com/PurpleBooth)
+
+See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](https://choosealicense.com/licenses/mit/) file for details
+
+## Acknowledgments
+
+- Hat tip to anyone whose code was used
+- Inspiration
+- etc
