@@ -42,7 +42,7 @@ function Login() {
   const navigate = useNavigate();
 
   const handleClose = (data) => {
-    if (data) {
+    if (data && data.user) {
       const inputData = {
         id: data.user.id,
         name: data.user.name,
