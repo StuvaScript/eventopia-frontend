@@ -2,11 +2,16 @@
 
 Planning a trip and need to keep track of all your vacation activities? Or maybe you just like to be in the know with local entertainment. With {this app} you can search and keep all your fun events in one place!
 
-## Navigate To:
+## 🗺️ Navigate On This Page To:
 
+- [<code>📦 Getting Started</code>](#getting-started)
+- [<code>Deployment</code>](#deployment)
+- [<code>Built With</code>](#built-with)
 - [<code>Authors</code>](#authors)
+- [<code>License</code>](#license)
+- [<code>Acknowledgments</code>](#acknowledgments)
 
-## Getting Started
+## 📦 Getting Started
 
 To deploy this app locally, find our [backend codebase here](https://github.com/Code-the-Dream-School/hh-team1-back).
 
