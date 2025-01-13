@@ -15,12 +15,14 @@ import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import Link from "@mui/material/Link";
 import { useNavigate } from "react-router-dom";
+import { postData } from "../../util/index";
 
 const isEmail = (email) =>
   /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email);
 
-// TODO update once the real URL is available
-const URL = `${import.meta.env.VITE_API_BASE_URL}/api/user/resetpassword`;
+const URL = `${
+  import.meta.env.VITE_API_BASE_URL
+}/api/v1/user/request-password-reset`;
 
 function Forgot() {
   const [emailInput, setEmailInput] = useState("");
@@ -62,8 +64,7 @@ function Forgot() {
 
   async function resetPassword(requestBody) {
     try {
-      // TODO Call the reset password API once available
-      // const myData = await postData(URL, requestBody);
+      const myData = await postData(URL, requestBody);
       handleClose();
       return true;
     } catch (error) {
