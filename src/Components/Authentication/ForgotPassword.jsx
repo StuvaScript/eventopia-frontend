@@ -19,6 +19,9 @@ import { useNavigate } from "react-router-dom";
 const isEmail = (email) =>
   /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email);
 
+// TODO update once the real URL is available
+const URL = `${import.meta.env.VITE_API_BASE_URL}/api/user/resetpassword`;
+
 function Forgot() {
   const [emailInput, setEmailInput] = useState("");
 
@@ -42,20 +45,32 @@ function Forgot() {
     setEmailError(false);
   };
 
-  const handleLoginSubmit = (e) => {
+  const handleResetPassword = (e) => {
     e.preventDefault();
-    setSuccess();
 
     if (emailError || !emailInput) {
-      setFormValid("Email is inValid.Please enter Email");
+      setFormValid("Email is invalid.Please enter Email");
       return;
     }
-
-    setFormValid(null);
-    setSuccess("Form submitted successfully");
-
     console.log("Email:" + emailInput);
+    setFormValid(null);
+    const inputData = {
+      email: emailInput,
+    };
+    resetPassword(inputData);
   };
+
+  async function resetPassword(requestBody) {
+    try {
+      // TODO Call the reset password API once available
+      // const myData = await postData(URL, requestBody);
+      handleClose();
+      return true;
+    } catch (error) {
+      setFormValid("Reset password failed, please check your email address");
+      return false;
+    }
+  }
 
   return (
     <>
@@ -187,7 +202,7 @@ function Forgot() {
             />
             <Typography>
               <Button
-                onClick={handleLoginSubmit}
+                onClick={handleResetPassword}
                 fullWidth
                 variant="contained"
                 startIcon={<LoginIcon />}
