@@ -14,6 +14,7 @@ const theme = createTheme({
     body1: { fontSize: "24px", fontWeight: 400 },
     body2: { fontSize: "20px", fontWeight: 100 },
     body3: { fontSize: "18px", fontWeight: 100 },
+    body4: { fontSize: "16px", fontWeight: 100 },
   },
 });
 

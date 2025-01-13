@@ -21,7 +21,9 @@ const Footer = () => {
         width: "100%",
       }}
     >
-      <Typography variant="body2">© 2024 App Name</Typography>
+      <Typography variant="body4">
+        © {new Date().getFullYear()} App Name
+      </Typography>
       <Box
         sx={{
           display: "flex",

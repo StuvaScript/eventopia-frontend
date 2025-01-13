@@ -22,7 +22,7 @@ import { getData } from "../util";
 const NavBar = ({ title }) => {
   const [location, setLocation] = React.useState({ city: "", state: "" });
   const [dateRange, setDateRange] = useState([]);
-  const [error, setError] = useState({city: false, state: false});
+  const [error, setError] = useState({ city: false, state: false });
 
   const handleLocationChange = (city, state) => {
     setLocation({ city, state });
@@ -57,11 +57,11 @@ const NavBar = ({ title }) => {
         state: !location.state,
       });
       return; //early exit if validation fails
-    }else{
-       setError({
-         city: false,
-         state: false,
-       });
+    } else {
+      setError({
+        city: false,
+        state: false,
+      });
     }
 
     // Add API call to execute the search
@@ -92,82 +92,89 @@ const NavBar = ({ title }) => {
           padding: "0 16px",
         }}
       >
-        <Typography variant="h6">{title || getTitle()}</Typography>
-        <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }} />
-        <IconButton
-          sx={{
-            backgroundColor: "background.paper",
-            p: 1,
-            borderRadius: "50%",
-            mx: 2,
-          }}
-        >
-          <MusicNoteIcon
-            sx={{ color: "primary.contrastText", fontSize: "1.5rem" }}
-          />
-        </IconButton>
-
-        {/* Middle Icons and Location Picker */}
         <Box
           sx={{
             display: "flex",
             alignItems: "center",
-            justifyContent: "space-around",
-            backgroundColor: "background.paper",
-            borderRadius: "32px",
-            px: 2,
-            py: 0.6,
+            gap: 2,
             flexGrow: 1,
-            margin: "5px",
-            maxWidth: "55%",
           }}
         >
-          {/* Location Picker */}
+          <Typography variant="h6">{title || getTitle()}</Typography>
+          <IconButton
+            sx={{
+              backgroundColor: "background.paper",
+              p: 1,
+              borderRadius: "50%",
+              mx: 2,
+            }}
+          >
+            <MusicNoteIcon
+              sx={{ color: "primary.contrastText", fontSize: "1.5rem" }}
+            />
+          </IconButton>
+
+          {/* Middle Icons and Location Picker */}
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
               justifyContent: "space-around",
-              width: "100%",
+              backgroundColor: "background.paper",
+              borderRadius: "50px",
+              px: 2,
+              py: 0.6,
+              flexGrow: 1,
+              margin: "5px",
+              maxWidth: "55%",
             }}
           >
-            <LocationOnIcon
-              sx={{ color: "primary.main", mr: 1, width: "7%" }}
-            />
-            <CustomLocationPicker
-              onLocationChange={handleLocationChange}
-              error={error}
-              InputProps={{ disableUnderline: true }}
+            {/* Location Picker */}
+            <Box
               sx={{
-                flexGrow: 1,
-                backgroundColor: "background.default",
-                borderRadius: "5px",
-                padding: "5px 10px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-around",
+                width: "100%",
+              }}
+            >
+              <LocationOnIcon
+                sx={{ color: "primary.main", mr: 1, width: "7%" }}
+              />
+              <CustomLocationPicker
+                onLocationChange={handleLocationChange}
+                error={error}
+                InputProps={{ disableUnderline: true }}
+                sx={{
+                  flexGrow: 1,
+                  backgroundColor: "background.default",
+                  borderRadius: "5px",
+                  padding: "5px 10px",
+                }}
+              />
+            </Box>
+            <Box
+              sx={{
+                width: "1px",
+                backgroundColor: "primary.main",
+                height: "24px",
+                mx: 1,
               }}
             />
+            <CustomDatePicker
+              startDate={dateRange[0]}
+              endDate={dateRange[1]}
+              onDateRangeChange={handleDateRangeChange}
+            />
+            {/* Search Icon */}
+            <IconButton
+              onClick={handleSearch}
+              sx={{ color: "primary.main", mx: 0.5 }}
+            >
+              <SearchIcon />
+            </IconButton>
           </Box>
-          <Box
-            sx={{
-              width: "1px",
-              backgroundColor: "primary.main",
-              height: "24px",
-              mx: 1,
-            }}
-          />
-          <CustomDatePicker
-            startDate={dateRange[0]}
-            endDate={dateRange[1]}
-            onDateRangeChange={handleDateRangeChange}
-          />
-          {/* Search Icon */}
-          <IconButton
-            onClick={handleSearch}
-            sx={{ color: "primary.main", mx: 0.5 }}
-          >
-            <SearchIcon />
-          </IconButton>
         </Box>
-
         {/* Navigation Links */}
         <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
           <Typography
@@ -177,19 +184,6 @@ const NavBar = ({ title }) => {
               mx: 2,
               fontSize: "1rem",
               cursor: "pointer",
-              paddingLeft: "1rem",
-            }}
-          >
-            Create Your Event
-          </Typography>
-          <Typography
-            variant="body1"
-            sx={{
-              color: "text.primary",
-              mx: 2,
-              fontSize: "1rem",
-              cursor: "pointer",
-              borderLeft: "1px solid white",
               paddingLeft: "1rem",
             }}
           >
