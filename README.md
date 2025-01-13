@@ -4,7 +4,7 @@ Planning a trip and need to keep track of all your vacation activities? Or maybe
 
 ## Navigate To:
 
-- [<code>Authors</code>](#-authors)
+- [<code>Authors</code>](#authors)
 
 ## Getting Started
 
