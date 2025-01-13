@@ -9,13 +9,13 @@ import {
 } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-import { getData } from "../util";
 import { getRangeFilter } from "../util/daterangefilter";
 import { useLocation } from "react-router-dom";
 import { Stack } from "@mui/material";
-import { Button, ButtonGroup } from "@mui/material";
+import { Button } from "@mui/material";
 
 const EventResult = () => {
+  const [allEvents, setAllEvents] = useState([]);
   const [events, setEvents] = useState([]);
   const [isloading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -26,58 +26,50 @@ const EventResult = () => {
   const city = data.city;
   const state = data.state;
 
-  // Fetch code
-  const getEvents = async (startDate, endDate) => {
-    setIsLoading(true);
-    // Optional config
-    const config = {
-      params: {
-        dateRangeStart: startDate,
-        dateRangeEnd: endDate,
-      },
-    };
-    // Ticketmaster search Url
-    const URL = `${
-      import.meta.env.VITE_API_BASE_URL
-    }/api/ticketmaster/events/${city}/${state}`;
-
-    try {
-      const response = await getData(URL, config);
-      console.log(response);
-      if (Array.isArray(response)) {
-        setEvents(response);
-      } else {
-        setEvents([]);
-      }
-    } catch (error) {
-      console.error("Throw Error:", error);
-      setError(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
   useEffect(() => {
-    getEvents("", "");
+    //Sort the events
+    if (data && Array.isArray(data.events)) {
+      const sortedEvents = data.events.sort((a, b) =>
+        new Date(a.dates.startDate) > new Date(b.dates.startDate) ? 1 : -1
+      );
+      setAllEvents(sortedEvents);
+      setEvents(sortedEvents);
+    } else {
+      setAllEvents([]);
+      setEvents([]);
+    }
   }, [data]);
 
   const handleFilterChange = (filter) => {
     setSelectedFilter(filter);
 
     if (filter === "all") {
-      getEvents("", "");
-    } else {
-      // const end = new Date(today);
-      const range = getRangeFilter(filter);
-      const today = range.start;
-      const end = range.end;
-      const year = today.getFullYear();
-      const month = String(today.getMonth() + 1).padStart(2, "0"); // January is 0!
-      const day = String(today.getDate()).padStart(2, "0");
+      setEvents(allEvents);
+    } else if (allEvents) {
+      filterForRange(filter);
+    }
+  };
 
-      const eyear = end.getFullYear();
-      const emonth = String(end.getMonth() + 1).padStart(2, "0"); // January is 0!
-      const eday = String(end.getDate()).padStart(2, "0");
-      getEvents(`${year}-${month}-${day}`, `${eyear}-${emonth}-${eday}`);
+  const filterForRange = (filter) => {
+    const range = getRangeFilter(filter);
+    const start = range.start;
+    const end = range.end;
+    if (allEvents) {
+      const sortedEvents = allEvents
+        .filter((event) => {
+          const eventDate = new Date(event.dates.startDate);
+          if (eventDate >= start && eventDate <= end) {
+            return true;
+          } else {
+            false;
+          }
+        })
+        .sort((a, b) =>
+          new Date(a.dates.startDate) > new Date(b.dates.startDate) ? 1 : -1
+        );
+      setEvents(sortedEvents || []);
+    } else {
+      setEvents([]);
     }
   };
 
@@ -90,7 +82,7 @@ const EventResult = () => {
       >
         Events for location : {city} {"-"} {state}
       </Typography>
-      <Stack direction="row" spacing={2}>
+      <Stack direction="row" spacing={2} padding={3}>
         <Button
           onClick={() => handleFilterChange("all")}
           color={selectedFilter === "all" ? "default" : "primary"}
@@ -150,7 +142,7 @@ const EventResult = () => {
         {error && <Typography>Error:{error.message}</Typography>}
         {events.length > 0 ? (
           events.map((event) => (
-            <Grid item xs={12} sm={6} md={4} key={event.id}>
+            <Grid item xs={10} sm={6} md={4} key={event.ticketmasterId}>
               <Card sx={{ backgroundColor: "#1A1A1A", color: "#fff" }}>
                 <CardMedia
                   component="img"

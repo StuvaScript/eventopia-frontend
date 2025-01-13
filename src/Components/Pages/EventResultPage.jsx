@@ -3,14 +3,14 @@ import NavBar from "../NavBar";
 import EventResult from "../EventResult";
 import Footer from "../Footer";
 
-const HomePage = () => {
+const EventResultPage = () => {
   return (
     <div>
-      <NavBar />
+      {/* <NavBar /> */}
       <EventResult />
       <Footer />
     </div>
   );
 };
 
-export default HomePage;
+export default EventResultPage;

@@ -1,4 +1,3 @@
-import React from "react";
 import {
   AppBar,
   Toolbar,
@@ -6,19 +5,16 @@ import {
   IconButton,
   Typography,
   Button,
-  TextField,
 } from "@mui/material";
-import { useLocation } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
-import EventIcon from "@mui/icons-material/Event";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CustomLocationPicker from "./Shared/LocationPicker";
 import CustomDatePicker from "./Shared/DatePicker";
 import Link from "@mui/material/Link";
-import { useState } from "react";
 import { getData } from "../util";
 import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 
 const NavBar = ({ title }) => {
   const [location, setLocation] = React.useState({ city: "", state: "" });
@@ -66,16 +62,18 @@ const NavBar = ({ title }) => {
     }
 
     // Add API call to execute the search
-    // try {
-    //   const response = await getData(URL, config);
-    //   console.log(response);
-    // } catch (error) {
-    //   console.error("Error fetching data:", error);
-    // }
-    // Call to event result page with search criteria
-    const inputData = { city: location.city, state: location.state };
-    // Add API call to execute the search
-    navigate("/eventresult", { state: inputData });
+    try {
+      const response = await getData(URL, config);
+      console.log(response);
+      const inputData = {
+        city: location.city,
+        state: location.state,
+        events: response,
+      };
+      navigate("/eventresult", { state: inputData });
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
 
   const getTitle = () => {
