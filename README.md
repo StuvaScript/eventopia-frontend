@@ -4,12 +4,12 @@ Planning a trip and need to keep track of all your vacation activities? Or maybe
 
 ## 🗺️ Navigate On This Page To:
 
-- [<code>📦 Getting Started</code>](#getting-started)
-- [<code>Deployment</code>](#deployment)
-- [<code>Built With</code>](#built-with)
-- [<code>Authors</code>](#authors)
-- [<code>License</code>](#license)
-- [<code>Acknowledgments</code>](#acknowledgments)
+- [<code>📦 Getting Started</code>](#-getting-started)
+- [<code>🚀 Deployment</code>](#-deployment)
+- [<code>🔧 Built With</code>](#-built-with)
+- [<code>📜 Authors</code>](#-authors)
+- [<code>📝 License</code>](#-license)
+- [<code>🥂 Acknowledgments</code>](#-acknowledgments)
 
 ## 📦 Getting Started
 
@@ -43,7 +43,7 @@ VITE_API_BASE_URL=YOUR_LOCAL_HOST_AND_PORT_NUMBER_ROUTE
 
 In both the backend and the frontend folders you will need to run `npm i` to install the dependencies.
 
-## Deployment
+## 🚀 Deployment
 
 To deploy this app live, you will need to:
 
@@ -51,14 +51,14 @@ To deploy this app live, you will need to:
 2. Change the frontend `VITE_API_BASE_URL` key's value to the live backend URL.
 3. Deploy your frontend folder.
 
-## Built With
+## 🔧 Built With
 
 - [React](https://www.react.dev/) - Frontend Javascript library
 - [Vite](https://www.vite.dev/) - Frontend build tool
 - [MongoDB](https://www.mongodb.com/) - Backend database
 - [Express](https://www.express.js.com/) - Backend framework for Node.js
 
-## Authors
+## 📜 Authors
 
 ### Frontend
 
@@ -72,11 +72,11 @@ To deploy this app live, you will need to:
 - **Amanda Hockmuth** - _backend developer_ - [Amanda's Github](https://github.com/AmandaHockmuth)
 - **Sisi Wang** - _backend developer_ - [Sisi's Github](https://github.com/Sisi-tech)
 
-## License
+## 📝 License
 
 This project is licensed under the MIT License - see [MIT License](https://choosealicense.com/licenses/mit/) for details
 
-## Acknowledgments
+## 🥂 Acknowledgments
 
 - Our amazing mentors who helped guide us along the way!
 
