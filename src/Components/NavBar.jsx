@@ -36,7 +36,20 @@ const NavBar = ({ title }) => {
       location.city
     }/${location.state}`;
 
+    // Populate date range
+    // const localStartDate = new Date(`${dateRange[0]}T00:00:00`);
+    // const localEndDate = new Date(`${dateRange[1]}T23:59:59`);
+    // // Convert local datetime to UTC using toISOString()
+    // const dateRangeStart = localStartDate.toISOString();
+    // const dateRangeEnd = localEndDate.toISOString();
+
     // Optional config
+    // const config = {
+    //   params: {
+    //     dateRangeStart: dateRangeStart,
+    //     dateRangeEnd: dateRangeEnd,
+    //   },
+    // };
     const config = {
       params: {
         dateRangeStart: dateRange[0],

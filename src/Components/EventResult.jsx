@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
+  Box,
   Grid,
   Card,
   CardMedia,
@@ -9,10 +10,12 @@ import {
 } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import FindInPageIcon from "@mui/icons-material/FindInPage";
 import { getRangeFilter } from "../util/daterangefilter";
 import { useLocation } from "react-router-dom";
 import { Stack } from "@mui/material";
 import { Button } from "@mui/material";
+import EmptyList from "./Shared/EmptyList";
 
 const EventResult = () => {
   const [allEvents, setAllEvents] = useState([]);
@@ -74,15 +77,11 @@ const EventResult = () => {
   };
 
   return (
-    <div>
-      <Typography
-        variant="h5"
-        align="center"
-        sx={{ margin: "20px 0", color: "#fff" }}
-      >
+    <Box sx={{ py: 8, px: 3 }}>
+      <Typography align="center" sx={{ mt: 5, mb: 4, color: "#fff" }}>
         Events for location : {city} {"-"} {state}
       </Typography>
-      <Stack direction="row" spacing={2} padding={3}>
+      <Stack direction="row" spacing={2} paddingBottom={2}>
         <Button
           onClick={() => handleFilterChange("all")}
           color={selectedFilter === "all" ? "default" : "primary"}
@@ -136,44 +135,69 @@ const EventResult = () => {
         container
         spacing={3}
         justifyContent="center"
-        sx={{ padding: "20px" }}
+        sx={{ paddingBottom: "30px" }}
       >
         {isloading && <Typography>Loading...</Typography>}
         {error && <Typography>Error:{error.message}</Typography>}
         {events.length > 0 ? (
           events.map((event) => (
-            <Grid item xs={10} sm={6} md={4} key={event.ticketmasterId}>
-              <Card sx={{ backgroundColor: "#1A1A1A", color: "#fff" }}>
+            <Grid item xs={12} sm={6} md={3} key={event.ticketmasterId}>
+              <Card
+                sx={{
+                  height: "100%",
+                  backgroundColor: "#1A1A1A",
+                  color: "#fff",
+                }}
+              >
                 <CardMedia
                   component="img"
                   height="140"
                   image={event.images[0]}
                   alt={event.name}
                 />
-                <CardContent>
-                  <Typography variant="body2" color="text.secondary">
-                    {event.dates.startDate} • {event.dates.startTime}
-                  </Typography>
-                  <Typography variant="h6">{event.name}</Typography>
-                </CardContent>
-                <div>
-                  <IconButton aria-label="add to favorites" color="inherit">
-                    <FavoriteBorderIcon />
-                  </IconButton>
-                  <IconButton aria-label="bookmark" color="inherit">
-                    <BookmarkBorderIcon />
-                  </IconButton>
-                </div>
+
+                <Box
+                  sx={{
+                    padding: "8px",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+
+                    height: "160px",
+                  }}
+                >
+                  <Box>
+                    <Typography fontSize="15px" color="text.secondary">
+                      {event.dates.startDate} • {event.dates.startTime}
+                    </Typography>
+                    <Typography fontSize="15px">{event.name}</Typography>
+                  </Box>
+
+                  <Box>
+                    <IconButton aria-label="add to favorites" color="inherit">
+                      <FavoriteBorderIcon />
+                    </IconButton>
+                    <IconButton aria-label="bookmark" color="inherit">
+                      <BookmarkBorderIcon />
+                    </IconButton>
+                  </Box>
+                </Box>
               </Card>
             </Grid>
           ))
         ) : (
-          <Grid item xs={12}>
-            <Typography variant="body1">No events to display</Typography>
+          <Grid item xs={10}>
+            <EmptyList
+              icon={<FindInPageIcon sx={{ fontSize: 100 }} />}
+              message="Sorry, we couldn't find any events matching your search criteria. Try adjusting your filters or search again later!"
+              buttonText="Explore More Events >>"
+            />
+            ;{/* <EmptyList></EmptyList> */}
+            {/* <Typography variant="body1">No events to display</Typography> */}
           </Grid>
         )}
       </Grid>
-    </div>
+    </Box>
   );
 };
 
