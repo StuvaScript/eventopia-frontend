@@ -33,7 +33,7 @@ import { getData } from "../../util/index";
 const name = "Nihal";
 const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/itinerary`;
 const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzgxYzdjNWZkMjExZWZhZjViMTgzNmUiLCJmaXJzdE5hbWUiOiJBYmNhYmMiLCJsYXN0TmFtZSI6IkFiY2FiYyIsImlhdCI6MTczNjU1ODU1OCwiZXhwIjoxNzM2NjQ0OTU4fQ.3zoXjycPW7BIZxGFgpnbTVyCbxWrgKEtmKjH3ysbWgc";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzg1YjdiNjU4YThkN2I2MWM2NjUxYTAiLCJmaXJzdE5hbWUiOiJBYWEiLCJsYXN0TmFtZSI6IkJiYiIsImlhdCI6MTczNjgxNjU2NiwiZXhwIjoxNzM2OTAyOTY2fQ.TyYDxej6o2t6htgGJcaemGxXFVeFqeBTz07MJwb1c7w";
 const config = "";
 const today = new Date();
 
@@ -50,10 +50,19 @@ const MyPlanner = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(`Response: ${response}`);
-      filterNextEvent();
-      setItineraries(response);
-      setFilteredItineraries(response); 
+      
+      let itineraryItems = [];
+      if (response && response.itineraryItems) {
+      const itineraryItems = response.itineraryItems.map((event) => ({
+        ...event,
+        formattedDate: event.date ? formatDate(event.date) : "Invalid Date",
+      }))};
+
+       console.log(
+         JSON.stringify(response)
+       );
+
+      setItineraries(itineraryItems); 
       setLoading(false);
     } catch (error) {
       console.error("Error fetching itineraries:", error);
@@ -66,18 +75,33 @@ const MyPlanner = () => {
     fetchItineraries();
   }, []);
 
+   useEffect(() => {
+     if (itineraries.length > 0) {
+       filterNextEvent();
+     }
+   }, [itineraries]);
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "Invalid Date";
+    const date = new Date(dateString);
+    return isNaN(date.getTime())
+      ? ""
+      : date.toISOString().split("T")[0];
+  };
+
   const filterNextEvent = () => {
     const sortedEvents = itineraries
       .filter((event) => new Date(event.date) > today)
       .sort((a, b) => new Date(a.date) - new Date(b.date));
+
     const nextEvent = sortedEvents[0];
-    setFilteredItineraries(nextEvent || []);
+    setFilteredItineraries(nextEvent ? [nextEvent] : []);
     setSelectedFilter("next");
   };
 
-  const filterPasteEvents = () => {
+  const filterPastEvents = () => {
     const pastedEvents = itineraries.filter(
-      (event) => new Date(event.date) < today
+      (event) => new Date(event.formattedDate) < today
     );
     setFilteredItineraries(pastedEvents);
     setSelectedFilter("past");
@@ -93,19 +117,16 @@ const MyPlanner = () => {
       <Typography variant="h4" gutterBottom>
         Welcome to Your Planner, {name}!
       </Typography>
-      {loading ?
-       (
+      {loading ? (
         <Typography variant="h6">Loading...</Typography>
-      ) 
-      : (!itineraries || itineraries.itineraryItems.length === 0) ? (
+      ) : !itineraries || itineraries.length === 0 ? (
         <EmptyList
           icon={<CalendarTodayIcon sx={{ fontSize: 200 }} />}
           message="Your planner is empty right now, but that's okay—it's just waiting for you to fill it with your exciting events!"
           buttonText="Explore Events >>"
           onClick={() => console.log("Explore Events Clicked")} // add logic
         />
-      ) 
-      : (
+      ) : (
         <>
           <Box
             sx={{
@@ -128,7 +149,7 @@ const MyPlanner = () => {
               Your Next Event
             </Button>
             <Button
-              onClick={filterPasteEvents}
+              onClick={filterPastEvents}
               variant="outlined"
               sx={{
                 borderRadius: "20px",
@@ -160,7 +181,7 @@ const MyPlanner = () => {
                   />
                   <CardContent>
                     <Typography variant="body2" color="text.secondary">
-                      {event.date} • {event.time}{" "}
+                      {event.formattedDate} • {event.formattedDate}{" "}
                     </Typography>
                     <Typography variant="h6">{event.title}</Typography>{" "}
                   </CardContent>
