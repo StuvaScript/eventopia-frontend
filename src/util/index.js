@@ -1,4 +1,5 @@
 import axios from "axios";
+import { fetchCsrfToken } from "./csrfFunction";
 
 const getData = async (url, config) => {
   try {
@@ -30,9 +31,19 @@ const getAllData = async (url) => {
 //   },
 // };
 
-const postData = async (url, requestBody, config) => {
+const postData = async (url, requestBody, config = {}) => {
   try {
-    let res = await axios.post(url, requestBody, config);
+    const csrfToken = await fetchCsrfToken();
+    console.log({ csrfToken });
+
+    let res = await axios.post(url, requestBody, {
+      ...config,
+      headers: {
+        ...config?.headers,
+        "x-csrf-token": "csrfToken", // Add CSRF token
+      },
+      withCredentials: true, // Ensure cookies are sent with the request
+    });
     let data = res.data;
     return data;
   } catch (error) {
@@ -54,9 +65,19 @@ const postData = async (url, requestBody, config) => {
 //   },
 // };
 
-const patchData = async (url, requestBody, config) => {
+const patchData = async (url, requestBody, csrfToken, config) => {
   try {
-    let res = await axios.patch(url, requestBody, config);
+    const csrfToken = await fetchCsrfToken();
+    console.log({ csrfToken });
+
+    let res = await axios.patch(url, requestBody, {
+      ...config,
+      headers: {
+        ...config?.headers,
+        "x-csrf-token": csrfToken, // Add CSRF token
+      },
+      withCredentials: true, // Ensure cookies are sent with the request
+    });
     let data = res.data;
     return data;
   } catch (error) {
@@ -67,9 +88,19 @@ const patchData = async (url, requestBody, config) => {
 
 // ``** DELETE **``
 
-const deleteData = async (url, config) => {
+const deleteData = async (url, csrfToken, config) => {
   try {
-    let res = await axios.delete(url, config);
+    const csrfToken = await fetchCsrfToken();
+    console.log({ csrfToken });
+
+    let res = await axios.delete(url, {
+      ...config,
+      headers: {
+        ...config?.headers,
+        "x-csrf-token": csrfToken, // Add CSRF token
+      },
+      withCredentials: true, // Ensure cookies are sent with the request
+    });
     let data = res.data;
     return data;
   } catch (error) {

@@ -17,13 +17,35 @@ import CustomLocationPicker from "./Shared/LocationPicker";
 import CustomDatePicker from "./Shared/DatePicker";
 import Link from "@mui/material/Link";
 import { useState } from "react";
-import { getData } from "../util";
+import { getData, postData } from "../util";
 
 const NavBar = ({ title }) => {
   const [location, setLocation] = React.useState({ city: "", state: "" });
   const [dateRange, setDateRange] = useState([]);
   const [error, setError] = useState({ city: false, state: false });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // ``** SIGN UP/REGISTER **``
+
+  // User register Url
+  const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/user/register`;
+
+  //  register requestBody example
+  const requestBody = {
+    firstName: "Billy",
+    lastName: "Bob",
+    email: "tessst4@gmail.com",
+    password: "Password129",
+    city: "Austin",
+    state: "TX",
+  };
+
+  async function registerUser(URL, requestBody) {
+    const myData = await postData(URL, requestBody);
+    console.log(myData);
+  }
+
+  registerUser(URL, requestBody);
 
   const handleLogin = () => {
     // Perform your login logic here
@@ -41,9 +63,9 @@ const NavBar = ({ title }) => {
   };
 
   const handleSearch = async () => {
-    const URL = `${import.meta.env.VITE_API_BASE_URL}/api/ticketmaster/events/${
-      location.city
-    }/${location.state}`;
+    const URL = `${
+      import.meta.env.VITE_API_BASE_URL
+    }/api/v1/ticketmaster/events/${location.city}/${location.state}`;
 
     // Optional config
     const config = {

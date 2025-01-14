@@ -1,12 +1,12 @@
 import { deleteData, getData, patchData, postData } from ".";
 // *************************************************
 // *************************************************
-// ``** SIGN UP/REGISTER **``
+// // ``** SIGN UP/REGISTER **``
 
-// User register Url
+// // User register Url
 // const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/user/register`;
 
-//  register requestBody example
+// //  register requestBody example
 // const requestBody = {
 //   firstName: "Billy",
 //   lastName: "Bob",
@@ -36,12 +36,12 @@ import { deleteData, getData, patchData, postData } from ".";
 //   password: "Password129",
 // };
 
-// async function logInUser(URL, requestBody) {
+// async function logInUser(URL, requestBody, csrfToken) {
 //   const myData = await postData(URL, requestBody);
 //   console.log(myData);
 // }
 
-// logInUser(URL, requestBody);
+// logInUser(URL, requestBody, csrfToken);
 
 // *************************************************
 // *************************************************
@@ -71,8 +71,8 @@ import { deleteData, getData, patchData, postData } from ".";
 // const token =
 //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzY3Mzk0YzBhOWY3Njk3OTA0NmE1MmMiLCJmaXJzdE5hbWUiOiJEYW4iLCJsYXN0TmFtZSI6IkFrcm95ZCIsImlhdCI6MTczNDgxOTcyMSwiZXhwIjoxNzM0OTA2MTIxfQ.k6bTkN77-5an2vo3fsGfX5EGn40ALtetfEFRhvj3Qnk";
 
-// async function createItinerary(URL, requestBody, token) {
-//   const myData = await postData(URL, requestBody, {
+// async function createItinerary(URL, requestBody, token, csrfToken) {
+//   const myData = await postData(URL, requestBody, csrfToken, {
 //     headers: {
 //       Authorization: `Bearer ${token}`,
 //     },
@@ -80,7 +80,7 @@ import { deleteData, getData, patchData, postData } from ".";
 //   console.log(myData);
 // }
 
-// createItinerary(URL, requestBody, token);
+// createItinerary(URL, requestBody, token,csrfToken);
 
 // *************************************************
 // *************************************************
@@ -160,8 +160,8 @@ import { deleteData, getData, patchData, postData } from ".";
 // const token =
 //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzY3Mzk0YzBhOWY3Njk3OTA0NmE1MmMiLCJmaXJzdE5hbWUiOiJEYW4iLCJsYXN0TmFtZSI6IkFrcm95ZCIsImlhdCI6MTczNDgxOTcyMSwiZXhwIjoxNzM0OTA2MTIxfQ.k6bTkN77-5an2vo3fsGfX5EGn40ALtetfEFRhvj3Qnk";
 
-// async function updateItinerary(URL, requestBody, token) {
-//   const myData = await patchData(URL, requestBody, {
+// async function updateItinerary(URL, requestBody, token, csrfToken,) {
+//   const myData = await patchData(URL, requestBody, csrfToken, {
 //     headers: {
 //       Authorization: `Bearer ${token}`,
 //     },
@@ -169,7 +169,7 @@ import { deleteData, getData, patchData, postData } from ".";
 //   console.log(myData);
 // }
 
-// updateItinerary(URL, requestBody, token);
+// updateItinerary(URL, requestBody, token, csrfToken);
 
 // *************************************************
 // *************************************************
@@ -181,8 +181,8 @@ import { deleteData, getData, patchData, postData } from ".";
 // Single itinerary Url
 // const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/itinerary/${eventID}`;
 
-// async function deleteItinerary(URL) {
-//   const myData = await deleteData(URL, {
+// async function deleteItinerary(URL, csrfToken) {
+//   const myData = await deleteData(URL, csrfToken, {
 //     headers: {
 //       Authorization: `Bearer ${token}`,
 //     },
@@ -190,4 +190,4 @@ import { deleteData, getData, patchData, postData } from ".";
 //   console.log(myData);
 // }
 
-// deleteItinerary(URL);
+// deleteItinerary(URL, csrfToken,);
