@@ -36,8 +36,11 @@ const postData = async (url, requestBody, config) => {
     let data = res.data;
     return data;
   } catch (error) {
-    console.error("Error details:", error.response?.data || error.message);
-    console.log(error, `error - postData in ${url} route`);
+    // TODO server side error messages need to be uniform as they are different for login and signup
+    // until then we wil just throw the error back to csller.
+    //console.error("Error details:", error.response?.data || error.message);
+    //console.log(error, `error - postData in ${url} route`);
+    throw error;
   }
 };
 
