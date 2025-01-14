@@ -15,8 +15,6 @@ Planning a trip and need to keep track of all your vacation activities? Or maybe
 
 To deploy this app locally, find our [backend codebase here](https://github.com/Code-the-Dream-School/hh-team1-back).
 
-type
-
 ### Prerequisites
 
 You will need a few environment variables to get this running. Create a `.env` file in both the backend folder and the frontend folder.
