@@ -46,10 +46,10 @@ const NavBar = ({ title }) => {
     // const localStartDate = new Date(`${dateRange[0]}T00:00:00`);
     // const localEndDate = new Date(`${dateRange[1]}T23:59:59`);
     // // Convert local datetime to UTC using toISOString()
-    // const dateRangeStart = localStartDate.toISOString();
-    // const dateRangeEnd = localEndDate.toISOString();
+    // const dateRangeStart = localStartDate.toISOString().slice(0, 19) + "Z";
+    // const dateRangeEnd = localEndDate.toISOString().slice(0, 19) + "Z";
 
-    // Optional config
+    // // Optional config
     // const config = {
     //   params: {
     //     dateRangeStart: dateRangeStart,
