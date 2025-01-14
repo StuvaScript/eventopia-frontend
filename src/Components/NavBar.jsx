@@ -26,7 +26,7 @@ const NavBar = ({ title }) => {
     // Perform your login logic here
     setIsLoggedIn(true);
   };
-  
+
   const handleLocationChange = (city, state) => {
     setLocation({ city, state });
   };
@@ -38,9 +38,9 @@ const NavBar = ({ title }) => {
   const navigate = useNavigate();
 
   const handleSearch = async () => {
-    const URL = `${import.meta.env.VITE_API_BASE_URL}/api/ticketmaster/events/${
-      location.city
-    }/${location.state}`;
+    const URL = `${
+      import.meta.env.VITE_API_BASE_URL
+    }/api/v1/ticketmaster/events/${location.city}/${location.state}`;
 
     // Populate date range
     // const localStartDate = new Date(`${dateRange[0]}T00:00:00`);

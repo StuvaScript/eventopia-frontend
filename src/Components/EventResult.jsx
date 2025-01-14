@@ -58,19 +58,35 @@ const EventResult = () => {
     const start = range.start;
     const end = range.end;
     if (allEvents) {
-      const sortedEvents = allEvents
-        .filter((event) => {
-          const eventDate = new Date(event.dates.startDate);
-          if (eventDate >= start && eventDate <= end) {
-            return true;
-          } else {
-            false;
-          }
-        })
-        .sort((a, b) =>
+      // const sortedEvents = allEvents
+      //   .filter((event) => {
+      //     const eventDate = new Date(event.dates.startDate);
+      //     if (eventDate >= start && eventDate <= end) {
+      //       return true;
+      //     } else {
+      //       false;
+      //     }
+      //   })
+      //   .sort((a, b) =>
+      //     new Date(a.dates.startDate) > new Date(b.dates.startDate) ? 1 : -1
+      //   );
+      const filterEvents = allEvents.filter((event) => {
+        const eventDate = new Date(
+          event.dates.startDate + "T" + event.dates.startTime + "Z"
+        );
+        //const eventDate = new Date(event.dates.startDate);
+        if (eventDate >= start && eventDate <= end) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      if (filterEvents) {
+        const sortedEvents = filterEvents.sort((a, b) =>
           new Date(a.dates.startDate) > new Date(b.dates.startDate) ? 1 : -1
         );
-      setEvents(sortedEvents || []);
+        setEvents(sortedEvents || []);
+      }
     } else {
       setEvents([]);
     }
@@ -81,7 +97,14 @@ const EventResult = () => {
       <Typography align="center" sx={{ mt: 5, mb: 4, color: "#fff" }}>
         Events for location : {city} {"-"} {state}
       </Typography>
-      <Stack direction="row" spacing={2} paddingBottom={2}>
+      <Stack
+        direction="row"
+        spacing={2}
+        paddingBottom={2}
+        flexWrap="wrap"
+        display="flex"
+        justifyContent="center"
+      >
         <Button
           onClick={() => handleFilterChange("all")}
           color={selectedFilter === "all" ? "default" : "primary"}
@@ -186,15 +209,18 @@ const EventResult = () => {
             </Grid>
           ))
         ) : (
-          <Grid item xs={10}>
+          <Box
+            sx={{
+              "& .MuiBox-root ": {
+                padding: "0",
+              },
+            }}
+          >
             <EmptyList
-              icon={<FindInPageIcon sx={{ fontSize: 100 }} />}
+              icon={<FindInPageIcon sx={{ fontSize: 90 }} />}
               message="Sorry, we couldn't find any events matching your search criteria. Try adjusting your filters or search again later!"
-              buttonText="Explore More Events >>"
             />
-            ;{/* <EmptyList></EmptyList> */}
-            {/* <Typography variant="body1">No events to display</Typography> */}
-          </Grid>
+          </Box>
         )}
       </Grid>
     </Box>
