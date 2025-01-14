@@ -13,22 +13,28 @@ import SearchIcon from "@mui/icons-material/Search";
 import EventIcon from "@mui/icons-material/Event";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import CustomLocationPicker from "./Shared/LocationPicker";
-import CustomDatePicker from "./Shared/DatePicker";
+import CustomLocationPicker from "../Shared/LocationPicker";
+import CustomDatePicker from "../Shared/DatePicker";
 import Link from "@mui/material/Link";
 import { useState } from "react";
-import { getData } from "../util";
+import { getData } from "../../util";
 
-const NavBar = ({ title }) => {
+const UserHome = ({ title }) => {
   const [location, setLocation] = React.useState({ city: "", state: "" });
   const [dateRange, setDateRange] = useState([]);
   const [error, setError] = useState({ city: false, state: false });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const handleLogin = () => {
-    // Perform your login logic here
-    setIsLoggedIn(true);
-  };
+  const data = useLocation();
+  const input = data.state;
+  const userName = input.name;
+  const userId = input.id;
+  const sessionToken = input.token;
+
+  // const handleLogin = () => {
+  //   // Perform your login logic here
+  //   setIsLoggedIn(true);
+  // };
 
   const handleLocationChange = (city, state) => {
     setLocation({ city, state });
@@ -41,15 +47,15 @@ const NavBar = ({ title }) => {
   };
 
   const handleSearch = async () => {
-    const URL = `${import.meta.env.VITE_API_BASE_URL}/api/ticketmaster/events/${
-      location.city
-    }/${location.state}`;
+    const URL = `${
+      import.meta.env.VITE_API_BASE_URL
+    }/api/v1/ticketmaster/events/${location.city}/${location.state}`;
 
     // Optional config
     const config = {
       params: {
-        dateRangeStart: dateRange[0],
-        dateRangeEnd: dateRange[1],
+        startDateTime: dateRange[0],
+        endDateTime: dateRange[1],
       },
     };
 
@@ -84,9 +90,11 @@ const NavBar = ({ title }) => {
       case "/":
         return "Home";
       default:
-        return "App Name"; //What is our app's name
+        return `Welcome ${userName}`;
     }
   };
+  //   useEffect(() => {
+  //   }, [data]);
 
   return (
     <AppBar position="fixed" color="primary" sx={{ padding: 0, top: 0 }}>
@@ -105,7 +113,7 @@ const NavBar = ({ title }) => {
             backgroundColor: "background.paper",
             p: 1,
             borderRadius: "50%",
-            mx: 2,
+            mx: 10,
           }}
         >
           <MusicNoteIcon
@@ -174,52 +182,6 @@ const NavBar = ({ title }) => {
           </IconButton>
         </Box>
 
-        {/* Navigation Links */}
-        {/* <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
-          <Typography
-            variant="body1"
-            sx={{
-              color: "text.primary",
-              mx: 2,
-              fontSize: "1rem",
-              cursor: "pointer",
-              paddingLeft: "1rem",
-            }}
-          >
-            Create Your Event
-          </Typography>
-          <Typography
-            variant="body1"
-            sx={{
-              color: "text.primary",
-              mx: 2,
-              fontSize: "1rem",
-              cursor: "pointer",
-              borderLeft: "1px solid white",
-              paddingLeft: "1rem",
-            }}
-          >
-            <Link href="/login" variant="body2" style={{ color: "white" }}>
-              Login
-            </Link>
-          </Typography>
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: "background.paper",
-              color: "text.primary",
-              textTransform: "none",
-              ml: 2,
-              px: 3,
-              borderRadius: "25px",
-              "&:hover": { backgroundColor: "#323232" },
-            }}
-          >
-            <Link href="/signup" variant="body2" style={{ color: "white" }}>
-              Sign Up
-            </Link>
-          </Button>
-        </Box> */}
         {!isLoggedIn && (
           <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
             <Typography
@@ -238,33 +200,17 @@ const NavBar = ({ title }) => {
               variant="body1"
               sx={{
                 color: "text.primary",
-                mx: 2,
-                fontSize: "1rem",
+                mx: 3,
+                fontSize: ".5rem",
                 cursor: "pointer",
                 borderLeft: "1px solid white",
                 paddingLeft: "1rem",
               }}
             >
-              <Link href="/login" variant="body2" style={{ color: "white" }}>
-                Login
+              <Link href="/home" variant="body2" style={{ color: "white" }}>
+                LogOut
               </Link>
             </Typography>
-            <Button
-              variant="contained"
-              sx={{
-                backgroundColor: "background.paper",
-                color: "text.primary",
-                textTransform: "none",
-                ml: 2,
-                px: 3,
-                borderRadius: "25px",
-                "&:hover": { backgroundColor: "#323232" },
-              }}
-            >
-              <Link href="/signup" variant="body2" style={{ color: "white" }}>
-                Sign Up
-              </Link>
-            </Button>
           </Box>
         )}
         {isLoggedIn && (
@@ -288,4 +234,4 @@ const NavBar = ({ title }) => {
   );
 };
 
-export default NavBar;
+export default UserHome;
