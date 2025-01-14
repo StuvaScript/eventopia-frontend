@@ -15,9 +15,14 @@ import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import Link from "@mui/material/Link";
 import { useNavigate } from "react-router-dom";
+import { postData } from "../../util/index";
 
 const isEmail = (email) =>
   /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email);
+
+const URL = `${
+  import.meta.env.VITE_API_BASE_URL
+}/api/v1/user/request-password-reset`;
 
 function Forgot() {
   const [emailInput, setEmailInput] = useState("");
@@ -42,20 +47,31 @@ function Forgot() {
     setEmailError(false);
   };
 
-  const handleLoginSubmit = (e) => {
+  const handleResetPassword = (e) => {
     e.preventDefault();
-    setSuccess();
 
     if (emailError || !emailInput) {
-      setFormValid("Email is inValid.Please Re-Enter Email");
+      setFormValid("Email is invalid.Please enter Email");
       return;
     }
-
-    setFormValid(null);
-    setSuccess("Form submitted successfully");
-
     console.log("Email:" + emailInput);
+    setFormValid(null);
+    const inputData = {
+      email: emailInput,
+    };
+    resetPassword(inputData);
   };
+
+  async function resetPassword(requestBody) {
+    try {
+      const myData = await postData(URL, requestBody);
+      handleClose();
+      return true;
+    } catch (error) {
+      setFormValid("Reset password failed, please check your email address");
+      return false;
+    }
+  }
 
   return (
     <>
@@ -87,7 +103,7 @@ function Forgot() {
           <SvgIcon
             style={{
               margin: ".5rem",
-              width: "30rem",
+              width: "initial",
               height: "3rem",
               display: "flex",
               flexWrap: "wrap",
@@ -97,7 +113,7 @@ function Forgot() {
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              fill="FFF"
+              fill="000"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
@@ -110,6 +126,7 @@ function Forgot() {
             </svg>
           </SvgIcon>
           <DialogTitle
+            variant="h5"
             sx={{
               padding: ".2rem",
               textAlign: "center",
@@ -146,24 +163,30 @@ function Forgot() {
               height: 1,
             }}
           >
-            <Typography color="white" textAlign="center">
+            <Typography color="white" variant="h6" textAlign="center">
               Enter your email to get a password reset link
             </Typography>
             <TextField
               sx={{
-                border: "white",
                 backgroundColor: "white",
                 borderRadius: "1rem",
-                "& .MuiInputBase-root": {
-                  "&:before": {
-                    borderBottom: "none",
+                "& .MuiInputBase-input": {
+                  color: "#000000",
+                  fontSize: "20px",
+                  height: "1em",
+                  borderRadius: "1rem !important",
+                  "&:-webkit-autofill": {
+                    color: "#000000",
+                    //fontSize: "18px",
+                    backgroundColor: "white !important",
+                    borderRadius: "1rem !important",
+                    WebkitBoxShadow: "0 0 0 100px white inset",
                   },
-                  "&:hover:before": {
-                    borderBottom: "none",
-                  },
-                  "&:after": {
-                    borderBottom: "none",
-                  },
+                },
+                "& .MuiFormLabel-root": {
+                  fontSize: "18px",
+                  fontWeight: "100",
+                  lineHeight: "1em",
                 },
               }}
               id="email"
@@ -174,11 +197,13 @@ function Forgot() {
               onBlur={handleLoginEmail}
               variant="filled"
               fullWidth
+              required
               size="small"
+              InputProps={{ disableUnderline: true }}
             />
             <Typography>
               <Button
-                onClick={handleLoginSubmit}
+                onClick={handleResetPassword}
                 fullWidth
                 variant="contained"
                 startIcon={<LoginIcon />}
@@ -187,14 +212,14 @@ function Forgot() {
               </Button>
             </Typography>
             <Typography>
-              <Link href="/login" variant="body2" style={{ color: "white" }}>
+              <Link href="/login" variant="h6" style={{ color: "white" }}>
                 Back to Login
               </Link>
             </Typography>
-            <Typography>
+            <Typography component={"div"}>
               {formValid && <Alert severity="error">{formValid}</Alert>}
             </Typography>
-            <Typography>
+            <Typography component={"div"}>
               {success && <Alert severity="success">{success}</Alert>}
             </Typography>
           </DialogContent>
