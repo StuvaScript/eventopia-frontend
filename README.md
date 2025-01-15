@@ -1,6 +1,7 @@
-$$\huge\textbf{\textsf{\color{#3271D6}Event\color{#F59E0B}opia}}$$
-
-$$\large\textsf{\color{white}Connecting \color{#3271D6}you \color{white}with \color{#F59E0B}your \color{white}passions}$$
+<div align="center">
+<h1>Eventopia</h1>
+<h3>Connecting you with your passion</h3>
+</div>
 
 Planning a trip and need to keep track of all your vacation activities? Or maybe you just like to be in the know with local entertainment. With Eventopia you can search and keep all your fun events in one place!
 
