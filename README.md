@@ -2,7 +2,7 @@
 <h1 style="color:#3271D6">Project <span style="color:#F59E0B">Title</span></h1>
 </div>
 
-### $${\color{white}Connecting\space \color{#3271D6}you \space \color{white}with \space \color{#F59E0B}your \space \color{white}passions}$$
+$${\color{white}Connecting\space \color{#3271D6}you \space \color{white}with \space \color{#F59E0B}your \space \color{white}passions}$$
 
 Planning a trip and need to keep track of all your vacation activities? Or maybe you just like to be in the know with local entertainment. With {this app} you can search and keep all your fun events in one place!
 
@@ -31,7 +31,7 @@ Here are the required keys:
 
 For the backend:
 
-```s
+```
 TICKETMASTER_API_KEY=YOUR_TICKETMASTER_KEY
 MONGO_URI=YOUR_MONGO_DB_KEY
 JWT_LIFETIME=YOUR_JWT_TOKEN_KEY
