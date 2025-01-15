@@ -6,30 +6,6 @@ import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import { useState, useEffect } from "react";
 import { getData } from "../../util/index";
 
-// const events = [
-//   {
-//     id: 1,
-//     title: "Event 1",
-//     date: "Fri, Dec 6th",
-//     time: "9:00pm",
-//     image: "event1.jpg",
-//   },
-//   {
-//     id: 2,
-//     title: "Event 2",
-//     date: "Fri, Dec 6th",
-//     time: "9:00pm",
-//     image: "event2.jpg",
-//   },
-//   {
-//     id: 3,
-//     title: "Event 3",
-//     date: "Fri, Dec 6th",
-//     time: "9:00pm",
-//     image: "event3.jpg",
-//   },
-// ];
-
 const name = "Nihal";
 const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/itinerary`;
 const token =
@@ -50,19 +26,23 @@ const MyPlanner = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      
+
       let itineraryItems = [];
       if (response && response.itineraryItems) {
-      const itineraryItems = response.itineraryItems.map((event) => ({
-        ...event,
-        formattedDate: event.date ? formatDate(event.date) : "Invalid Date",
-      }))};
+        itineraryItems = response.itineraryItems.map((event) => {
+          const formattedDate = formatDate(event.startDateTime || event.date);
 
-       console.log(
-         JSON.stringify(response)
-       );
+          return {
+            ...event,
+            formattedDate: formattedDate,
+          };
+        });
+      }
 
-      setItineraries(itineraryItems); 
+      console.log(JSON.stringify(response));
+
+      setItineraries(itineraryItems);
+      console.log("Itineraries after fetching:", itineraryItems);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching itineraries:", error);
@@ -81,35 +61,34 @@ const MyPlanner = () => {
      }
    }, [itineraries]);
 
-  const formatDate = (dateString) => {
-    if (!dateString) return "Invalid Date";
-    const date = new Date(dateString);
-    return isNaN(date.getTime())
-      ? ""
-      : date.toISOString().split("T")[0];
-  };
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  return isNaN(date) ? "Invalid Date" : date.toISOString().split("T")[0];
+};
 
-  const filterNextEvent = () => {
-    const sortedEvents = itineraries
-      .filter((event) => new Date(event.date) > today)
-      .sort((a, b) => new Date(a.date) - new Date(b.date));
+const filterNextEvent = () => {
+  const nextEvent = itineraries
+    .filter((event) => new Date(event.formattedDate) > today && event.formattedDate !== "Invalid Date")
+    .sort((a, b) => new Date(a.formattedDate) - new Date(b.formattedDate))[0] || null;
 
-    const nextEvent = sortedEvents[0];
-    setFilteredItineraries(nextEvent ? [nextEvent] : []);
-    setSelectedFilter("next");
-  };
+  setFilteredItineraries(nextEvent ? [nextEvent] : []);
+  setSelectedFilter("next");
+  console.log("filter next event =", nextEvent);
+};
 
   const filterPastEvents = () => {
-    const pastedEvents = itineraries.filter(
+    const pastEvents = itineraries.filter(
       (event) => new Date(event.formattedDate) < today
     );
-    setFilteredItineraries(pastedEvents);
+    setFilteredItineraries(pastEvents);
     setSelectedFilter("past");
+    console.log("filter past event =", pastEvents);
   };
 
   const filterAllEvents = () => {
     setFilteredItineraries(itineraries);
     setSelectedFilter("all");
+    console.log("filter all events =", itineraries);
   };
 
   return (
@@ -119,7 +98,7 @@ const MyPlanner = () => {
       </Typography>
       {loading ? (
         <Typography variant="h6">Loading...</Typography>
-      ) : !itineraries || itineraries.length === 0 ? (
+      ) : itineraries.length === 0 ? (
         <EmptyList
           icon={<CalendarTodayIcon sx={{ fontSize: 200 }} />}
           message="Your planner is empty right now, but that's okay—it's just waiting for you to fill it with your exciting events!"
