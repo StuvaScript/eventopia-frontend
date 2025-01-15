@@ -1,9 +1,10 @@
 <div align="center">
 <h1 style="color:#3271D6">Project <span style="color:#F59E0B">Title</span></h1>
-<p style="font-size:1.24rem">Connecting <span style="color:#3271D6">you</span> with <span style="color:#F59E0B">your</span> passions</p>
 </div>
 
-$${\color{red}Planning}$$ a trip and need to keep track of all your vacation activities? Or maybe you just like to be in the know with local entertainment. With {this app} you can search and keep all your fun events in one place!
+$${\color{white}Connecting\space \color{#3271D6}you \space \color{white}with \space \color{#F59E0B}your \space \color{white}passions}$$
+
+Planning a trip and need to keep track of all your vacation activities? Or maybe you just like to be in the know with local entertainment. With {this app} you can search and keep all your fun events in one place!
 
 ## 🗺️ Navigate To:
 
@@ -16,6 +17,10 @@ $${\color{red}Planning}$$ a trip and need to keep track of all your vacation act
 
 ## 📦 Getting Started
 
+$${\color{#3271D6}Start \space \color{#F59E0B}App}$$
+
+### Backend
+
 To deploy this app locally, find our [backend codebase here](https://github.com/Code-the-Dream-School/hh-team1-back).
 
 ### Prerequisites
@@ -26,12 +31,13 @@ Here are the required keys:
 
 For the backend:
 
-```
+```s
 TICKETMASTER_API_KEY=YOUR_TICKETMASTER_KEY
 MONGO_URI=YOUR_MONGO_DB_KEY
 JWT_LIFETIME=YOUR_JWT_TOKEN_KEY
 JWT_SECRET=YOUR_JWT_TOKEN_KEY
 PORT=YOUR_LOCAL_PORT_NUMBER
+JWT_SECRET_CSRF=YOUR_CSRF_KEY
 ```
 
 For the frontend:
@@ -46,6 +52,8 @@ In both the backend and the frontend folders you will need to run `npm i` to ins
 
 ## 🚀 Deployment
 
+$${\color{#3271D6}Deploy \space \color{#F59E0B}Fast}$$
+
 To deploy this app live, you will need to:
 
 1. Deploy your backend folder.
@@ -54,12 +62,16 @@ To deploy this app live, you will need to:
 
 ## 🔧 Built With
 
+$${\color{#3271D6}The \space \color{#F59E0B}Tools}$$
+
 - [React](https://www.react.dev/) - Frontend Javascript library
 - [Vite](https://www.vite.dev/) - Frontend build tool
 - [MongoDB](https://www.mongodb.com/) - Backend database
 - [Express](https://www.express.js.com/) - Backend framework for Node.js
 
 ## 📜 Authors
+
+$${\color{#3271D6}Our \space \color{#F59E0B}Team}$$
 
 ### Frontend
 
@@ -75,9 +87,13 @@ To deploy this app live, you will need to:
 
 ## 📝 License
 
+$${\color{#3271D6}Legal \space \color{#F59E0B}Stuff}$$
+
 This project is licensed under the MIT License - see [MIT License](https://choosealicense.com/licenses/mit/) for details
 
 ## 🥂 Acknowledgments
+
+$${\color{#3271D6}Thank \space \color{#F59E0B}You}$$
 
 - Our amazing mentors who helped guide us along the way!
 
