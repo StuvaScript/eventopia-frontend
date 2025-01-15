@@ -1,8 +1,11 @@
-# Project Title
+<div align="center">
+<h1 style="color:#3271D6">Project <span style="color:#F59E0B">Title</span></h1>
+<p style="font-size:1.24rem">Connecting <span style="color:#3271D6">you</span> with <span style="color:#F59E0B">your</span> passions</p>
+</div>
 
 Planning a trip and need to keep track of all your vacation activities? Or maybe you just like to be in the know with local entertainment. With {this app} you can search and keep all your fun events in one place!
 
-## 🗺️ Navigate On This Page To:
+## 🗺️ Navigate To:
 
 - [<code>📦 Getting Started</code>](#-getting-started)
 - [<code>🚀 Deployment</code>](#-deployment)
@@ -41,7 +44,7 @@ VITE_API_BASE_URL=YOUR_LOCAL_HOST_AND_PORT_NUMBER_ROUTE
 
 In both the backend and the frontend folders you will need to run `npm i` to install the dependencies.
 
-## 🚀 Deployment
+<h2> 🚀 Deployment </h2>
 
 To deploy this app live, you will need to:
 
