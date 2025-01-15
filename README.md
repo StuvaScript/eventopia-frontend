@@ -2,7 +2,7 @@
 <h1 style="color:#3271D6">Project <span style="color:#F59E0B">Title</span></h1>
 </div>
 
-$${\color{white}Connecting\space \color{#3271D6}you \space \color{white}with \space \color{#F59E0B}your \space \color{white}passions}$$
+$$\large\textsf{\color{white}Connecting \color{#3271D6}you \color{white}with \color{#F59E0B}your \color{white}passions}$$
 
 Planning a trip and need to keep track of all your vacation activities? Or maybe you just like to be in the know with local entertainment. With {this app} you can search and keep all your fun events in one place!
 
@@ -17,7 +17,7 @@ Planning a trip and need to keep track of all your vacation activities? Or maybe
 
 ## 📦 Getting Started
 
-$${\color{#3271D6}Start \space \color{#F59E0B}App}$$
+$$\textsf{\color{#3271D6}Start \color{#F59E0B}App}$$
 
 ### Backend
 
@@ -52,7 +52,7 @@ In both the backend and the frontend folders you will need to run `npm i` to ins
 
 ## 🚀 Deployment
 
-$${\color{#3271D6}Deploy \space \color{#F59E0B}Fast}$$
+$$\textsf{\color{#3271D6}Deploy \color{#F59E0B}Fast}$$
 
 To deploy this app live, you will need to:
 
@@ -62,7 +62,7 @@ To deploy this app live, you will need to:
 
 ## 🔧 Built With
 
-$${\color{#3271D6}The \space \color{#F59E0B}Tools}$$
+$$\textsf{\color{#3271D6}The \color{#F59E0B}Tools}$$
 
 - [React](https://www.react.dev/) - Frontend Javascript library
 - [Vite](https://www.vite.dev/) - Frontend build tool
@@ -71,7 +71,7 @@ $${\color{#3271D6}The \space \color{#F59E0B}Tools}$$
 
 ## 📜 Authors
 
-$${\color{#3271D6}Our \space \color{#F59E0B}Team}$$
+$$\textsf{\color{#3271D6}Our \color{#F59E0B}Team}$$
 
 ### Frontend
 
@@ -87,13 +87,13 @@ $${\color{#3271D6}Our \space \color{#F59E0B}Team}$$
 
 ## 📝 License
 
-$${\color{#3271D6}Legal \space \color{#F59E0B}Stuff}$$
+$$\textsf{\color{#3271D6}Legal \color{#F59E0B}Stuff}$$
 
 This project is licensed under the MIT License - see [MIT License](https://choosealicense.com/licenses/mit/) for details
 
 ## 🥂 Acknowledgments
 
-$${\color{#3271D6}Thank \space \color{#F59E0B}You}$$
+$$\textsf{\color{#3271D6}Thank \color{#F59E0B}You}$$
 
 - Our amazing mentors who helped guide us along the way!
 
