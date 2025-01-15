@@ -1,10 +1,8 @@
-<div align="center">
-<h1 style="color:#3271D6">Project <span style="color:#F59E0B">Title</span></h1>
-</div>
+$$\huge\textbf{\textsf{\color{#3271D6}Event\color{#F59E0B}opia}}$$
 
 $$\large\textsf{\color{white}Connecting \color{#3271D6}you \color{white}with \color{#F59E0B}your \color{white}passions}$$
 
-Planning a trip and need to keep track of all your vacation activities? Or maybe you just like to be in the know with local entertainment. With {this app} you can search and keep all your fun events in one place!
+Planning a trip and need to keep track of all your vacation activities? Or maybe you just like to be in the know with local entertainment. With Eventopia you can search and keep all your fun events in one place!
 
 ## 🗺️ Navigate To:
 
@@ -27,23 +25,27 @@ To deploy this app locally, find our [backend codebase here](https://github.com/
 
 You will need a few environment variables to get this running. Create a `.env` file in both the backend folder and the frontend folder.
 
-Here are the required keys:
+Here are the required environment variables:
 
-For the backend:
-
-```
-TICKETMASTER_API_KEY=YOUR_TICKETMASTER_KEY
-MONGO_URI=YOUR_MONGO_DB_KEY
-JWT_LIFETIME=YOUR_JWT_TOKEN_KEY
-JWT_SECRET=YOUR_JWT_TOKEN_KEY
-PORT=YOUR_LOCAL_PORT_NUMBER
-JWT_SECRET_CSRF=YOUR_CSRF_KEY
-```
-
-For the frontend:
+#### Backend:
 
 ```
-VITE_API_BASE_URL=YOUR_LOCAL_HOST_AND_PORT_NUMBER_ROUTE
+TICKETMASTER_API_KEY=YOUR_KEY
+MONGO_URI=YOUR_KEY
+JWT_LIFETIME=YOUR_KEY
+JWT_SECRET=YOUR_KEY
+PORT=YOUR_KEY
+SMTP_HOST=YOUR_KEY
+SMTP_PORT=YOUR_KEY
+SENDER_EMAIL=YOUR_KEY
+SENDER_EMAIL_PASSWORD=YOUR_KEY
+JWT_SECRET_CSRF=YOUR_KEY
+```
+
+#### Frontend:
+
+```
+VITE_API_BASE_URL=YOUR_KEY
 ```
 
 ### Installing
