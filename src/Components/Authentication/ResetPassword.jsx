@@ -1,45 +1,110 @@
 import React, { useState } from "react";
-import Alert from "@mui/material/Alert";
-import TextField from "@mui/material/TextField";
+import { useNavigate } from "react-router-dom";
+import { postData } from "../../util/index";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import InputAdornment from "@mui/material/InputAdornment";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import LoginIcon from "@mui/icons-material/Login";
+import Alert from "@mui/material/Alert";
 import {
   Dialog,
   DialogContent,
   DialogTitle,
   Typography,
+  TextField,
   SvgIcon,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
-import Link from "@mui/material/Link";
-import { useNavigate } from "react-router-dom";
-import { postData } from "../../util/index";
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import InputAdornment from "@mui/material/InputAdornment";
+import { useParams } from "react-router-dom";
 
-// User login Url
-const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/user/login`;
+const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/user/reset-password`;
 
-const isEmail = (email) =>
-  /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email);
+function ResetPassword() {
+  const { resetToken } = useParams();
 
-function Login() {
-  const [showPassword, setShowPassword] = useState(false);
-
-  const [emailInput, setEmailInput] = useState("");
-  const [passwordInput, setPasswordInput] = useState("");
-
-  const [emailError, setEmailError] = useState(false);
+  const [newPasswordInput, setNewPasswordInput] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordError, setPasswordError] = useState(false);
+  const [confirmPasswordError, setConfirmPasswordError] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const [formValid, setFormValid] = useState();
   const [success, setSuccess] = useState();
 
   const [open, setOpen] = useState(true);
   const navigate = useNavigate();
+
+  const handleNewPassword = () => {
+    if (
+      !newPasswordInput ||
+      newPasswordInput.length < 5 ||
+      newPasswordInput.length > 15
+    ) {
+      setPasswordError(true);
+      return;
+    }
+    setPasswordError(false);
+  };
+
+  const handleConfirmPassword = () => {
+    if (
+      !confirmPassword ||
+      confirmPassword.length < 5 ||
+      confirmPassword.length > 15
+    ) {
+      setConfirmPasswordError(true);
+      return;
+    }
+    setConfirmPasswordError(false);
+  };
+
+  const handleResetPassword = (e) => {
+    e.preventDefault();
+    if (newPasswordInput.length < 6) {
+      setFormValid(
+        "Password must be atleast 6 characters.Please enter valid password"
+      );
+      return;
+    }
+
+    if (confirmPassword.length < 6) {
+      setFormValid(
+        "Confirm password must be atleast 6 characters.Please enter valid confirm password"
+      );
+      return;
+    }
+
+    if (newPasswordInput !== confirmPassword) {
+      setFormValid("Passwords doesn't match");
+      return;
+    }
+    setFormValid(null);
+    console.log("Password:" + newPasswordInput);
+    const requestBody = {
+      resetToken: resetToken,
+      newPassword: newPasswordInput,
+    };
+    resetPassword(requestBody);
+  };
+
+  async function resetPassword(requestBody) {
+    try {
+      const myData = await postData(URL, requestBody);
+      handleClose();
+      return true;
+    } catch (error) {
+      setFormValid("Reset password failed, please check your email address");
+      return false;
+    }
+  }
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   const handleClose = (data) => {
     if (data && data.user) {
@@ -50,71 +115,10 @@ function Login() {
       };
       navigate("/userhome", { state: inputData });
     } else {
-      navigate("/home");
+      navigate("/login");
     }
   };
 
-  const handleLoginEmail = () => {
-    if (!isEmail(emailInput)) {
-      setEmailError(true);
-      return;
-    }
-    setEmailError(false);
-  };
-
-  const handleLoginPassword = () => {
-    if (
-      !passwordInput ||
-      passwordInput.length < 5 ||
-      passwordInput.length > 15
-    ) {
-      setPasswordError(true);
-      return;
-    }
-    setPasswordError(false);
-  };
-
-  const handleLoginSubmit = (e) => {
-    e.preventDefault();
-    setSuccess();
-
-    if (emailError || !emailInput) {
-      setFormValid("Email is invalid.Please enter Email");
-      return;
-    }
-
-    if (passwordError || !passwordInput) {
-      setFormValid("Please enter Password");
-      return;
-    }
-    setFormValid(null);
-    const requestBody = {
-      email: emailInput,
-      password: passwordInput,
-    };
-    loginUser(URL, requestBody);
-  };
-
-  async function loginUser(URL, requestBody) {
-    try {
-      const myData = await postData(URL, requestBody);
-      if (myData) {
-        // TODO Set User, City and State
-        handleClose(myData);
-      }
-      console.log(myData);
-      return true;
-    } catch (error) {
-      setFormValid("Invalid email or password, login failed");
-      return false;
-    }
-  }
-
-  const handleLoginClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleLoginMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
   return (
     <>
       <Box
@@ -155,7 +159,7 @@ function Login() {
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              fill="#000"
+              fill="000"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
@@ -170,7 +174,7 @@ function Login() {
           <DialogTitle
             variant="h5"
             sx={{
-              padding: ".2rem",
+              padding: "1rem",
               textAlign: "center",
               color: "white",
               display: "flex",
@@ -179,7 +183,7 @@ function Login() {
               alignItems: "center",
             }}
           >
-            Log In
+            Reset Password
             <IconButton
               onClick={handleClose}
               sx={{
@@ -197,72 +201,53 @@ function Login() {
               color: "white",
               display: "flex",
               flexWrap: "wrap",
+              flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
-              gap: 4,
+              gap: 1.5,
               width: 400,
               height: 1,
             }}
           >
-            <Typography color="white" variant="h6" textAlign="center">
-              {" "}
-              Not a member yet?{"    "}
-              <Link href="/signup" variant="h6" style={{ color: "white" }}>
-                Sign Up
-              </Link>
-            </Typography>
             <TextField
               sx={{
                 backgroundColor: "white",
                 borderRadius: "1rem",
+
                 "& .MuiInputBase-input": {
                   color: "#000000",
                   fontSize: "20px",
                   height: "1em",
-                  borderRadius: "1rem !important",
-                  "&:-webkit-autofill": {
-                    color: "#000000",
-                    //fontSize: "18px",
-                    backgroundColor: "white !important",
-                    borderRadius: "1rem !important",
-                    WebkitBoxShadow: "0 0 0 100px white inset",
-                  },
                 },
                 "& .MuiFormLabel-root": {
-                  fontSize: "20px",
+                  fontSize: "18px",
                   fontWeight: "100",
                   lineHeight: "1em",
                 },
-                //border: "white",
-                // backgroundColor: "white",
-                //borderRadius: "1rem",
-                //"& .MuiInputBase-input": {
-                // color: (theme) => theme.palette.text.tertiary,
-                //fontSize: (theme) => theme.typography.body2.fontSize,
-                //},
-                /*"& .MuiInputBase-root": {
-                  "&:before": {
-                    borderBottom: "none",
-                  },
-                  "&:hover:before": {
-                    borderBottom: "none",
-                  },
-                  "&:after": {
-                    borderBottom: "none",
-                  },
-                },*/
               }}
-              id="email"
-              error={emailError}
-              label="Email"
-              value={emailInput}
-              onChange={(event) => setEmailInput(event.target.value)}
-              onBlur={handleLoginEmail}
+              error={passwordError}
+              label="New Password"
               variant="filled"
+              type={showPassword ? "text" : "newpassword"}
+              value={newPasswordInput}
+              onChange={(event) => setNewPasswordInput(event.target.value)}
+              onBlur={handleNewPassword}
               fullWidth
               required
               size="small"
-              InputProps={{ disableUnderline: true }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+                disableUnderline: true,
+              }}
             />
             <TextField
               sx={{
@@ -280,12 +265,12 @@ function Login() {
                 },
               }}
               error={passwordError}
-              label="Password"
+              label="Confirm password"
               variant="filled"
               type={showPassword ? "text" : "password"}
-              value={passwordInput}
-              onChange={(event) => setPasswordInput(event.target.value)}
-              onBlur={handleLoginPassword}
+              value={confirmPassword}
+              onChange={(event) => setConfirmPassword(event.target.value)}
+              onBlur={handleConfirmPassword}
               fullWidth
               required
               size="small"
@@ -293,8 +278,8 @@ function Login() {
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
-                      onClick={handleLoginClickShowPassword}
-                      onMouseDown={handleLoginMouseDownPassword}
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
                     >
                       {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
@@ -303,27 +288,20 @@ function Login() {
                 disableUnderline: true,
               }}
             />
-            <Typography>
-              <Link
-                href="/forgotpassword"
-                variant="body2"
-                style={{ color: "white" }}
-              >
-                Forgot Password
-              </Link>
-            </Typography>
+
             <Typography>
               <Button
-                onClick={handleLoginSubmit}
+                onClick={handleResetPassword}
                 fullWidth
                 variant="contained"
                 startIcon={<LoginIcon />}
               >
-                Login
+                Submit
               </Button>
             </Typography>
+
             <Typography component={"div"}>
-              {formValid && <Alert severity="error">{formValid}</Alert>}{" "}
+              {formValid && <Alert severity="error">{formValid}</Alert>}
             </Typography>
             <Typography component={"div"}>
               {success && <Alert severity="success">{success}</Alert>}
@@ -334,4 +312,4 @@ function Login() {
     </>
   );
 }
-export default Login;
+export default ResetPassword;

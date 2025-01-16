@@ -332,7 +332,6 @@ function SignUp() {
                   borderRadius: "1rem !important",
                   "&:-webkit-autofill": {
                     color: "#000000",
-                    //fontSize: "18px",
                     backgroundColor: "white !important",
                     borderRadius: "1rem !important",
                     WebkitBoxShadow: "0 0 0 100px white inset",
@@ -372,7 +371,6 @@ function SignUp() {
                   borderRadius: "1rem !important",
                   "&:-webkit-autofill": {
                     color: "#000000",
-                    //fontSize: "18px",
                     backgroundColor: "white !important",
                     borderRadius: "1rem !important",
                     WebkitBoxShadow: "0 0 0 100px white inset",
@@ -399,9 +397,6 @@ function SignUp() {
 
             <TextField
               sx={{
-                //backgroundColor: "white",
-                //borderRadius: "1rem",
-
                 "& .MuiFormLabel-root": {
                   fontSize: "18px",
                   fontWeight: "100",
@@ -415,7 +410,6 @@ function SignUp() {
                   borderRadius: "1rem !important",
                   "&:-webkit-autofill": {
                     color: "#000000",
-                    //fontSize: "18px",
                     backgroundColor: "white !important",
                     borderRadius: "1rem !important",
                     WebkitBoxShadow: "0 0 0 100px white inset",
@@ -440,7 +434,6 @@ function SignUp() {
             />
 
             <TextField
-              //component={"form"}
               sx={{
                 backgroundColor: "white",
                 borderRadius: "1rem",
@@ -454,10 +447,6 @@ function SignUp() {
                   fontWeight: "100",
                   lineHeight: "1em",
                 },
-                // "& .MuiInputBase-root": {
-                //   color: "#000",
-                //   fontSize: "18px",
-                // },
               }}
               error={passwordError}
               label="Password"
@@ -496,7 +485,6 @@ function SignUp() {
                   borderRadius: "1rem !important",
                   "&:-webkit-autofill": {
                     color: "#000000",
-                    //fontSize: "18px",
                     backgroundColor: "white !important",
                     borderRadius: "1rem !important",
                     WebkitBoxShadow: "0 0 0 100px white inset",
@@ -520,30 +508,6 @@ function SignUp() {
               size="small"
               InputProps={{ disableUnderline: true }}
             />
-            {/* <FormControl
-              fullWidth
-              size="small"
-              variant="filled"
-              style={{
-                backgroundColor: "white",
-                borderRadius: "1rem",
-              }}
-            >
-              <InputLabel id="state-select-label">State</InputLabel>
-              <Select
-                labelId="state-select-label"
-                value={selectedState}
-                onChange={handleState}
-                label="State"
-                disableUnderline
-              >
-                {states.map((state) => (
-                  <MenuItem key={state} value={state}>
-                    {state}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl> */}
 
             <FormControl
               fullWidth
@@ -564,22 +528,11 @@ function SignUp() {
                 "& .MuiFormLabel-root": {
                   fontSize: "18px",
                   fontWeight: "100",
-                  //lineHeight: "1em",
                 },
-
-                // "& .MuiInputBase-root": {
-                //   color: "#000",
-                //   fontSize: "20px",
-                // },
               }}
             >
               <InputLabel id="state-select-label">State</InputLabel>
               <Select
-                // sx={{
-                //   "&.MuiSelect-select ": {
-                //     minHeight: "1em",
-                //   },
-                // }}
                 MenuProps={{
                   PaperProps: {
                     sx: {

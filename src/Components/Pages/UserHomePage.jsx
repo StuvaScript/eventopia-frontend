@@ -1,16 +1,7 @@
 import React from "react";
-import {
-  AppBar,
-  Toolbar,
-  Box,
-  IconButton,
-  Typography,
-  Button,
-  TextField,
-} from "@mui/material";
+import { AppBar, Toolbar, Box, IconButton, Typography } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
-import EventIcon from "@mui/icons-material/Event";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CustomLocationPicker from "../Shared/LocationPicker";
@@ -30,11 +21,6 @@ const UserHome = ({ title }) => {
   const userName = input.name;
   const userId = input.id;
   const sessionToken = input.token;
-
-  // const handleLogin = () => {
-  //   // Perform your login logic here
-  //   setIsLoggedIn(true);
-  // };
 
   const handleLocationChange = (city, state) => {
     setLocation({ city, state });
@@ -90,11 +76,9 @@ const UserHome = ({ title }) => {
       case "/":
         return "Home";
       default:
-        return `Welcome ${userName}`;
+        return;
     }
   };
-  //   useEffect(() => {
-  //   }, [data]);
 
   return (
     <AppBar position="fixed" color="primary" sx={{ padding: 0, top: 0 }}>
