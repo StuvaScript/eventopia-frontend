@@ -27,30 +27,30 @@ const NavBar = ({ title }) => {
 
   // ``** SIGN UP/REGISTER **``
 
-  // User register Url
-  const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/user/register`;
+  // // User register Url
+  // const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/user/register`;
 
-  //  register requestBody example
-  const requestBody = {
-    firstName: "Billy",
-    lastName: "Bob",
-    email: "tessst4@gmail.com",
-    password: "Password129",
-    city: "Austin",
-    state: "TX",
-  };
+  // //  register requestBody example
+  // const requestBody = {
+  //   firstName: "Billy",
+  //   lastName: "Bob",
+  //   email: "tessst4@gmail.com",
+  //   password: "Password129",
+  //   city: "Austin",
+  //   state: "TX",
+  // };
 
-  async function registerUser(URL, requestBody) {
-    const myData = await postData(URL, requestBody);
-    console.log(myData);
-  }
+  // async function registerUser(URL, requestBody) {
+  //   const myData = await postData(URL, requestBody);
+  //   console.log(myData);
+  // }
 
-  registerUser(URL, requestBody);
+  // registerUser(URL, requestBody);
 
-  const handleLogin = () => {
-    // Perform your login logic here
-    setIsLoggedIn(true);
-  };
+  // const handleLogin = () => {
+  //   // Perform your login logic here
+  //   setIsLoggedIn(true);
+  // };
 
   const handleLocationChange = (city, state) => {
     setLocation({ city, state });
