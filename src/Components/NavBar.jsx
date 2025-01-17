@@ -1,4 +1,3 @@
-import React from "react";
 import {
   AppBar,
   Toolbar,
@@ -6,18 +5,16 @@ import {
   IconButton,
   Typography,
   Button,
-  TextField,
 } from "@mui/material";
-import { useLocation } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
-import EventIcon from "@mui/icons-material/Event";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CustomLocationPicker from "./Shared/LocationPicker";
 import CustomDatePicker from "./Shared/DatePicker";
 import Link from "@mui/material/Link";
-import { useState } from "react";
 import { getData } from "../util";
+import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 
 const NavBar = ({ title }) => {
   const [location, setLocation] = React.useState({ city: "", state: "" });
@@ -32,20 +29,19 @@ const NavBar = ({ title }) => {
 
   const handleLocationChange = (city, state) => {
     setLocation({ city, state });
-    console.log("Selected City:", city);
-    console.log("Selected State:", state);
   };
 
   const handleDateRangeChange = (newDateRange) => {
     setDateRange(newDateRange);
   };
 
+  const navigate = useNavigate();
+
   const handleSearch = async () => {
     const URL = `${import.meta.env.VITE_API_BASE_URL}/api/ticketmaster/events/${
       location.city
     }/${location.state}`;
 
-    // Optional config
     const config = {
       params: {
         dateRangeStart: dateRange[0],
@@ -74,6 +70,12 @@ const NavBar = ({ title }) => {
     try {
       const response = await getData(URL, config);
       console.log(response);
+      const inputData = {
+        city: location.city,
+        state: location.state,
+        events: response,
+      };
+      navigate("/eventresult", { state: inputData });
     } catch (error) {
       console.error("Error fetching data:", error);
     }
