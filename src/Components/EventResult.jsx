@@ -30,6 +30,7 @@ const EventResult = () => {
   const state = data.state;
 
   useEffect(() => {
+    setSelectedFilter("all");
     //Sort the events
     if (data && Array.isArray(data.events)) {
       const sortedEvents = data.events.sort((a, b) =>
