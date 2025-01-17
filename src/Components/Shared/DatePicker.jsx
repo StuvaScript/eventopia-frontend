@@ -18,8 +18,8 @@ const CustomDatePicker = ({onDateRangeChange}) => {
     } else if (!startDate && endDate) {
       newDateRange[0] = endDate;
     }
-    const isoStringStart = startDate ? startDate.isoStringStart() : "";
-    const isoStringEnd = endDate ? endDate.isoStringStart() : "";
+    const isoStringStart = startDate ? startDate.toISOString() : "";
+    const isoStringEnd = endDate ? endDate.toISOString() : "";
     const formattedStartDate = isoStringStart.slice(0, 19) + "Z";
     const formattedEndDate = isoStringEnd.slice(0, 19) + "Z";
     setDateRange(newDateRange);
