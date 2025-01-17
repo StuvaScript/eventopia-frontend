@@ -5,10 +5,7 @@ import axios from "axios";
 export const fetchCsrfToken = async () => {
   try {
     const response = await axios.get(
-      `${import.meta.env.VITE_API_BASE_URL}/api/v1/csrf-token`,
-      {
-        withCredentials: true, // Include cookies in the request
-      }
+      `${import.meta.env.VITE_API_BASE_URL}/api/v1/csrf-token`
     );
     // csrfToken = response.data.csrfToken;
     console.log("CSRF Token fetched:", response.data.csrfToken);

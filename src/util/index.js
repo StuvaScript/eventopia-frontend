@@ -35,12 +35,15 @@ const postData = async (url, requestBody, config = {}) => {
   try {
     const csrfToken = await fetchCsrfToken();
     console.log({ csrfToken });
+    if (!csrfToken) {
+      throw new Error("CSRF token could not be fetched. Request aborted.");
+    }
 
     let res = await axios.post(url, requestBody, {
       ...config,
       headers: {
         ...config?.headers,
-        "x-csrf-token": "csrfToken", // Add CSRF token
+        "x-csrf-token": csrfToken, // Add CSRF token
       },
       withCredentials: true, // Ensure cookies are sent with the request
     });
@@ -69,6 +72,9 @@ const patchData = async (url, requestBody, csrfToken, config) => {
   try {
     const csrfToken = await fetchCsrfToken();
     console.log({ csrfToken });
+    if (!csrfToken) {
+      throw new Error("CSRF token could not be fetched. Request aborted.");
+    }
 
     let res = await axios.patch(url, requestBody, {
       ...config,
@@ -76,7 +82,7 @@ const patchData = async (url, requestBody, csrfToken, config) => {
         ...config?.headers,
         "x-csrf-token": csrfToken, // Add CSRF token
       },
-      withCredentials: true, // Ensure cookies are sent with the request
+      // withCredentials: true, // Ensure cookies are sent with the request
     });
     let data = res.data;
     return data;
@@ -92,6 +98,9 @@ const deleteData = async (url, csrfToken, config) => {
   try {
     const csrfToken = await fetchCsrfToken();
     console.log({ csrfToken });
+    if (!csrfToken) {
+      throw new Error("CSRF token could not be fetched. Request aborted.");
+    }
 
     let res = await axios.delete(url, {
       ...config,
@@ -99,7 +108,7 @@ const deleteData = async (url, csrfToken, config) => {
         ...config?.headers,
         "x-csrf-token": csrfToken, // Add CSRF token
       },
-      withCredentials: true, // Ensure cookies are sent with the request
+      // withCredentials: true, // Ensure cookies are sent with the request
     });
     let data = res.data;
     return data;

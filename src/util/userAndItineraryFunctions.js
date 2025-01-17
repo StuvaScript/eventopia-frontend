@@ -36,12 +36,12 @@ import { deleteData, getData, patchData, postData } from ".";
 //   password: "Password129",
 // };
 
-// async function logInUser(URL, requestBody, csrfToken) {
+// async function logInUser(URL, requestBody) {
 //   const myData = await postData(URL, requestBody);
 //   console.log(myData);
 // }
 
-// logInUser(URL, requestBody, csrfToken);
+// logInUser(URL, requestBody);
 
 // *************************************************
 // *************************************************
@@ -71,8 +71,8 @@ import { deleteData, getData, patchData, postData } from ".";
 // const token =
 //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzY3Mzk0YzBhOWY3Njk3OTA0NmE1MmMiLCJmaXJzdE5hbWUiOiJEYW4iLCJsYXN0TmFtZSI6IkFrcm95ZCIsImlhdCI6MTczNDgxOTcyMSwiZXhwIjoxNzM0OTA2MTIxfQ.k6bTkN77-5an2vo3fsGfX5EGn40ALtetfEFRhvj3Qnk";
 
-// async function createItinerary(URL, requestBody, token, csrfToken) {
-//   const myData = await postData(URL, requestBody, csrfToken, {
+// async function createItinerary(URL, requestBody, token) {
+//   const myData = await postData(URL, requestBody, {
 //     headers: {
 //       Authorization: `Bearer ${token}`,
 //     },
@@ -80,7 +80,7 @@ import { deleteData, getData, patchData, postData } from ".";
 //   console.log(myData);
 // }
 
-// createItinerary(URL, requestBody, token,csrfToken);
+// createItinerary(URL, requestBody, token);
 
 // *************************************************
 // *************************************************
