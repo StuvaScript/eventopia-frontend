@@ -92,9 +92,9 @@ const filterNextEvent = () => {
   };
 
   return (
-    <Box>
-      <Typography variant="h4" gutterBottom>
-        Welcome to Your Planner, {name}!
+    <Box sx={{ marginTop: "120px", padding: "20 px" }}>
+      <Typography variant="h4" gutterBottom sx={{marginLeft: "25px"}}>
+        Welcome to Your Planner, {name}! 🎉
       </Typography>
       {loading ? (
         <Typography variant="h6">Loading...</Typography>

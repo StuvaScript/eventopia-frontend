@@ -33,7 +33,7 @@ const EmptyList = ({ icon, message, buttonText, onClick }) => {
       alignItems="center"
       justifyContent="center"
       textAlign="center"
-      sx={{ padding: 28 }}
+      sx={{ padding: 18 }}
     >
       <Box sx={{ fontSize: 150, color: "primary.main", marginBottom: 2 }}>
         {icon}

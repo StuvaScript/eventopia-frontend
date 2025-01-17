@@ -279,7 +279,7 @@ const NavBar = ({ title }) => {
                 paddingLeft: "1rem",
               }}
             >
-              Create Your Event
+              My Planner
             </Typography>
           </Box>
         )}
