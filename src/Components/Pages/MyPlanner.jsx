@@ -13,6 +13,8 @@ import EmptyList from "../Shared/EmptyList";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getData } from "../../util/index";
@@ -181,11 +183,18 @@ useEffect(() => {
                   }}
                 />
                 <CardContent sx={{ display: "flex", flexDirection: "column" }}>
-                  <Typography variant="h5">{event.name}</Typography>{" "}
-                  <Typography variant="body3" color="text.secondary">
+                  <Typography sx={{marginBottom: "3px"}} variant="h5">{event.name}</Typography>{" "}
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <LocationOnIcon sx={{ fontSize: "15px", marginRight: "2px" }}/>  
+                  <Typography sx={{ fontSize: "15px" }}>{event.venue.city + ", " + event.venue.state}</Typography>{""}
+                  </Box>
+                   <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <AccessTimeFilledIcon sx={{ fontSize: "13px", marginRight: "2px" }}/>
+                    <Typography sx={{ fontSize: "15px" }} color="text.secondary">
                     {formatDate(event.startDateTime)} •{" "}
                     {formatTime(event.startDateTime)}{" "}
-                  </Typography>
+                    </Typography>
+                  </Box>
                 </CardContent>
                 <Box
                   sx={{
