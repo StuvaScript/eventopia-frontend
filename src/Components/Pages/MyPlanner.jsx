@@ -123,9 +123,9 @@ useEffect(() => {
                 setSelectedFilter("next");
               }}
               variant="outlined"
+              color={selectedFilter === "next" ? "default" : "primary"}
               sx={{
                 borderRadius: "20px",
-                color: selectedFilter === "next" ? "default" : "main",
               }}
             >
               Your Next Event
@@ -135,9 +135,9 @@ useEffect(() => {
                 setSelectedFilter("past");
               }}
               variant="outlined"
+              color={selectedFilter === "past" ? "default" : "primary"}
               sx={{
                 borderRadius: "20px",
-                color: selectedFilter === "past" ? "default" : "main",
               }}
             >
               Past Events
@@ -147,9 +147,9 @@ useEffect(() => {
                 setSelectedFilter("all");
               }}
               variant="outlined"
+              color={selectedFilter === "all" ? "default" : "primary"}
               sx={{
                 borderRadius: "20px",
-                color: selectedFilter === "all" ? "default" : "main",
               }}
             >
               All
@@ -179,16 +179,28 @@ useEffect(() => {
                   }}
                 />
                 <CardContent sx={{ display: "flex", flexDirection: "column" }}>
-                  <Typography sx={{marginBottom: "3px"}} variant="h5">{event.name}</Typography>{" "}
+                  <Typography sx={{ marginBottom: "3px" }} variant="h5">
+                    {event.name}
+                  </Typography>{" "}
                   <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <LocationOnIcon sx={{ fontSize: "15px", marginRight: "2px" }}/>  
-                  <Typography sx={{ fontSize: "15px" }}>{event.venue.city + ", " + event.venue.state}</Typography>{""}
+                    <LocationOnIcon
+                      sx={{ fontSize: "15px", marginRight: "2px" }}
+                    />
+                    <Typography sx={{ fontSize: "15px" }}>
+                      {event.venue.city + ", " + event.venue.state}
+                    </Typography>
+                    {""}
                   </Box>
-                   <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <AccessTimeFilledIcon sx={{ fontSize: "13px", marginRight: "2px" }}/>
-                    <Typography sx={{ fontSize: "15px" }} color="text.secondary">
-                    {formatDate(event.startDateTime)} •{" "}
-                    {formatTime(event.startDateTime)}{" "}
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <AccessTimeFilledIcon
+                      sx={{ fontSize: "13px", marginRight: "2px" }}
+                    />
+                    <Typography
+                      sx={{ fontSize: "15px" }}
+                      color="text.secondary"
+                    >
+                      {formatDate(event.startDateTime)} •{" "}
+                      {formatTime(event.startDateTime)}{" "}
                     </Typography>
                   </Box>
                 </CardContent>
