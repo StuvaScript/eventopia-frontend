@@ -1,4 +1,14 @@
-import { Typography, Button, Box, Paper, Grid, Card, CardContent, CardMedia, IconButton,} from "@mui/material";
+import {
+  Typography,
+  Button,
+  Box,
+  Paper,
+  Grid,
+  Card,
+  CardContent,
+  CardMedia,
+  IconButton,
+} from "@mui/material";
 import EmptyList from "../Shared/EmptyList";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -6,10 +16,9 @@ import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import { useState, useEffect } from "react";
 import { getData } from "../../util/index";
 
-const name = "Nihal";
 const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/itinerary`;
 const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzg1YjdiNjU4YThkN2I2MWM2NjUxYTAiLCJmaXJzdE5hbWUiOiJBYWEiLCJsYXN0TmFtZSI6IkJiYiIsImlhdCI6MTczNjgxNjU2NiwiZXhwIjoxNzM2OTAyOTY2fQ.TyYDxej6o2t6htgGJcaemGxXFVeFqeBTz07MJwb1c7w";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzhhZTYzMTM4YjdhM2M5YWFlYzIyZDUiLCJmaXJzdE5hbWUiOiJ3d3d3IiwibGFzdE5hbWUiOiJhYWFhIiwiaWF0IjoxNzM3MTYxMzIzLCJleHAiOjE3Mzc3NjYxMjN9.5marMbUWelmkIoSQBN3K10STzHoR6gWR6qaAST16qdU";
 const config = "";
 const today = new Date();
 
@@ -26,21 +35,8 @@ const MyPlanner = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-
-      let itineraryItems = [];
-      if (response && response.itineraryItems) {
-        itineraryItems = response.itineraryItems.map((event) => {
-          const formattedDate = formatDate(event.startDateTime || event.date);
-
-          return {
-            ...event,
-            formattedDate: formattedDate,
-          };
-        });
-      }
-
       console.log(JSON.stringify(response));
-
+      const itineraryItems = response?.itineraryItems || [];
       setItineraries(itineraryItems);
       console.log("Itineraries after fetching:", itineraryItems);
       setLoading(false);
@@ -55,31 +51,35 @@ const MyPlanner = () => {
     fetchItineraries();
   }, []);
 
-   useEffect(() => {
-     if (itineraries.length > 0) {
-       filterNextEvent();
-     }
-   }, [itineraries]);
+  useEffect(() => {
+    if (itineraries.length > 0) {
+      filterAllEvents();
+    }
+  }, [itineraries]);
 
-const formatDate = (dateString) => {
-  const date = new Date(dateString);
-  return isNaN(date) ? "Invalid Date" : date.toISOString().split("T")[0];
-};
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return isNaN(date) ? "Invalid Date" : date.toISOString().split("T")[0];
+  };
 
-const filterNextEvent = () => {
-  const nextEvent = itineraries
-    .filter((event) => new Date(event.formattedDate) > today && event.formattedDate !== "Invalid Date")
-    .sort((a, b) => new Date(a.formattedDate) - new Date(b.formattedDate))[0] || null;
+  const formatTime = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  };
 
-  setFilteredItineraries(nextEvent ? [nextEvent] : []);
-  setSelectedFilter("next");
-  console.log("filter next event =", nextEvent);
-};
+  const filterNextEvent = () => {
+    const nextEvent =
+      itineraries
+        .filter((event) => new Date(event.startDateTime) > today)
+        .sort((a, b) => new Date(a.startDateTime) - new Date(b.startDateTime))[0] || null;
+
+    setFilteredItineraries(nextEvent ? [nextEvent] : []);
+    setSelectedFilter("next");
+    console.log("filter next event =", nextEvent);
+  };
 
   const filterPastEvents = () => {
-    const pastEvents = itineraries.filter(
-      (event) => new Date(event.formattedDate) < today
-    );
+    const pastEvents = itineraries.filter((event) => new Date(event.startDateTime) < today);
     setFilteredItineraries(pastEvents);
     setSelectedFilter("past");
     console.log("filter past event =", pastEvents);
@@ -93,8 +93,8 @@ const filterNextEvent = () => {
 
   return (
     <Box sx={{ marginTop: "120px", padding: "20 px" }}>
-      <Typography variant="h4" gutterBottom sx={{marginLeft: "25px"}}>
-        Welcome to Your Planner, {name}! 🎉
+      <Typography variant="h4" gutterBottom sx={{ marginLeft: "25px" }}>
+        Welcome to Your Planner! 🎉
       </Typography>
       {loading ? (
         <Typography variant="h6">Loading...</Typography>
@@ -103,7 +103,7 @@ const filterNextEvent = () => {
           icon={<CalendarTodayIcon sx={{ fontSize: 200 }} />}
           message="Your planner is empty right now, but that's okay—it's just waiting for you to fill it with your exciting events!"
           buttonText="Explore Events >>"
-          onClick={() => console.log("Explore Events Clicked")} // add logic
+          onClick={() => console.log("Explore Events Clicked")} 
         />
       ) : (
         <>
@@ -155,14 +155,15 @@ const filterNextEvent = () => {
                   <CardMedia
                     component="img"
                     height="140"
-                    image={event.image}
-                    alt={event.title}
+                    image={event.imageURL}
+                    alt={event.name}
                   />
                   <CardContent>
                     <Typography variant="body2" color="text.secondary">
-                      {event.formattedDate} • {event.formattedDate}{" "}
+                      {formatDate(event.startDateTime)} •{" "}
+                      {formatTime(event.startDateTime)}{" "}
                     </Typography>
-                    <Typography variant="h6">{event.title}</Typography>{" "}
+                    <Typography variant="h6">{event.name}</Typography>{" "}
                   </CardContent>
                   <div>
                     <IconButton aria-label="add to favorites" color="inherit">
