@@ -11,11 +11,9 @@ import {
 } from "@mui/material";
 import EmptyList from "../Shared/EmptyList";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
-import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getData } from "../../util/index";
 
@@ -29,7 +27,6 @@ const MyPlanner = () => {
   const [filteredItineraries, setFilteredItineraries] = useState([]); //store filtered saved events
   const [selectedFilter, setSelectedFilter] = useState("next"); //selected filter via button
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   const fetchItineraries = async () => {
     try {
@@ -55,7 +52,7 @@ const MyPlanner = () => {
   }, []);
 
 useEffect(() => {
-  if (!loading && itineraries.length > 0) {
+  if (itineraries.length > 0) {
     if (selectedFilter === "next") {
       filterNextEvent();
     } else if (selectedFilter === "past") {
@@ -64,7 +61,7 @@ useEffect(() => {
       filterAllEvents();
     }
   }
-}, [selectedFilter, itineraries, loading]);
+}, [selectedFilter, itineraries]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -94,7 +91,6 @@ useEffect(() => {
 
   const filterAllEvents = () => {
     setFilteredItineraries(itineraries);
-    setSelectedFilter("all");
     console.log("filter all events =", itineraries);
   };
 
@@ -205,9 +201,6 @@ useEffect(() => {
                     gap: "8px",
                   }}
                 >
-                  <IconButton aria-label="add to favorites" color="inherit">
-                    <FavoriteBorderIcon />
-                  </IconButton>
                   <IconButton aria-label="bookmark" color="inherit">
                     <BookmarkBorderIcon />
                   </IconButton>
