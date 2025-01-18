@@ -13,20 +13,21 @@ import EmptyList from "../Shared/EmptyList";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getData } from "../../util/index";
 
 const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/itinerary`;
 const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzhhZTYzMTM4YjdhM2M5YWFlYzIyZDUiLCJmaXJzdE5hbWUiOiJ3d3d3IiwibGFzdE5hbWUiOiJhYWFhIiwiaWF0IjoxNzM3MTYxMzIzLCJleHAiOjE3Mzc3NjYxMjN9.5marMbUWelmkIoSQBN3K10STzHoR6gWR6qaAST16qdU";
-const config = "";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzhiZGJhZTlhMDc5N2EzMGI1ZGQ2ZWQiLCJmaXJzdE5hbWUiOiJuaWhhbCIsImxhc3ROYW1lIjoiZWhkZmgiLCJpYXQiOjE3MzcyMTg5OTEsImV4cCI6MTczNzgyMzc5MX0.GYVwiITKNdFi42YIltcrN4OU8_S1Uw0G19IsmJ_16vU";
 const today = new Date();
 
 const MyPlanner = () => {
   const [itineraries, setItineraries] = useState([]); //all users' saved events
   const [filteredItineraries, setFilteredItineraries] = useState([]); //store filtered saved events
-  const [selectedFilter, setSelectedFilter] = useState(null); //selected filter via button
+  const [selectedFilter, setSelectedFilter] = useState("next"); //selected filter via button
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const fetchItineraries = async () => {
     try {
@@ -51,11 +52,17 @@ const MyPlanner = () => {
     fetchItineraries();
   }, []);
 
-  useEffect(() => {
-    if (itineraries.length > 0) {
+useEffect(() => {
+  if (!loading && itineraries.length > 0) {
+    if (selectedFilter === "next") {
+      filterNextEvent();
+    } else if (selectedFilter === "past") {
+      filterPastEvents();
+    } else if (selectedFilter === "all") {
       filterAllEvents();
     }
-  }, [itineraries]);
+  }
+}, [selectedFilter, itineraries, loading]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -74,14 +81,12 @@ const MyPlanner = () => {
         .sort((a, b) => new Date(a.startDateTime) - new Date(b.startDateTime))[0] || null;
 
     setFilteredItineraries(nextEvent ? [nextEvent] : []);
-    setSelectedFilter("next");
     console.log("filter next event =", nextEvent);
   };
 
   const filterPastEvents = () => {
     const pastEvents = itineraries.filter((event) => new Date(event.startDateTime) < today);
     setFilteredItineraries(pastEvents);
-    setSelectedFilter("past");
     console.log("filter past event =", pastEvents);
   };
 
@@ -92,7 +97,7 @@ const MyPlanner = () => {
   };
 
   return (
-    <Box sx={{ marginTop: "120px", padding: "20 px" }}>
+    <Box sx={{ marginTop: "120px", paddingLeft: "3%" }}>
       <Typography variant="h4" gutterBottom sx={{ marginLeft: "25px" }}>
         Welcome to Your Planner! 🎉
       </Typography>
@@ -102,84 +107,108 @@ const MyPlanner = () => {
         <EmptyList
           icon={<CalendarTodayIcon sx={{ fontSize: 200 }} />}
           message="Your planner is empty right now, but that's okay—it's just waiting for you to fill it with your exciting events!"
-          buttonText="Explore Events >>"
-          onClick={() => console.log("Explore Events Clicked")} 
         />
       ) : (
-        <>
+        <Box>
           <Box
             sx={{
               display: "flex",
               justifyContent: "space-around",
               alignItems: "center",
-              maxWidth: "40%",
+              maxWidth: "33%",
               x: 2,
               py: 4.6,
             }}
           >
             <Button
-              onClick={filterNextEvent}
+              onClick={() => {
+                setSelectedFilter("next");
+              }}
               variant="outlined"
               sx={{
                 borderRadius: "20px",
-                color: selectedFilter === "next" ? "default" : "primary.main",
+                color: selectedFilter === "next" ? "default" : "main",
               }}
             >
               Your Next Event
             </Button>
             <Button
-              onClick={filterPastEvents}
+              onClick={() => {
+                setSelectedFilter("past");
+              }}
               variant="outlined"
               sx={{
                 borderRadius: "20px",
-                color: selectedFilter === "past" ? "default" : "primary.main",
+                color: selectedFilter === "past" ? "default" : "main",
               }}
             >
               Past Events
             </Button>
             <Button
-              onClick={filterAllEvents}
+              onClick={() => {
+                setSelectedFilter("all");
+              }}
               variant="outlined"
               sx={{
                 borderRadius: "20px",
-                color: selectedFilter === "all" ? "default" : "primary.main",
+                color: selectedFilter === "all" ? "default" : "main",
               }}
             >
               All
             </Button>
           </Box>
-          <Grid container spacing={2}>
-            {filteredItineraries.map((event) => (
-              <Grid item xs={12} sm={6} md={4} key={event.id}>
-                <Card sx={{ backgroundColor: "#1A1A1A", color: "#fff" }}>
-                  <CardMedia
-                    component="img"
-                    height="140"
-                    image={event.imageURL}
-                    alt={event.name}
-                  />
-                  <CardContent>
-                    <Typography variant="body2" color="text.secondary">
-                      {formatDate(event.startDateTime)} •{" "}
-                      {formatTime(event.startDateTime)}{" "}
-                    </Typography>
-                    <Typography variant="h6">{event.name}</Typography>{" "}
-                  </CardContent>
-                  <div>
-                    <IconButton aria-label="add to favorites" color="inherit">
-                      <FavoriteBorderIcon />
-                    </IconButton>
-                    <IconButton aria-label="bookmark" color="inherit">
-                      <BookmarkBorderIcon />
-                    </IconButton>
-                  </div>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </>
+          {/* <Grid container spacing={2} sx={{height:"30px"}}> */}
+          {filteredItineraries.map((event) => (
+            <Grid item xs={12} key={event.ticketmasterId} marginBottom={5}>
+              <Card
+                sx={{
+                  backgroundColor: "#1A1A1A",
+                  color: "#fff",
+                  margin: "16px",
+                  marginRight: "50%",
+                  display: "flex",
+                  position: "relative",
+                }}
+              >
+                <CardMedia
+                  component="img"
+                  image={event.imageURL}
+                  sx={{
+                    objectFit: "cover",
+                    width: "180px",
+                    height: "180px",
+                    marginRight: "16px",
+                  }}
+                />
+                <CardContent sx={{ display: "flex", flexDirection: "column" }}>
+                  <Typography variant="h5">{event.name}</Typography>{" "}
+                  <Typography variant="body3" color="text.secondary">
+                    {formatDate(event.startDateTime)} •{" "}
+                    {formatTime(event.startDateTime)}{" "}
+                  </Typography>
+                </CardContent>
+                <Box
+                  sx={{
+                    position: "absolute",
+                    bottom: 8,
+                    right: 8,
+                    display: "flex",
+                    gap: "8px",
+                  }}
+                >
+                  <IconButton aria-label="add to favorites" color="inherit">
+                    <FavoriteBorderIcon />
+                  </IconButton>
+                  <IconButton aria-label="bookmark" color="inherit">
+                    <BookmarkBorderIcon />
+                  </IconButton>
+                </Box>
+              </Card>
+            </Grid>
+          ))}
+          {/* </Grid> */}
+        </Box>
       )}
-      <Paper sx={{ padding: 2 }}></Paper>
     </Box>
   );
 };
