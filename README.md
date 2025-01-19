@@ -1,6 +1,9 @@
 <div align="center">
 <h1>Eventopia</h1>
 <h3>Connecting you with your passion</h3>
+<img src="./images/eventopia.png" width="75%"/>
+<br>
+<br>
 </div>
 
 Planning a trip and need to keep track of all your vacation activities? Or maybe you just like to be in the know with local entertainment. With Eventopia you can search and keep all your fun events in one place!
