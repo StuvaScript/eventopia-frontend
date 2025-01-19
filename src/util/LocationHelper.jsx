@@ -58,7 +58,7 @@ export const fetchEvents = async (city, state) => {
       title: event.name,
       date: event.dates.startDate,
       time: event.dates.startTime,
-      location: event.venue
+      venue: event.venue
         ? `${event.venue.name}, ${event.venue.address}`
         : "Unknown Venue",
       image: event.images?.[0] || "",

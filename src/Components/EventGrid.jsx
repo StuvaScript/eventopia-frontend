@@ -102,7 +102,6 @@ const EventGrid = () => {
             key={event.id}
             event={event}
             actions={{
-              onLike: () => console.log(`Liked: ${event.title}`),
               onSave: () => console.log(`Saved: ${event.title}`),
               onShare: () => console.log(`Shared: ${event.title}`),
             }}

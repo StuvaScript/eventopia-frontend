@@ -22,7 +22,7 @@ const Footer = () => {
       }}
     >
       <Typography variant="body4">
-        © {new Date().getFullYear()} App Name
+        © {new Date().getFullYear()} Eventopia
       </Typography>
       <Box
         sx={{

@@ -87,7 +87,7 @@ const NavBar = ({ title }) => {
       case "/":
         return "Home";
       default:
-        return "App Name"; //What is our app's name
+        return "Eventopia";
     }
   };
 
@@ -109,7 +109,7 @@ const NavBar = ({ title }) => {
             flexGrow: 1,
           }}
         >
-          <Typography variant="h6">{title || getTitle()}</Typography>
+          <Typography variant="h4">{title || getTitle()}</Typography>
           <IconButton
             sx={{
               backgroundColor: "background.paper",
@@ -184,52 +184,7 @@ const NavBar = ({ title }) => {
             </IconButton>
           </Box>
         </Box>
-        {/* Navigation Links */}
-        {/* <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
-          <Typography
-            variant="body1"
-            sx={{
-              color: "text.primary",
-              mx: 2,
-              fontSize: "1rem",
-              cursor: "pointer",
-              paddingLeft: "1rem",
-            }}
-          >
-            Create Your Event
-          </Typography>
-          <Typography
-            variant="body1"
-            sx={{
-              color: "text.primary",
-              mx: 2,
-              fontSize: "1rem",
-              cursor: "pointer",
-              borderLeft: "1px solid white",
-              paddingLeft: "1rem",
-            }}
-          >
-            <Link href="/login" variant="body2" style={{ color: "white" }}>
-              Login
-            </Link>
-          </Typography>
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: "background.paper",
-              color: "text.primary",
-              textTransform: "none",
-              ml: 2,
-              px: 3,
-              borderRadius: "25px",
-              "&:hover": { backgroundColor: "#323232" },
-            }}
-          >
-            <Link href="/signup" variant="body2" style={{ color: "white" }}>
-              Sign Up
-            </Link>
-          </Button>
-        </Box> */}
+
         {!isLoggedIn && (
           <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
             <Typography

@@ -9,8 +9,6 @@ import {
   DialogContent,
   DialogActions,
 } from "@mui/material";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import ShareIcon from "@mui/icons-material/Share";
@@ -18,7 +16,6 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
 const EventCard = ({ event, actions }) => {
-  const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
   const [open, setOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(
@@ -27,12 +24,6 @@ const EventCard = ({ event, actions }) => {
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const handleLike = (e) => {
-    e.stopPropagation();
-    setLiked(!liked);
-    actions?.onLike?.();
-  };
 
   const handleSave = (e) => {
     e.stopPropagation();
@@ -56,23 +47,28 @@ const EventCard = ({ event, actions }) => {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           body: JSON.stringify({
-            name: event.title,
-            date: event.date,
-            location: {
-              address: event.location.address || "Unknown address",
-              city: event.location.city || "Unknown city",
-              state: event.location.state || "Unknown state",
-              postalCode: event.location.postalCode || "00000",
+            name: event.name,
+            startDateTime: event.startDateTime,
+            ticketmasterId: event.ticketmasterId,
+            venue: {
+              name: event.venue.name,
+              address: event.venue.address || "Unknown address",
+              city: event.venue.city || "Unknown city",
+              state: event.venue.state || "Unknown state",
+              postalCode: event.venue.postalCode || "00000",
               coordinates: {
-                lat: event.location.coordinates?.lat || 0,
-                lng: event.location.coordinates?.lng || 0,
+                lat: event.venue.coordinates?.lat || 0,
+                lng: event.venue.coordinates?.lng || 0,
               },
             },
+            url: event.url || "",
+            imageURL: event.imageURL || "",
+            info: event.info || "",
             user: localStorage.getItem("userId"),
           }),
         }
       );
-
+      console.log(event.venue.city);
       if (response.ok) {
         alert("Event saved successfully!");
       } else {
@@ -137,32 +133,21 @@ const EventCard = ({ event, actions }) => {
           <Box
             sx={{
               display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              alignItems: "top",
+              justifyContent: "flex-start",
               marginTop: "4px",
             }}
           >
-            <LocationOnIcon sx={{ fontSize: "1rem", marginRight: "4px" }} />
-            <Typography variant="body2">{event.location}</Typography>
+            <LocationOnIcon
+              sx={{ fontSize: "1rem", marginRight: "4px", marginTop: "5px" }}
+            />
+
+            <Typography variant="body2">{event.venue}</Typography>
           </Box>
         </Box>
         <Box
           sx={{ display: "flex", justifyContent: "space-around", marginTop: 2 }}
         >
-          <IconButton
-            onClick={(e) => {
-              e.stopPropagation();
-              if (isLoggedIn) {
-                handleLike(e);
-              } else {
-                alert("Please log in to like events!");
-              }
-            }}
-            color="inherit"
-          >
-            {liked && isLoggedIn ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-          </IconButton>
-
           <IconButton
             onClick={(e) => {
               e.stopPropagation();
@@ -225,7 +210,7 @@ const EventCard = ({ event, actions }) => {
             color="textSecondary"
             sx={{ marginBottom: 2 }}
           >
-            <strong>Location:</strong> {event.location}
+            <strong>Location:</strong> {event.venue}
           </Typography>
           <Button href={event.link} target="_blank" sx={{ marginBottom: 2 }}>
             More Info Here
@@ -233,20 +218,6 @@ const EventCard = ({ event, actions }) => {
         </DialogContent>
 
         <DialogActions sx={{ justifyContent: "center", marginBottom: 2 }}>
-          <IconButton
-            onClick={(e) => {
-              e.stopPropagation();
-              if (isLoggedIn) {
-                handleLike(e);
-              } else {
-                alert("Please log in to like events!");
-              }
-            }}
-            color="inherit"
-          >
-            {liked && isLoggedIn ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-          </IconButton>
-
           <IconButton
             onClick={(e) => {
               e.stopPropagation();
