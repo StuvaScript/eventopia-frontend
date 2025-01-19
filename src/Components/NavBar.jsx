@@ -5,10 +5,12 @@ import {
   IconButton,
   Typography,
   Button,
+  TextField,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import CustomLocationPicker from "./Shared/LocationPicker";
 import CustomDatePicker from "./Shared/DatePicker";
 import Link from "@mui/material/Link";
@@ -21,6 +23,7 @@ const NavBar = ({ title }) => {
   const [dateRange, setDateRange] = useState([]);
   const [error, setError] = useState({ city: false, state: false });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [keyword, setKeyword] = useState("")
 
   const handleLogin = () => {
     // Perform your login logic here
@@ -35,6 +38,11 @@ const NavBar = ({ title }) => {
     setDateRange(newDateRange);
   };
 
+  const handleKeywordChange = (event) => {
+    const keyword = event.target.value;
+    setKeyword(keyword);
+  };
+
   const navigate = useNavigate();
 
   const handleSearch = async () => {
@@ -46,6 +54,7 @@ const NavBar = ({ title }) => {
       params: {
         dateRangeStart: dateRange[0],
         dateRangeEnd: dateRange[1],
+        keyword: keyword,
       },
     };
 
@@ -127,7 +136,7 @@ const NavBar = ({ title }) => {
             py: 0.6,
             flexGrow: 1,
             margin: "5px",
-            maxWidth: "55%",
+            maxWidth: "65%",
           }}
         >
           {/* Location Picker */}
@@ -167,12 +176,39 @@ const NavBar = ({ title }) => {
             endDate={dateRange[1]}
             onDateRangeChange={handleDateRangeChange}
           />
+          <Box
+            sx={{
+              width: "1px",
+              backgroundColor: "primary.main",
+              height: "24px",
+              mx: 1,
+            }}
+          />
+          <TextField
+            label={
+              <span style={{ display: "flex", alignItems: "center" }}>
+                <SearchOutlinedIcon sx={{ size: "small" }} />
+                Keyword
+              </span>
+            }
+            variant="outlined"
+            value={keyword}
+            onChange={handleKeywordChange}
+            InputProps={{ sx: { fontSize: "0.9rem" } }}
+            InputLabelProps={{ sx: { fontSize: "0.9rem" } }}
+            sx={{ width: "45%" }}
+          />
           {/* Search Icon */}
           <IconButton
             onClick={handleSearch}
-            sx={{ color: "primary.main", mx: 0.5 }}
+            sx={{
+              color: "primary.main",
+              mx: 0.5,
+              backgroundColor: "primary.main",
+              marginLeft: "8px",
+            }}
           >
-            <SearchIcon />
+            <SearchIcon sx={{ color: "primary.contrastText" }} />
           </IconButton>
         </Box>
 
@@ -233,24 +269,10 @@ const NavBar = ({ title }) => {
                 cursor: "pointer",
                 paddingLeft: "1rem",
               }}
-            >
-              Create Your Event
-            </Typography>
-            <Typography
-              variant="body1"
-              sx={{
-                color: "text.primary",
-                mx: 2,
-                fontSize: "1rem",
-                cursor: "pointer",
-                borderLeft: "1px solid white",
-                paddingLeft: "1rem",
-              }}
-            >
-              <Link href="/login" variant="body2" style={{ color: "white" }}>
-                Login
-              </Link>
-            </Typography>
+            ></Typography>
+            <Link href="/login" variant="body2" style={{ color: "white" }}>
+              Login
+            </Link>
             <Button
               variant="contained"
               sx={{
