@@ -18,22 +18,10 @@ import CloseIcon from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import { useNavigate } from "react-router-dom";
+import { postData } from "../../util/index";
 
 // User login Url
 const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/user/login`;
-
-//  login requestBody example
-// const requestBody = {
-//   email: "example@gmail.com",
-//   password: "Password129",
-// };
-
-// Fetch code
-async function logInUser(URL, requestBody) {
-  const myData = await postData(URL, requestBody);
-  // setMessage(myData.data);
-  console.log(myData);
-}
 
 const isEmail = (email) =>
   /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email);
@@ -53,8 +41,17 @@ function Login() {
   const [open, setOpen] = useState(true);
   const navigate = useNavigate();
 
-  const handleClose = () => {
-    navigate("/home");
+  const handleClose = (data) => {
+    if (data && data.user) {
+      const inputData = {
+        id: data.user.id,
+        name: data.user.name,
+        token: data.token,
+      };
+      navigate("/userhome", { state: inputData });
+    } else {
+      navigate("/home");
+    }
   };
 
   const handleLoginEmail = () => {
@@ -82,22 +79,36 @@ function Login() {
     setSuccess();
 
     if (emailError || !emailInput) {
-      setFormValid("Email is inValid.Please Re-Enter Email");
+      setFormValid("Email is invalid.Please enter Email");
       return;
     }
 
     if (passwordError || !passwordInput) {
-      setFormValid(
-        "Password should be in 5-15 characters.Please Re-Enter Password"
-      );
+      setFormValid("Please enter Password");
       return;
     }
     setFormValid(null);
-    setSuccess("Form submitted successfully");
-
-    console.log("Email:" + emailInput);
-    console.log("Password:" + passwordInput);
+    const requestBody = {
+      email: emailInput,
+      password: passwordInput,
+    };
+    loginUser(URL, requestBody);
   };
+
+  async function loginUser(URL, requestBody) {
+    try {
+      const myData = await postData(URL, requestBody);
+      if (myData) {
+        // TODO Set User, City and State
+        handleClose(myData);
+      }
+      console.log(myData);
+      return true;
+    } catch (error) {
+      setFormValid("Invalid email or password, login failed");
+      return false;
+    }
+  }
 
   const handleLoginClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -120,11 +131,6 @@ function Login() {
           open={open}
           onClose={null}
           sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
             background: "#000",
             "& .MuiPaper-root": {
               background: "#000",
@@ -139,7 +145,7 @@ function Login() {
           <SvgIcon
             style={{
               margin: ".5rem",
-              width: "30rem",
+              width: "initial",
               height: "3rem",
               display: "flex",
               flexWrap: "wrap",
@@ -149,7 +155,7 @@ function Login() {
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              fill="#FFF"
+              fill="#000"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
@@ -162,6 +168,7 @@ function Login() {
             </svg>
           </SvgIcon>
           <DialogTitle
+            variant="h5"
             sx={{
               padding: ".2rem",
               textAlign: "center",
@@ -190,27 +197,50 @@ function Login() {
               color: "white",
               display: "flex",
               flexWrap: "wrap",
-              flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
-              gap: 2,
+              gap: 4,
               width: 400,
               height: 1,
             }}
           >
-            <Typography color="white" textAlign="center">
+            <Typography color="white" variant="h6" textAlign="center">
               {" "}
               Not a member yet?{"    "}
-              <Link href="/signup" variant="body2" style={{ color: "white" }}>
+              <Link href="/signup" variant="h6" style={{ color: "white" }}>
                 Sign Up
               </Link>
             </Typography>
             <TextField
               sx={{
-                border: "white",
                 backgroundColor: "white",
                 borderRadius: "1rem",
-                "& .MuiInputBase-root": {
+                "& .MuiInputBase-input": {
+                  color: "#000000",
+                  fontSize: "20px",
+                  height: "1em",
+                  borderRadius: "1rem !important",
+                  "&:-webkit-autofill": {
+                    color: "#000000",
+                    //fontSize: "18px",
+                    backgroundColor: "white !important",
+                    borderRadius: "1rem !important",
+                    WebkitBoxShadow: "0 0 0 100px white inset",
+                  },
+                },
+                "& .MuiFormLabel-root": {
+                  fontSize: "20px",
+                  fontWeight: "100",
+                  lineHeight: "1em",
+                },
+                //border: "white",
+                // backgroundColor: "white",
+                //borderRadius: "1rem",
+                //"& .MuiInputBase-input": {
+                // color: (theme) => theme.palette.text.tertiary,
+                //fontSize: (theme) => theme.typography.body2.fontSize,
+                //},
+                /*"& .MuiInputBase-root": {
                   "&:before": {
                     borderBottom: "none",
                   },
@@ -220,7 +250,7 @@ function Login() {
                   "&:after": {
                     borderBottom: "none",
                   },
-                },
+                },*/
               }}
               id="email"
               error={emailError}
@@ -230,26 +260,41 @@ function Login() {
               onBlur={handleLoginEmail}
               variant="filled"
               fullWidth
+              required
               size="small"
+              InputProps={{ disableUnderline: true }}
             />
             <TextField
               sx={{
-                border: "white",
                 backgroundColor: "white",
                 borderRadius: "1rem",
-
-                "& .MuiInputBase-root": {
-                  "&:before": {
-                    borderBottom: "none",
-                  },
-                  "&:hover:before": {
-                    borderBottom: "none",
-                  },
-                  "&:after": {
-                    borderBottom: "none",
-                  },
+                "& .MuiInputBase-input": {
+                  color: "#000000",
+                  fontSize: "20px",
+                  height: "1em",
+                },
+                "& .MuiFormLabel-root": {
+                  fontSize: "18px",
+                  fontWeight: "100",
+                  lineHeight: "1em",
                 },
               }}
+              //border: "white",
+              //backgroundColor: "white",
+              //borderRadius: "1rem",
+
+              //"& .MuiInputBase-root": {
+              // "&:before": {
+              //  borderBottom: "none",
+              //},
+              // "&:hover:before": {
+              // borderBottom: "none",
+              //},
+              //"&:after": {
+              // borderBottom: "none",
+              //},
+              //},
+              //}}
               error={passwordError}
               label="Password"
               variant="filled"
@@ -258,6 +303,7 @@ function Login() {
               onChange={(event) => setPasswordInput(event.target.value)}
               onBlur={handleLoginPassword}
               fullWidth
+              required
               size="small"
               InputProps={{
                 endAdornment: (
@@ -270,6 +316,7 @@ function Login() {
                     </IconButton>
                   </InputAdornment>
                 ),
+                disableUnderline: true,
               }}
             />
             <Typography>
@@ -291,10 +338,10 @@ function Login() {
                 Login
               </Button>
             </Typography>
-            <Typography>
+            <Typography component={"div"}>
               {formValid && <Alert severity="error">{formValid}</Alert>}{" "}
             </Typography>
-            <Typography>
+            <Typography component={"div"}>
               {success && <Alert severity="success">{success}</Alert>}
             </Typography>
           </DialogContent>

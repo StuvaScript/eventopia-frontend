@@ -1,4 +1,3 @@
-import React from "react";
 import {
   AppBar,
   Toolbar,
@@ -8,38 +7,42 @@ import {
   Button,
   TextField,
 } from "@mui/material";
-import { useLocation } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
-import EventIcon from "@mui/icons-material/Event";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CustomLocationPicker from "./Shared/LocationPicker";
 import CustomDatePicker from "./Shared/DatePicker";
 import Link from "@mui/material/Link";
-import { useState } from "react";
 import { getData } from "../util";
+import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 
 const NavBar = ({ title }) => {
   const [location, setLocation] = React.useState({ city: "", state: "" });
   const [dateRange, setDateRange] = useState([]);
   const [error, setError] = useState({ city: false, state: false });
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleLogin = () => {
+    // Perform your login logic here
+    setIsLoggedIn(true);
+  };
 
   const handleLocationChange = (city, state) => {
     setLocation({ city, state });
-    console.log("Selected City:", city);
-    console.log("Selected State:", state);
   };
 
   const handleDateRangeChange = (newDateRange) => {
     setDateRange(newDateRange);
   };
 
+  const navigate = useNavigate();
+
   const handleSearch = async () => {
     const URL = `${import.meta.env.VITE_API_BASE_URL}/api/ticketmaster/events/${
       location.city
     }/${location.state}`;
 
-    // Optional config
     const config = {
       params: {
         dateRangeStart: dateRange[0],
@@ -68,6 +71,12 @@ const NavBar = ({ title }) => {
     try {
       const response = await getData(URL, config);
       console.log(response);
+      const inputData = {
+        city: location.city,
+        state: location.state,
+        events: response,
+      };
+      navigate("/eventresult", { state: inputData });
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -176,7 +185,7 @@ const NavBar = ({ title }) => {
           </Box>
         </Box>
         {/* Navigation Links */}
-        <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
+        {/* <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
           <Typography
             variant="body1"
             sx={{
@@ -187,7 +196,22 @@ const NavBar = ({ title }) => {
               paddingLeft: "1rem",
             }}
           >
-            Login
+            Create Your Event
+          </Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              color: "text.primary",
+              mx: 2,
+              fontSize: "1rem",
+              cursor: "pointer",
+              borderLeft: "1px solid white",
+              paddingLeft: "1rem",
+            }}
+          >
+            <Link href="/login" variant="body2" style={{ color: "white" }}>
+              Login
+            </Link>
           </Typography>
           <Button
             variant="contained"
@@ -201,9 +225,48 @@ const NavBar = ({ title }) => {
               "&:hover": { backgroundColor: "#323232" },
             }}
           >
-            Sign Up
+            <Link href="/signup" variant="body2" style={{ color: "white" }}>
+              Sign Up
+            </Link>
           </Button>
-        </Box>
+        </Box> */}
+        {!isLoggedIn && (
+          <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
+            <Typography
+              variant="body1"
+              sx={{
+                color: "text.primary",
+                mx: 2,
+                fontSize: "1rem",
+                cursor: "pointer",
+                paddingLeft: "1rem",
+              }}
+            >
+              <Link href="/login" variant="body2" style={{ color: "white" }}>
+                Login
+              </Link>
+            </Typography>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: "background.paper",
+                color: "text.primary",
+                textTransform: "none",
+                ml: 2,
+                px: 3,
+                borderRadius: "25px",
+                "&:hover": { backgroundColor: "#323232" },
+              }}
+            >
+              <Link href="/signup" variant="body2" style={{ color: "white" }}>
+                Sign Up
+              </Link>
+            </Button>
+          </Box>
+        )}
+        {isLoggedIn && (
+          <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}></Box>
+        )}
       </Toolbar>
     </AppBar>
   );
