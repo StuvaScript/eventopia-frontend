@@ -8,18 +8,23 @@ import {
   CardContent,
   CardMedia,
   IconButton,
+  Dialog,
+  DialogActions,
+  DialogContent,
 } from "@mui/material";
 import EmptyList from "../Shared/EmptyList";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import ShareIcon from "@mui/icons-material/Share";
 import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
+import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getData } from "../../util/index";
 
 const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/itinerary`;
-const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzhiZGJhZTlhMDc5N2EzMGI1ZGQ2ZWQiLCJmaXJzdE5hbWUiOiJuaWhhbCIsImxhc3ROYW1lIjoiZWhkZmgiLCJpYXQiOjE3MzcyMTg5OTEsImV4cCI6MTczNzgyMzc5MX0.GYVwiITKNdFi42YIltcrN4OU8_S1Uw0G19IsmJ_16vU";
+// const token = 
+//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzhiZGJhZTlhMDc5N2EzMGI1ZGQ2ZWQiLCJmaXJzdE5hbWUiOiJuaWhhbCIsImxhc3ROYW1lIjoiZWhkZmgiLCJpYXQiOjE3MzcyMTg5OTEsImV4cCI6MTczNzgyMzc5MX0.GYVwiITKNdFi42YIltcrN4OU8_S1Uw0G19IsmJ_16vU";
 const today = new Date();
 
 const MyPlanner = () => {
@@ -27,6 +32,25 @@ const MyPlanner = () => {
   const [filteredItineraries, setFilteredItineraries] = useState([]); //store filtered saved events
   const [selectedFilter, setSelectedFilter] = useState("next"); //selected filter via button
   const [loading, setLoading] = useState(true);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
+  
+  //Get token from the login
+  const { state } = useLocation(); 
+
+   if (!state) {
+     console.error("No state found, possibly a navigation issue");
+     return <div>Error: State not found</div>;
+   }
+
+  const { name, id, token } = state;
+  const firstName = name.split(" ")[0]; 
+
+  if (!token) {
+    console.error("Token is missing");
+    return <div>Error: Token is missing</div>;
+  } 
+
 
   const fetchItineraries = async () => {
     try {
@@ -48,8 +72,10 @@ const MyPlanner = () => {
 
   //call api, get user's events when the comp is mounted
   useEffect(() => {
-    fetchItineraries();
-  }, []);
+    if (token) {
+      fetchItineraries(); 
+    }
+  }, [token]);
 
 useEffect(() => {
   if (itineraries.length > 0) {
@@ -62,6 +88,16 @@ useEffect(() => {
     }
   }
 }, [selectedFilter, itineraries]);
+
+const handleEventClick = (event) => {
+  setSelectedEvent(event); // Set the selected event
+  setOpenDialog(true); // Open the dialog
+};
+
+const closeDetailDialog = () => {
+  setOpenDialog(false); // Close the dialog
+  setSelectedEvent(null); // Reset selected event when closing
+};
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -97,7 +133,7 @@ useEffect(() => {
   return (
     <Box sx={{ marginTop: "120px", paddingLeft: "3%" }}>
       <Typography variant="h4" gutterBottom sx={{ marginLeft: "25px" }}>
-        Welcome to Your Planner! 🎉
+        Welcome to Your Planner, {firstName}! 🎉
       </Typography>
       {loading ? (
         <Typography variant="h6">Loading...</Typography>
@@ -167,6 +203,7 @@ useEffect(() => {
                   display: "flex",
                   position: "relative",
                 }}
+                onClick={() => handleEventClick(event)}
               >
                 <CardMedia
                   component="img"
@@ -210,11 +247,13 @@ useEffect(() => {
                     bottom: 8,
                     right: 8,
                     display: "flex",
-                    gap: "8px",
                   }}
                 >
                   <IconButton aria-label="bookmark" color="inherit">
                     <BookmarkBorderIcon />
+                  </IconButton>
+                  <IconButton color="inherit">
+                    <ShareIcon />
                   </IconButton>
                 </Box>
               </Card>
@@ -223,6 +262,72 @@ useEffect(() => {
           {/* </Grid> */}
         </Box>
       )}
+
+      <Dialog open={openDialog} onClose={closeDetailDialog}>
+        <DialogContent>
+          {selectedEvent && (
+            <>
+              <img
+                src={selectedEvent.imageURL}
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  borderRadius: "8px",
+                  marginBottom: "16px",
+                }}
+              />
+              <Typography variant="body1" sx={{ marginBottom: 2 }}>
+                {selectedEvent.info}
+              </Typography>
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                // sx={{ marginBottom: 1 }}
+              >
+                <strong>Date:</strong> {formatDate(selectedEvent.startDateTime)}
+              </Typography>
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                // sx={{ marginBottom: 1 }}
+              >
+                <strong>Time:</strong> {formatTime(selectedEvent.startDateTime)}
+              </Typography>
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                sx={{ marginBottom: 2 }}
+              >
+                <strong>Location: </strong> 
+                {selectedEvent.venue.name + ", " +selectedEvent.venue.address +
+                  " " +
+                  selectedEvent.venue.city +
+                  ", " +
+                  selectedEvent.venue.state +
+                  " " +
+                  selectedEvent.venue.postalCode}
+              </Typography>
+              <Button
+                href={selectedEvent.url}
+                target="_blank"
+                sx={{
+                  marginBottom: 2,
+                  textDecoration: "underline",
+                  textAlign: "left",
+                  padding: 0,
+                }}
+              >
+                More Info Here
+              </Button>
+            </>
+          )}
+        </DialogContent>
+        <DialogActions sx={{ justifyContent: "center", marginBottom: 2 }}>
+          <Button onClick={closeDetailDialog} color="primary">
+            Back to Events
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
