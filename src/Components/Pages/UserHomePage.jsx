@@ -1,3 +1,4 @@
+import React from "react";
 import {
   AppBar,
   Toolbar,
@@ -7,54 +8,54 @@ import {
   Button,
   TextField,
 } from "@mui/material";
+import { useLocation } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
+import EventIcon from "@mui/icons-material/Event";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import CustomLocationPicker from "./Shared/LocationPicker";
-import CustomDatePicker from "./Shared/DatePicker";
+import CustomLocationPicker from "../Shared/LocationPicker";
+import CustomDatePicker from "../Shared/DatePicker";
 import Link from "@mui/material/Link";
-import { getData } from "../util";
-import { useNavigate } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
+import { getData } from "../../util";
 
-const NavBar = ({ title }) => {
+const UserHome = ({ title }) => {
   const [location, setLocation] = React.useState({ city: "", state: "" });
   const [dateRange, setDateRange] = useState([]);
   const [error, setError] = useState({ city: false, state: false });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [keyword, setKeyword] = useState("")
 
-  const handleLogin = () => {
-    // Perform your login logic here
-    setIsLoggedIn(true);
-  };
+  const data = useLocation();
+  const input = data.state;
+  const userName = input.name;
+  const userId = input.id;
+  const sessionToken = input.token;
+
+  // const handleLogin = () => {
+  //   // Perform your login logic here
+  //   setIsLoggedIn(true);
+  // };
 
   const handleLocationChange = (city, state) => {
     setLocation({ city, state });
+    console.log("Selected City:", city);
+    console.log("Selected State:", state);
   };
 
   const handleDateRangeChange = (newDateRange) => {
     setDateRange(newDateRange);
   };
 
-  const handleKeywordChange = (event) => {
-    const keyword = event.target.value;
-    setKeyword(keyword);
-  };
-
-  const navigate = useNavigate();
-
   const handleSearch = async () => {
-    const URL = `${import.meta.env.VITE_API_BASE_URL}/api/ticketmaster/events/${
-      location.city
-    }/${location.state}`;
+    const URL = `${
+      import.meta.env.VITE_API_BASE_URL
+    }/api/v1/ticketmaster/events/${location.city}/${location.state}`;
 
+    // Optional config
     const config = {
       params: {
-        dateRangeStart: dateRange[0],
-        dateRangeEnd: dateRange[1],
-        keyword: keyword,
+        startDateTime: dateRange[0],
+        endDateTime: dateRange[1],
       },
     };
 
@@ -79,12 +80,6 @@ const NavBar = ({ title }) => {
     try {
       const response = await getData(URL, config);
       console.log(response);
-      const inputData = {
-        city: location.city,
-        state: location.state,
-        events: response,
-      };
-      navigate("/eventresult", { state: inputData });
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -95,9 +90,11 @@ const NavBar = ({ title }) => {
       case "/":
         return "Home";
       default:
-        return "App Name"; //What is our app's name
+        return `Welcome ${userName}`;
     }
   };
+  //   useEffect(() => {
+  //   }, [data]);
 
   return (
     <AppBar position="fixed" color="primary" sx={{ padding: 0, top: 0 }}>
@@ -116,7 +113,7 @@ const NavBar = ({ title }) => {
             backgroundColor: "background.paper",
             p: 1,
             borderRadius: "50%",
-            mx: 2,
+            mx: 10,
           }}
         >
           <MusicNoteIcon
@@ -136,7 +133,7 @@ const NavBar = ({ title }) => {
             py: 0.6,
             flexGrow: 1,
             margin: "5px",
-            maxWidth: "65%",
+            maxWidth: "55%",
           }}
         >
           {/* Location Picker */}
@@ -176,88 +173,15 @@ const NavBar = ({ title }) => {
             endDate={dateRange[1]}
             onDateRangeChange={handleDateRangeChange}
           />
-          <Box
-            sx={{
-              width: "1px",
-              backgroundColor: "primary.main",
-              height: "24px",
-              mx: 1,
-            }}
-          />
-          <TextField
-            label={
-              <span style={{ display: "flex", alignItems: "center" }}>
-                <SearchOutlinedIcon sx={{size:"small"}}/>
-                Keyword
-              </span>
-            }
-            variant="outlined"
-            value={keyword}
-            onChange={handleKeywordChange}
-            InputProps={{ sx: { fontSize: "0.9rem" } }}
-            InputLabelProps={{ sx: { fontSize: "0.9rem" } }}
-            sx={{ width: "45%" }}
-          />
           {/* Search Icon */}
           <IconButton
             onClick={handleSearch}
-            sx={{
-              color: "primary.main",
-              mx: 0.5,
-              backgroundColor: "primary.main",
-              marginLeft: "8px",
-            }}
+            sx={{ color: "primary.main", mx: 0.5 }}
           >
-            <SearchIcon sx={{ color: "primary.contrastText" }} />
+            <SearchIcon />
           </IconButton>
         </Box>
 
-        {/* Navigation Links */}
-        {/* <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
-          <Typography
-            variant="body1"
-            sx={{
-              color: "text.primary",
-              mx: 2,
-              fontSize: "1rem",
-              cursor: "pointer",
-              paddingLeft: "1rem",
-            }}
-          >
-            Create Your Event
-          </Typography>
-          <Typography
-            variant="body1"
-            sx={{
-              color: "text.primary",
-              mx: 2,
-              fontSize: "1rem",
-              cursor: "pointer",
-              borderLeft: "1px solid white",
-              paddingLeft: "1rem",
-            }}
-          >
-            <Link href="/login" variant="body2" style={{ color: "white" }}>
-              Login
-            </Link>
-          </Typography>
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: "background.paper",
-              color: "text.primary",
-              textTransform: "none",
-              ml: 2,
-              px: 3,
-              borderRadius: "25px",
-              "&:hover": { backgroundColor: "#323232" },
-            }}
-          >
-            <Link href="/signup" variant="body2" style={{ color: "white" }}>
-              Sign Up
-            </Link>
-          </Button>
-        </Box> */}
         {!isLoggedIn && (
           <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
             <Typography
@@ -269,26 +193,24 @@ const NavBar = ({ title }) => {
                 cursor: "pointer",
                 paddingLeft: "1rem",
               }}
-            ></Typography>
-              <Link href="/login" variant="body2" style={{ color: "white" }}>
-                Login
-              </Link>
-            <Button
-              variant="contained"
+            >
+              Create Your Event
+            </Typography>
+            <Typography
+              variant="body1"
               sx={{
-                backgroundColor: "background.paper",
                 color: "text.primary",
-                textTransform: "none",
-                ml: 2,
-                px: 3,
-                borderRadius: "25px",
-                "&:hover": { backgroundColor: "#323232" },
+                mx: 3,
+                fontSize: ".5rem",
+                cursor: "pointer",
+                borderLeft: "1px solid white",
+                paddingLeft: "1rem",
               }}
             >
-              <Link href="/signup" variant="body2" style={{ color: "white" }}>
-                Sign Up
+              <Link href="/home" variant="body2" style={{ color: "white" }}>
+                LogOut
               </Link>
-            </Button>
+            </Typography>
           </Box>
         )}
         {isLoggedIn && (
@@ -303,6 +225,7 @@ const NavBar = ({ title }) => {
                 paddingLeft: "1rem",
               }}
             >
+              Create Your Event
             </Typography>
           </Box>
         )}
@@ -311,4 +234,4 @@ const NavBar = ({ title }) => {
   );
 };
 
-export default NavBar;
+export default UserHome;

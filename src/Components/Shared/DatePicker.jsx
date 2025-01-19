@@ -14,13 +14,14 @@ const CustomDatePicker = ({onDateRangeChange}) => {
 
     // Automatically fill the missing date
     if (startDate && !endDate) {
-      newDateRange[1] = startDate; 
+      newDateRange[1] = startDate;
     } else if (!startDate && endDate) {
-      newDateRange[0] = endDate; 
+      newDateRange[0] = endDate;
     }
-
-    const formattedStartDate = startDate ? startDate.format("YYYY-MM-DD") : "";
-    const formattedEndDate = endDate ? endDate.format("YYYY-MM-DD") : "";
+    const isoStringStart = startDate ? startDate.toISOString() : "";
+    const isoStringEnd = endDate ? endDate.toISOString() : "";
+    const formattedStartDate = isoStringStart.slice(0, 19) + "Z";
+    const formattedEndDate = isoStringEnd.slice(0, 19) + "Z";
     setDateRange(newDateRange);
     onDateRangeChange([formattedStartDate, formattedEndDate]);
   };
