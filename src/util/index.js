@@ -34,10 +34,21 @@ const getAllData = async (url) => {
 const postData = async (url, requestBody, config = {}) => {
   try {
     const csrfToken = await fetchCsrfToken();
-    console.log({ csrfToken });
     if (!csrfToken) {
       throw new Error("CSRF token could not be fetched. Request aborted.");
     }
+
+    console.log("CSRF Token fetched:", csrfToken);
+    console.log("Cookies present in request:", document.cookie);
+
+    console.log({
+      ...config,
+      headers: {
+        ...config?.headers,
+        "x-csrf-token": csrfToken, // Add CSRF token
+      },
+      withCredentials: true, // Ensure cookies are sent with the request
+    });
 
     let res = await axios.post(url, requestBody, {
       ...config,

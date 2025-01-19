@@ -67,6 +67,28 @@ import { deleteData, getData, patchData, postData } from ".";
 //   user: "6767394c0a9f76979046a52c", // <-- user ID comes from "register" and "login" responses
 // };
 
+// Updated Itinerary requestBody example
+// const requestBody = {
+//     ticketmasterId: "abc123", // Unique Ticketmaster ID
+//     name: "Dan's Ninth Event",
+//     startDateTime: "2025-11-29T18:00:00Z", // ISO 8601 format for date and time
+//     venue: {
+//       name: "Main Street Event Center",
+//       address: "6780 Main St",
+//       city: "Portland",
+//       state: "OR",
+//       postalCode: "97217",
+//       coordinates: {
+//         lat: 5, // Valid latitude
+//         lng: 5, // Valid longitude
+//       },
+//     },
+//     url: "https://example.com/event-details", // Optional, can be omitted if not needed
+//     imageURL: "https://example.com/event-image.jpg", // Optional
+//     info: "This is a sample event description.", // Optional
+//     user: "678818a75b9df76cf9cb8e52", // Valid ObjectId referencing the User
+//   };
+
 // Token example (comes from "register" and "login" responses)
 // const token =
 //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzY3Mzk0YzBhOWY3Njk3OTA0NmE1MmMiLCJmaXJzdE5hbWUiOiJEYW4iLCJsYXN0TmFtZSI6IkFrcm95ZCIsImlhdCI6MTczNDgxOTcyMSwiZXhwIjoxNzM0OTA2MTIxfQ.k6bTkN77-5an2vo3fsGfX5EGn40ALtetfEFRhvj3Qnk";
