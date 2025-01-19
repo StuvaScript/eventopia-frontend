@@ -15,7 +15,7 @@ import {
 import EmptyList from "../Shared/EmptyList";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-import LocationOnIcon from '@mui/icons-material/LocationOn';
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 import ShareIcon from "@mui/icons-material/Share";
 import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
 import { useLocation } from "react-router-dom";
@@ -23,7 +23,7 @@ import { useState, useEffect } from "react";
 import { getData } from "../../util/index";
 
 const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/itinerary`;
-// const token = 
+// const token =
 //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzhiZGJhZTlhMDc5N2EzMGI1ZGQ2ZWQiLCJmaXJzdE5hbWUiOiJuaWhhbCIsImxhc3ROYW1lIjoiZWhkZmgiLCJpYXQiOjE3MzcyMTg5OTEsImV4cCI6MTczNzgyMzc5MX0.GYVwiITKNdFi42YIltcrN4OU8_S1Uw0G19IsmJ_16vU";
 const today = new Date();
 
@@ -34,23 +34,22 @@ const MyPlanner = () => {
   const [loading, setLoading] = useState(true);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
-  
-  //Get token from the login
-  const { state } = useLocation(); 
 
-   if (!state) {
-     console.error("No state found, possibly a navigation issue");
-     return <div>Error: State not found</div>;
-   }
+  //Get token from the login
+  const { state } = useLocation();
+
+  if (!state) {
+    console.error("No state found, possibly a navigation issue");
+    return <div>Error: State not found</div>;
+  }
 
   const { name, id, token } = state;
-  const firstName = name.split(" ")[0]; 
+  const firstName = name.split(" ")[0];
 
   if (!token) {
     console.error("Token is missing");
     return <div>Error: Token is missing</div>;
-  } 
-
+  }
 
   const fetchItineraries = async () => {
     try {
@@ -70,34 +69,33 @@ const MyPlanner = () => {
     }
   };
 
-  //call api, get user's events when the comp is mounted
   useEffect(() => {
     if (token) {
-      fetchItineraries(); 
+      fetchItineraries();
     }
   }, [token]);
 
-useEffect(() => {
-  if (itineraries.length > 0) {
-    if (selectedFilter === "next") {
-      filterNextEvent();
-    } else if (selectedFilter === "past") {
-      filterPastEvents();
-    } else if (selectedFilter === "all") {
-      filterAllEvents();
+  useEffect(() => {
+    if (itineraries.length > 0) {
+      if (selectedFilter === "next") {
+        filterNextEvent();
+      } else if (selectedFilter === "past") {
+        filterPastEvents();
+      } else if (selectedFilter === "all") {
+        filterAllEvents();
+      }
     }
-  }
-}, [selectedFilter, itineraries]);
+  }, [selectedFilter, itineraries]);
 
-const handleEventClick = (event) => {
-  setSelectedEvent(event); // Set the selected event
-  setOpenDialog(true); // Open the dialog
-};
+  const handleEventClick = (event) => {
+    setSelectedEvent(event);
+    setOpenDialog(true);
+  };
 
-const closeDetailDialog = () => {
-  setOpenDialog(false); // Close the dialog
-  setSelectedEvent(null); // Reset selected event when closing
-};
+  const closeDetailDialog = () => {
+    setOpenDialog(false);
+    setSelectedEvent(null);
+  };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -113,14 +111,18 @@ const closeDetailDialog = () => {
     const nextEvent =
       itineraries
         .filter((event) => new Date(event.startDateTime) > today)
-        .sort((a, b) => new Date(a.startDateTime) - new Date(b.startDateTime))[0] || null;
+        .sort(
+          (a, b) => new Date(a.startDateTime) - new Date(b.startDateTime)
+        )[0] || null;
 
     setFilteredItineraries(nextEvent ? [nextEvent] : []);
     console.log("filter next event =", nextEvent);
   };
 
   const filterPastEvents = () => {
-    const pastEvents = itineraries.filter((event) => new Date(event.startDateTime) < today);
+    const pastEvents = itineraries.filter(
+      (event) => new Date(event.startDateTime) < today
+    );
     setFilteredItineraries(pastEvents);
     console.log("filter past event =", pastEvents);
   };
@@ -298,8 +300,10 @@ const closeDetailDialog = () => {
                 color="textSecondary"
                 sx={{ marginBottom: 2 }}
               >
-                <strong>Location: </strong> 
-                {selectedEvent.venue.name + ", " +selectedEvent.venue.address +
+                <strong>Location: </strong>
+                {selectedEvent.venue.name +
+                  ", " +
+                  selectedEvent.venue.address +
                   " " +
                   selectedEvent.venue.city +
                   ", " +
