@@ -39,20 +39,16 @@ const EventGrid = () => {
                 }
 
                 const fetchedEvents = await fetchEvents(city, state);
-                if (Array.isArray(fetchedEvents)) {
-                  setEvents(fetchedEvents.slice(0, 3));
+                if (fetchedEvents.message === "No Events Returned") {
+                  setError("No events for your location.");
                 } else {
-                  console.error(
-                    "Error: fetchedEvents is not an array",
-                    fetchedEvents
-                  );
-                  setEvents([]);
+                  setEvents(fetchedEvents.slice(0, 3));
                 }
                 setLoading(false);
               } catch (err) {
                 console.error("Geocoding API Error:", err);
-                const fetchedEvents = await fetchEvents(city, state);
-                setEvents(fetchedEvents.slice(0, 3));
+                setError("Server error");
+                setLoading(false);
               }
             },
             async (err) => {
@@ -79,7 +75,7 @@ const EventGrid = () => {
   }, []);
 
   if (loading) return <Typography>Loading events ...</Typography>;
-  if (error) return <Typography>Error: {error}</Typography>;
+  if (error) return <Typography>{error}</Typography>;
 
   return (
     <Box sx={{ padding: 4 }}>

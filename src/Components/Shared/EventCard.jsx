@@ -98,9 +98,11 @@ const EventCard = ({ event, actions }) => {
           borderRadius: "8px",
           padding: 2,
           width: "300px",
+          height: "520px",
           backgroundColor: "background.paper",
           cursor: "pointer",
           "&:hover": { boxShadow: 3 },
+          overflow: "hidden",
         }}
         onClick={handleOpen}
       >

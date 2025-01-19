@@ -45,7 +45,11 @@ export const fetchEvents = async (city, state) => {
 
     const data = await response.json();
 
-    if (!data || data.length === 0) {
+    if (data.message === "No Events Returned") {
+      return { message: "No Events Returned" }; // Return a specific object
+    }
+
+    if (!data || !Array.isArray(data) || data.length === 0) {
       throw new Error("No events found or invalid response from API.");
     }
 

@@ -30,7 +30,7 @@ const Footer = () => {
           alignItems: "center", // Aligns "Follow Us" and icons vertically
         }}
       >
-        <Typography variant="body2" sx={{ marginRight: 1 }}>
+        <Typography variant="body4" sx={{ marginRight: 1 }}>
           Follow Us
         </Typography>
         <a
