@@ -279,7 +279,13 @@ const NavBar = ({ title }) => {
               <Button
                 onClick={handleMyPlanner}
                 variant="body2"
-                style={{ color: "white" }}
+                sx={{
+                  color: "white",
+                  "&.MuiButton-root": {
+                    textTransform: "none",
+                    fontSize: "1.2rem",
+                  },
+                }}
               >
                 My Planner
               </Button>
@@ -298,7 +304,13 @@ const NavBar = ({ title }) => {
               <Button
                 onClick={handleLogout}
                 variant="body2"
-                style={{ color: "white" }}
+                sx={{
+                  color: "white",
+                  "&.MuiButton-root": {
+                    textTransform: "none",
+                    fontSize: "1.2rem",
+                  },
+                }}
               >
                 Logout
               </Button>
