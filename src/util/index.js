@@ -2,7 +2,6 @@ import axios from "axios";
 
 const getData = async (url, config = {}) => {
   try {
-    console.log("document.cookie:", document.cookie);
     let res = await axios.get(url, {
       ...config,
       withCredentials: true,
