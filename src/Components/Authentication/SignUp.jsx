@@ -209,6 +209,7 @@ function SignUp() {
         id: data.user.id,
         name: data.user.name,
         token: data.token,
+        isLoggedIn: true,
       };
       navigate("/myplanner", { state: inputData });
     } else {
