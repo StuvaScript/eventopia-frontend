@@ -9,6 +9,7 @@ import NavBar from "./Components/NavBar";
 import Footer from "./Components/Footer";
 import { getAllData } from "./util/index";
 import EventResultPage from "./Components/Pages/EventResultPage";
+import MyPlanner from "./Components/Pages/MyPlanner"
 
 // import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -25,6 +26,7 @@ function App() {
           <Route path="/" element={<Navigate to="/home" />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/eventresult" element={<EventResultPage />} />
+          <Route path="/myplanner" element={<MyPlanner/>}/>
         </Routes>
         <Footer />
       </BrowserRouter>

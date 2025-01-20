@@ -187,7 +187,7 @@ const NavBar = ({ title }) => {
           <TextField
             label={
               <span style={{ display: "flex", alignItems: "center" }}>
-                <SearchOutlinedIcon sx={{size:"small"}}/>
+                <SearchOutlinedIcon sx={{ size: "small" }} />
                 Keyword
               </span>
             }
@@ -270,9 +270,9 @@ const NavBar = ({ title }) => {
                 paddingLeft: "1rem",
               }}
             ></Typography>
-              <Link href="/login" variant="body2" style={{ color: "white" }}>
-                Login
-              </Link>
+            <Link href="/login" variant="body2" style={{ color: "white" }}>
+              Login
+            </Link>
             <Button
               variant="contained"
               sx={{
@@ -303,6 +303,7 @@ const NavBar = ({ title }) => {
                 paddingLeft: "1rem",
               }}
             >
+              My Planner
             </Typography>
           </Box>
         )}
