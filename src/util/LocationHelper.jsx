@@ -34,7 +34,9 @@ export const getLocationData = async (defaultCity, defaultState) => {
 };
 
 export const fetchEvents = async (city, state) => {
-  const url = `https://hh-team1-back.onrender.com/api/ticketmaster/events/${city}/${state}`;
+  const url = `${
+    import.meta.env.VITE_API_BASE_URL
+  }/api/ticketmaster/events/${city}/${state}`;
 
   try {
     const response = await fetch(url);

@@ -203,7 +203,7 @@ const EventCard = ({ event, actions }) => {
             color="textSecondary"
             sx={{ marginBottom: 1 }}
           >
-            <strong>Time:</strong> {event.time}
+            <strong>Time:</strong> {event.startDateTime}
           </Typography>
           <Typography
             variant="body2"

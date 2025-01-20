@@ -150,94 +150,95 @@ const NavBar = ({ title }) => {
               sx={{ color: "primary.contrastText", fontSize: "1.5rem" }}
             />
           </IconButton>
-
-        {/* Middle Icons and Location Picker */}
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-around",
-            backgroundColor: "background.paper",
-            borderRadius: "50px",
-            px: 2,
-            py: 0.6,
-            flexGrow: 1,
-            margin: "5px",
-            maxWidth: "65%",
-          }}
-        >
-          {/* Location Picker */}
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
               justifyContent: "space-around",
-              width: "100%",
+              backgroundColor: "background.paper",
+              borderRadius: "50px",
+              px: 2,
+              py: 0.6,
+              flexGrow: 1,
+              margin: "5px",
+              maxWidth: "65%",
             }}
           >
-            <LocationOnIcon
-              sx={{ color: "primary.main", mr: 1, width: "7%" }}
-            />
-            <CustomLocationPicker
-              onLocationChange={handleLocationChange}
-              error={error}
-              InputProps={{ disableUnderline: true }}
+            {/* Location Picker */}
+            <Box
               sx={{
-                flexGrow: 1,
-                backgroundColor: "background.default",
-                borderRadius: "5px",
-                padding: "5px 10px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-around",
+                width: "100%",
+              }}
+            >
+              <LocationOnIcon
+                sx={{ color: "primary.main", mr: 1, width: "7%" }}
+              />
+              <CustomLocationPicker
+                onLocationChange={handleLocationChange}
+                error={error}
+                InputProps={{ disableUnderline: true }}
+                sx={{
+                  flexGrow: 1,
+                  backgroundColor: "background.default",
+                  borderRadius: "5px",
+                  padding: "5px 10px",
+                }}
+              />
+            </Box>
+            <Box
+              sx={{
+                width: "1px",
+                backgroundColor: "primary.main",
+                height: "24px",
+                mx: 1,
               }}
             />
+            <CustomDatePicker
+              startDate={dateRange[0]}
+              endDate={dateRange[1]}
+              onDateRangeChange={handleDateRangeChange}
+            />
+            <Box
+              sx={{
+                width: "1px",
+                backgroundColor: "primary.main",
+                height: "24px",
+                mx: 1,
+              }}
+            />
+            <TextField
+              label={
+                <span style={{ display: "flex", alignItems: "center" }}>
+                  <SearchOutlinedIcon sx={{ size: "small" }} />
+                  Keyword
+                </span>
+              }
+              variant="outlined"
+              value={keyword}
+              onChange={handleKeywordChange}
+              InputProps={{ sx: { fontSize: "0.9rem" } }}
+              InputLabelProps={{ sx: { fontSize: "0.9rem" } }}
+              sx={{ width: "45%" }}
+            />
+            {/* Search Icon */}
+            <IconButton
+              onClick={handleSearch}
+              sx={{
+                color: "primary.main",
+                mx: 0.5,
+                backgroundColor: "primary.main",
+                marginLeft: "8px",
+              }}
+            >
+              <SearchIcon sx={{ color: "primary.contrastText" }} />
+            </IconButton>
           </Box>
-          <Box
-            sx={{
-              width: "1px",
-              backgroundColor: "primary.main",
-              height: "24px",
-              mx: 1,
-            }}
-          />
-          <CustomDatePicker
-            startDate={dateRange[0]}
-            endDate={dateRange[1]}
-            onDateRangeChange={handleDateRangeChange}
-          />
-          <Box
-            sx={{
-              width: "1px",
-              backgroundColor: "primary.main",
-              height: "24px",
-              mx: 1,
-            }}
-          />
-          <TextField
-            label={
-              <span style={{ display: "flex", alignItems: "center" }}>
-                <SearchOutlinedIcon sx={{ size: "small" }} />
-                Keyword
-              </span>
-            }
-            variant="outlined"
-            value={keyword}
-            onChange={handleKeywordChange}
-            InputProps={{ sx: { fontSize: "0.9rem" } }}
-            InputLabelProps={{ sx: { fontSize: "0.9rem" } }}
-            sx={{ width: "45%" }}
-          />
-          {/* Search Icon */}
-          <IconButton
-            onClick={handleSearch}
-            sx={{
-              color: "primary.main",
-              mx: 0.5,
-              backgroundColor: "primary.main",
-              marginLeft: "8px",
-            }}
-          >
-            <SearchIcon sx={{ color: "primary.contrastText" }} />
-          </IconButton>
         </Box>
+        {/* Middle Icons and Location Picker */}
+
         {!isLoggedIn && (
           <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
             <Typography
