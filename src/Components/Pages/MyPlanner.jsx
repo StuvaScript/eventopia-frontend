@@ -15,6 +15,7 @@ import {
 import EmptyList from "../Shared/EmptyList";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import ShareIcon from "@mui/icons-material/Share";
 import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
@@ -252,7 +253,7 @@ const MyPlanner = () => {
                   }}
                 >
                   <IconButton aria-label="bookmark" color="inherit">
-                    <BookmarkBorderIcon />
+                    <BookmarkIcon />
                   </IconButton>
                   <IconButton color="inherit">
                     <ShareIcon />
