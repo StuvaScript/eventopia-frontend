@@ -1,8 +1,12 @@
 import axios from "axios";
 
-const getData = async (url, config) => {
+const getData = async (url, config = {}) => {
   try {
-    let res = await axios.get(url, config);
+    console.log("document.cookie:", document.cookie);
+    let res = await axios.get(url, {
+      ...config,
+      withCredentials: true,
+    });
     let data = res.data;
     return data;
   } catch (error) {
@@ -10,9 +14,12 @@ const getData = async (url, config) => {
   }
 };
 
-const getAllData = async (url) => {
+const getAllData = async (url, config = {}) => {
   try {
-    let res = await axios.get(url);
+    let res = await axios.get(url, {
+      ...config,
+      withCredentials: true,
+    });
     let data = res.data;
     return data;
   } catch (error) {
@@ -30,9 +37,12 @@ const getAllData = async (url) => {
 //   },
 // };
 
-const postData = async (url, requestBody, config) => {
+const postData = async (url, requestBody, config = {}) => {
   try {
-    let res = await axios.post(url, requestBody, config);
+    let res = await axios.post(url, requestBody, {
+      ...config,
+      withCredentials: true,
+    });
     let data = res.data;
     return data;
   } catch (error) {
@@ -54,9 +64,12 @@ const postData = async (url, requestBody, config) => {
 //   },
 // };
 
-const patchData = async (url, requestBody, config) => {
+const patchData = async (url, requestBody, config = {}) => {
   try {
-    let res = await axios.patch(url, requestBody, config);
+    let res = await axios.patch(url, requestBody, {
+      ...config,
+      withCredentials: true,
+    });
     let data = res.data;
     return data;
   } catch (error) {
@@ -67,9 +80,12 @@ const patchData = async (url, requestBody, config) => {
 
 // ``** DELETE **``
 
-const deleteData = async (url, config) => {
+const deleteData = async (url, config = {}) => {
   try {
-    let res = await axios.delete(url, config);
+    let res = await axios.delete(url, {
+      ...config,
+      withCredentials: true,
+    });
     let data = res.data;
     return data;
   } catch (error) {
