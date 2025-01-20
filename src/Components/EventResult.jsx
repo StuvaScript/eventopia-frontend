@@ -6,6 +6,9 @@ import {
   CardMedia,
   Typography,
   IconButton,
+  Dialog,
+  DialogActions,
+  DialogContent,
 } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
@@ -22,6 +25,8 @@ const EventResult = () => {
   const [isloading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState("all");
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
 
   const location = useLocation();
   const data = location.state;
@@ -77,6 +82,16 @@ const EventResult = () => {
     } else {
       setEvents([]);
     }
+  };
+
+  const handleEventClick = (event) => {
+    setSelectedEvent(event);
+    setOpenDialog(true);
+  };
+
+  const closeDetailDialog = () => {
+    setOpenDialog(false);
+    setSelectedEvent(null);
   };
 
   return (
@@ -158,6 +173,7 @@ const EventResult = () => {
                   backgroundColor: "#1A1A1A",
                   color: "#fff",
                 }}
+                onClick={() => handleEventClick(event)}
               >
                 <CardMedia
                   component="img"
@@ -184,9 +200,9 @@ const EventResult = () => {
                   </Box>
 
                   <Box>
-                    <IconButton aria-label="add to favorites" color="inherit">
+                    {/* <IconButton aria-label="add to favorites" color="inherit">
                       <FavoriteBorderIcon />
-                    </IconButton>
+                    </IconButton> */}
                     <IconButton aria-label="bookmark" color="inherit">
                       <BookmarkBorderIcon />
                     </IconButton>
@@ -210,6 +226,68 @@ const EventResult = () => {
           </Box>
         )}
       </Grid>
+
+      <Dialog open={openDialog} onClose={closeDetailDialog}>
+        <DialogContent>
+          {selectedEvent && (
+            <>
+              <img
+                src={selectedEvent.images[0]}
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  borderRadius: "8px",
+                  marginBottom: "16px",
+                }}
+              />
+              <Typography variant="body1" sx={{ marginBottom: 2 }}>
+                {selectedEvent.info}
+              </Typography>
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                // sx={{ marginBottom: 1 }}
+              >
+                <strong>Date:</strong> {selectedEvent.dates.startDate}
+              </Typography>
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                // sx={{ marginBottom: 1 }}
+              >
+                <strong>Time:</strong> {selectedEvent.dates.startTime}
+              </Typography>
+              <Typography color="textSecondary" sx={{ marginBottom: 2 }}>
+                <strong>Location: </strong>
+                {selectedEvent.venue.name +
+                  ", " +
+                  selectedEvent.venue.address +
+                  " " +
+                  selectedEvent.venue.city +
+                  ", " +
+                  selectedEvent.venue.state}
+              </Typography>
+              <Button
+                href={selectedEvent.url}
+                target="_blank"
+                sx={{
+                  marginBottom: 2,
+                  textDecoration: "underline",
+                  textAlign: "left",
+                  padding: 0,
+                }}
+              >
+                More Info Here
+              </Button>
+            </>
+          )}
+        </DialogContent>
+        <DialogActions sx={{ justifyContent: "center", marginBottom: 2 }}>
+          <Button onClick={closeDetailDialog} color="primary">
+            Back to Events
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
