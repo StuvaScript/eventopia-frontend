@@ -10,12 +10,12 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import CustomLocationPicker from "./Shared/LocationPicker";
 import CustomDatePicker from "./Shared/DatePicker";
 import Link from "@mui/material/Link";
 import { getData } from "../util";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 
 const NavBar = ({ title }) => {
@@ -23,12 +23,20 @@ const NavBar = ({ title }) => {
   const [dateRange, setDateRange] = useState([]);
   const [error, setError] = useState({ city: false, state: false });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [keyword, setKeyword] = useState("")
+  const [token, setToken] = useState("");
+  const [keyword, setKeyword] = useState("");
+  const loc = useLocation();
+  const data = loc.state;
 
-  const handleLogin = () => {
-    // Perform your login logic here
-    setIsLoggedIn(true);
-  };
+  useEffect(() => {
+    //Set the logged in status
+    if (data) {
+      setIsLoggedIn(data.isLoggedIn);
+      setToken(data.token);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [data]);
 
   const handleLocationChange = (city, state) => {
     setLocation({ city, state });
@@ -82,7 +90,10 @@ const NavBar = ({ title }) => {
       const inputData = {
         city: location.city,
         state: location.state,
+        token: data.token,
+        name: data.name,
         events: response,
+        isLoggedIn: isLoggedIn,
       };
       navigate("/eventresult", { state: inputData });
     } catch (error) {
@@ -99,6 +110,15 @@ const NavBar = ({ title }) => {
     }
   };
 
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    data.isLoggedIn = null;
+    navigate("/home", { state: [] });
+  };
+
+  const handleMyPlanner = () => {
+    navigate("/myplanner", { state: data });
+  };
   return (
     <AppBar position="fixed" color="primary" sx={{ padding: 0, top: 0 }}>
       <Toolbar
@@ -218,7 +238,6 @@ const NavBar = ({ title }) => {
             <SearchIcon sx={{ color: "primary.contrastText" }} />
           </IconButton>
         </Box>
-
         {!isLoggedIn && (
           <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
             <Typography
@@ -264,7 +283,44 @@ const NavBar = ({ title }) => {
                 paddingLeft: "1rem",
               }}
             >
-              My Planner
+              <Button
+                onClick={handleMyPlanner}
+                variant="body2"
+                sx={{
+                  color: "white",
+                  "&.MuiButton-root": {
+                    textTransform: "none",
+                    fontSize: "1.2rem",
+                  },
+                }}
+              >
+                My Planner
+              </Button>
+            </Typography>
+            <Typography
+              variant="body1"
+              sx={{
+                color: "text.primary",
+                mx: 3,
+                fontSize: ".5rem",
+                cursor: "pointer",
+                borderLeft: "1px solid white",
+                paddingLeft: "1rem",
+              }}
+            >
+              <Button
+                onClick={handleLogout}
+                variant="body2"
+                sx={{
+                  color: "white",
+                  "&.MuiButton-root": {
+                    textTransform: "none",
+                    fontSize: "1.2rem",
+                  },
+                }}
+              >
+                Logout
+              </Button>
             </Typography>
           </Box>
         )}
