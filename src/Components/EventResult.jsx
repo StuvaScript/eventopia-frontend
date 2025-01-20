@@ -4,7 +4,6 @@ import {
   Grid,
   Card,
   CardMedia,
-  CardContent,
   Typography,
   IconButton,
 } from "@mui/material";
@@ -59,23 +58,10 @@ const EventResult = () => {
     const start = range.start;
     const end = range.end;
     if (allEvents) {
-      // const sortedEvents = allEvents
-      //   .filter((event) => {
-      //     const eventDate = new Date(event.dates.startDate);
-      //     if (eventDate >= start && eventDate <= end) {
-      //       return true;
-      //     } else {
-      //       false;
-      //     }
-      //   })
-      //   .sort((a, b) =>
-      //     new Date(a.dates.startDate) > new Date(b.dates.startDate) ? 1 : -1
-      //   );
       const filterEvents = allEvents.filter((event) => {
         const eventDate = new Date(
           event.dates.startDate + "T" + event.dates.startTime + "Z"
         );
-        //const eventDate = new Date(event.dates.startDate);
         if (eventDate >= start && eventDate <= end) {
           return true;
         } else {

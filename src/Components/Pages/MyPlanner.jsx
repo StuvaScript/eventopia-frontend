@@ -44,7 +44,7 @@ const MyPlanner = () => {
   }
 
   const { name, id, token } = state;
-  const firstName = name.split(" ")[0];
+  const firstName = name ? name.split(" ")[0] : "";
 
   if (!token) {
     console.error("Token is missing");
