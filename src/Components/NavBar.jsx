@@ -10,6 +10,7 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import CustomLocationPicker from "./Shared/LocationPicker";
 import CustomDatePicker from "./Shared/DatePicker";
 import Link from "@mui/material/Link";
@@ -22,6 +23,7 @@ const NavBar = ({ title }) => {
   const [dateRange, setDateRange] = useState([]);
   const [error, setError] = useState({ city: false, state: false });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [keyword, setKeyword] = useState("")
 
   const handleLogin = () => {
     // Perform your login logic here
@@ -36,6 +38,11 @@ const NavBar = ({ title }) => {
     setDateRange(newDateRange);
   };
 
+  const handleKeywordChange = (event) => {
+    const keyword = event.target.value;
+    setKeyword(keyword);
+  };
+
   const navigate = useNavigate();
 
   const handleSearch = async () => {
@@ -47,6 +54,7 @@ const NavBar = ({ title }) => {
       params: {
         dateRangeStart: dateRange[0],
         dateRangeEnd: dateRange[1],
+        keyword: keyword,
       },
     };
 
@@ -123,66 +131,92 @@ const NavBar = ({ title }) => {
             />
           </IconButton>
 
-          {/* Middle Icons and Location Picker */}
+        {/* Middle Icons and Location Picker */}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-around",
+            backgroundColor: "background.paper",
+            borderRadius: "50px",
+            px: 2,
+            py: 0.6,
+            flexGrow: 1,
+            margin: "5px",
+            maxWidth: "65%",
+          }}
+        >
+          {/* Location Picker */}
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
               justifyContent: "space-around",
-              backgroundColor: "background.paper",
-              borderRadius: "50px",
-              px: 2,
-              py: 0.6,
-              flexGrow: 1,
-              margin: "5px",
-              maxWidth: "55%",
+              width: "100%",
             }}
           >
-            {/* Location Picker */}
-            <Box
+            <LocationOnIcon
+              sx={{ color: "primary.main", mr: 1, width: "7%" }}
+            />
+            <CustomLocationPicker
+              onLocationChange={handleLocationChange}
+              error={error}
+              InputProps={{ disableUnderline: true }}
               sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-around",
-                width: "100%",
-              }}
-            >
-              <LocationOnIcon
-                sx={{ color: "primary.main", mr: 1, width: "7%" }}
-              />
-              <CustomLocationPicker
-                onLocationChange={handleLocationChange}
-                error={error}
-                InputProps={{ disableUnderline: true }}
-                sx={{
-                  flexGrow: 1,
-                  backgroundColor: "background.default",
-                  borderRadius: "5px",
-                  padding: "5px 10px",
-                }}
-              />
-            </Box>
-            <Box
-              sx={{
-                width: "1px",
-                backgroundColor: "primary.main",
-                height: "24px",
-                mx: 1,
+                flexGrow: 1,
+                backgroundColor: "background.default",
+                borderRadius: "5px",
+                padding: "5px 10px",
               }}
             />
-            <CustomDatePicker
-              startDate={dateRange[0]}
-              endDate={dateRange[1]}
-              onDateRangeChange={handleDateRangeChange}
-            />
-            {/* Search Icon */}
-            <IconButton
-              onClick={handleSearch}
-              sx={{ color: "primary.main", mx: 0.5 }}
-            >
-              <SearchIcon />
-            </IconButton>
           </Box>
+          <Box
+            sx={{
+              width: "1px",
+              backgroundColor: "primary.main",
+              height: "24px",
+              mx: 1,
+            }}
+          />
+          <CustomDatePicker
+            startDate={dateRange[0]}
+            endDate={dateRange[1]}
+            onDateRangeChange={handleDateRangeChange}
+          />
+          <Box
+            sx={{
+              width: "1px",
+              backgroundColor: "primary.main",
+              height: "24px",
+              mx: 1,
+            }}
+          />
+          <TextField
+            label={
+              <span style={{ display: "flex", alignItems: "center" }}>
+                <SearchOutlinedIcon sx={{ size: "small" }} />
+                Keyword
+              </span>
+            }
+            variant="outlined"
+            value={keyword}
+            onChange={handleKeywordChange}
+            InputProps={{ sx: { fontSize: "0.9rem" } }}
+            InputLabelProps={{ sx: { fontSize: "0.9rem" } }}
+            sx={{ width: "45%" }}
+          />
+          {/* Search Icon */}
+          <IconButton
+            onClick={handleSearch}
+            sx={{
+              color: "primary.main",
+              mx: 0.5,
+              backgroundColor: "primary.main",
+              marginLeft: "8px",
+            }}
+          >
+            <SearchIcon sx={{ color: "primary.contrastText" }} />
+          </IconButton>
         </Box>
 
         {!isLoggedIn && (
@@ -196,11 +230,10 @@ const NavBar = ({ title }) => {
                 cursor: "pointer",
                 paddingLeft: "1rem",
               }}
-            >
-              <Link href="/login" variant="body2" style={{ color: "white" }}>
-                Login
-              </Link>
-            </Typography>
+            ></Typography>
+            <Link href="/login" variant="body2" style={{ color: "white" }}>
+              Login
+            </Link>
             <Button
               variant="contained"
               sx={{
@@ -220,7 +253,20 @@ const NavBar = ({ title }) => {
           </Box>
         )}
         {isLoggedIn && (
-          <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}></Box>
+          <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
+            <Typography
+              variant="body1"
+              sx={{
+                color: "text.primary",
+                mx: 2,
+                fontSize: "1rem",
+                cursor: "pointer",
+                paddingLeft: "1rem",
+              }}
+            >
+              My Planner
+            </Typography>
+          </Box>
         )}
       </Toolbar>
     </AppBar>

@@ -210,7 +210,7 @@ function SignUp() {
         name: data.user.name,
         token: data.token,
       };
-      navigate("/userhome", { state: inputData });
+      navigate("/myplanner", { state: inputData });
     } else {
       navigate("/home");
     }

@@ -1,28 +1,110 @@
-# Front-End Repo for Node/React Practicum
+<div align="center">
+<h1>Eventopia</h1>
+<h3>Connecting you with your passion</h3>
+<img src="./images/eventopia.png" width="75%"/>
+<br>
+<br>
+</div>
 
-This will be the front-end for your team's practicum project.
+Planning a trip and need to keep track of all your vacation activities? Or maybe you just like to be in the know with local entertainment. With Eventopia you can search and keep all your fun events in one place!
 
-It is suggested that you run these instructions **after** you setup the back-end server first.
-You can go through these steps during your first group meeting in case you need assistance from your mentors.
+## 🗺️ Navigate To:
 
-You will have two folders inside one team folder (one for front-end and one for back-end). Name the parent folder something appropriate (in the below example we title it "Practicum Project").  Then clone directly (do not fork and clone) the front and back repos while inside the parent ("Practicum Project") project folder.
+- [<code>📦 Getting Started</code>](#-getting-started)
+- [<code>🚀 Deployment</code>](#-deployment)
+- [<code>🔧 Built With</code>](#-built-with)
+- [<code>📜 Authors</code>](#-authors)
+- [<code>📝 License</code>](#-license)
+- [<code>🥂 Acknowledgments</code>](#-acknowledgments)
 
-![folders](images/folder_structure.png)
+## 📦 Getting Started
 
->The front-end app (React) will be running on port 3000. The back-end server will be running on port 8000. You will need to run both the front-end app and the back-end server at the same time to test your app.
+$$\textsf{\color{#3271D6}Start \color{#F59E0B}App}$$
 
-### Setting up local development environment
+### Backend
 
-1. Clone this repository to the folder that was already created for both the front-end and back-end repos
-2. Run `npm install` to install dependencies
-3. Pull the latest version of the `main` branch (when needed)
-4. Run `npm start` to start the development server
-5. Open http://localhost:3000 with your browser to see the data received the back-end server.
-6. Now you have your front-end and back-end running locally!
+To deploy this app locally, find our [backend codebase here](https://github.com/Code-the-Dream-School/hh-team1-back).
 
-#### Running the front-end server in Visual Studio Code
-Note: In the below example, the group's front-end repository was named `bb-practicum-team1-front` and the back-end repository was named `bb-practicum-team-1-back`.  Your repository will have a different name, but the rest should look the same.
-![vsc running](images/front-end-running-vsc.png)
+### Prerequisites
 
-#### Running the front-end server in the browser
-![browser running](images/front-end-running-browser.png)
+You will need a few environment variables to get this running. Create a `.env` file in both the backend folder and the frontend folder.
+
+Here are the required environment variables:
+
+#### Backend:
+
+```
+TICKETMASTER_API_KEY=YOUR_KEY
+MONGO_URI=YOUR_KEY
+JWT_LIFETIME=YOUR_KEY
+JWT_SECRET=YOUR_KEY
+PORT=YOUR_KEY
+SMTP_HOST=YOUR_KEY
+SMTP_PORT=YOUR_KEY
+SENDER_EMAIL=YOUR_KEY
+SENDER_EMAIL_PASSWORD=YOUR_KEY
+JWT_SECRET_CSRF=YOUR_KEY
+```
+
+#### Frontend:
+
+```
+VITE_API_BASE_URL=YOUR_KEY
+```
+
+### Installing
+
+In both the backend and the frontend folders you will need to run `npm i` to install the dependencies.
+
+## 🚀 Deployment
+
+$$\textsf{\color{#3271D6}Deploy \color{#F59E0B}Fast}$$
+
+To deploy this app live, you will need to:
+
+1. Deploy your backend folder.
+2. Change the frontend `VITE_API_BASE_URL` key's value to the live backend URL.
+3. Deploy your frontend folder.
+
+## 🔧 Built With
+
+$$\textsf{\color{#3271D6}The \color{#F59E0B}Tools}$$
+
+- [React](https://www.react.dev/) - Frontend Javascript library
+- [Vite](https://www.vite.dev/) - Frontend build tool
+- [MongoDB](https://www.mongodb.com/) - Backend database
+- [Express](https://www.express.js.com/) - Backend framework for Node.js
+
+## 📜 Authors
+
+$$\textsf{\color{#3271D6}Our \color{#F59E0B}Team}$$
+
+### Frontend
+
+- **Uma Sekar** - _frontend developer_ - [Uma's Github](https://github.com/umavenki)
+- **Nihal Erdal** - _frontend developer_ - [Nihal's Github](https://github.com/nihalerdal)
+- **Stu MacLeod** - _frontend developer_ - [Stu's Github](https://github.com/StuvaScript)
+- **Maria Domarkas** - _frontend developer_ - [Maria's Github](https://github.com/tobemari)
+
+### Backend
+
+- **Amanda Hockmuth** - _backend developer_ - [Amanda's Github](https://github.com/AmandaHockmuth)
+- **Sisi Wang** - _backend developer_ - [Sisi's Github](https://github.com/Sisi-tech)
+
+## 📝 License
+
+$$\textsf{\color{#3271D6}Legal \color{#F59E0B}Stuff}$$
+
+This project is licensed under the MIT License - see [MIT License](https://choosealicense.com/licenses/mit/) for details
+
+## 🥂 Acknowledgments
+
+$$\textsf{\color{#3271D6}Thank \color{#F59E0B}You}$$
+
+- Our amazing mentors who helped guide us along the way!
+
+  - **Josh Goldenburg** - _mentor_ - [Josh's Github](https://github.com/jgoldenberg29)
+  - **Katherine Lashcheuskaya** - _mentor_ - [Katherine's Github](https://github.com/katsiarynalashcheuskaya)
+  - **Rebeca Vassoler Gallo** - _mentor_ - [Rebeca's Github](https://github.com/rebs1203)
+
+- **Code The Dream** for creating this learning environment! - [CTD's Website](https://codethedream.org/about/?gad_source=1&gclid=Cj0KCQiAkJO8BhCGARIsAMkswyhD-TGXrjzFbUD-t93qmowxUl8S1cjXjHtNmaY3OG2AGoiSjUAI9EAaAky0EALw_wcB)
