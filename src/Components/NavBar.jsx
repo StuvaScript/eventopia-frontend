@@ -93,7 +93,7 @@ const NavBar = ({ title }) => {
         city: location.city,
         state: location.state,
         token: data?.token,
-        name: name?.name,
+        name: data?.name,
         events: response,
         isLoggedIn: isLoggedIn,
       };
