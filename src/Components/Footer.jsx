@@ -21,14 +21,16 @@ const Footer = () => {
         width: "100%",
       }}
     >
-      <Typography variant="body2">© 2024 App Name</Typography>
+      <Typography variant="body4">
+        © {new Date().getFullYear()} Eventopia
+      </Typography>
       <Box
         sx={{
           display: "flex",
           alignItems: "center", // Aligns "Follow Us" and icons vertically
         }}
       >
-        <Typography variant="body2" sx={{ marginRight: 1 }}>
+        <Typography variant="body4" sx={{ marginRight: 1 }}>
           Follow Us
         </Typography>
         <a

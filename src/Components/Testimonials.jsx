@@ -12,7 +12,7 @@ import { useTheme } from "@mui/system";
 const userTestimonials = [
   {
     avatar: <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />,
-    name: "Nihal",
+    name: "Nihal Erdal",
     occupation: "Senior Engineer, Event Enthusiast",
     testimonial: "This app has made finding and saving events so easy!",
   },
@@ -80,14 +80,14 @@ export default function Testimonials() {
       >
         <Typography
           component="h2"
-          variant="h4"
+          variant="h5"
           gutterBottom
           sx={{ color: "text.primary" }}
         >
           Testimonials
         </Typography>
-        <Typography variant="body1" sx={{ color: "text.secondary" }}>
-          See what our people love about the events
+        <Typography variant="body2" sx={{ color: "text.secondary" }}>
+          See what our people love about our app
         </Typography>
       </Box>
       <Grid container spacing={2}>
