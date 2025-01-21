@@ -108,7 +108,7 @@ const NavBar = ({ title }) => {
       case "/":
         return "Home";
       default:
-        return "App Name"; //What is our app's name
+        return "Eventopia";
     }
   };
 
@@ -133,111 +133,121 @@ const NavBar = ({ title }) => {
           padding: "0 16px",
         }}
       >
-        <Typography variant="h6">{title || getTitle()}</Typography>
-        <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }} />
-        <IconButton
-          sx={{
-            backgroundColor: "background.paper",
-            p: 1,
-            borderRadius: "50%",
-            mx: 2,
-          }}
-        >
-          <MusicNoteIcon
-            sx={{ color: "primary.contrastText", fontSize: "1.5rem" }}
-          />
-        </IconButton>
-
-        {/* Middle Icons and Location Picker */}
         <Box
           sx={{
             display: "flex",
             alignItems: "center",
-            justifyContent: "space-around",
-            backgroundColor: "background.paper",
-            borderRadius: "32px",
-            px: 2,
-            py: 0.6,
+            gap: 2,
             flexGrow: 1,
-            margin: "5px",
-            maxWidth: "65%",
           }}
         >
-          {/* Location Picker */}
+          <Box sx={{ marginRight: "2%", display: "flex" }}>
+            <Typography variant="h4">{title || getTitle()}</Typography>
+            <IconButton
+              sx={{
+                backgroundColor: "background.paper",
+                p: 1,
+                borderRadius: "50%",
+                mx: 2,
+              }}
+            >
+              <MusicNoteIcon
+                sx={{ color: "primary.contrastText", fontSize: "1.5rem" }}
+              />
+            </IconButton>
+          </Box>
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
               justifyContent: "space-around",
-              width: "100%",
+              backgroundColor: "background.paper",
+              borderRadius: "50px",
+              px: 2,
+              py: 0.6,
+              flexGrow: 1,
+              margin: "5px",
+              maxWidth: "70%",
             }}
           >
-            <LocationOnIcon
-              sx={{ color: "primary.main", mr: 1, width: "7%" }}
-            />
-            <CustomLocationPicker
-              onLocationChange={handleLocationChange}
-              error={error}
-              InputProps={{ disableUnderline: true }}
+            {/* Location Picker */}
+            <Box
               sx={{
-                flexGrow: 1,
-                backgroundColor: "background.default",
-                borderRadius: "5px",
-                padding: "5px 10px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-around",
+                width: "100%",
+              }}
+            >
+              <LocationOnIcon
+                sx={{ color: "primary.main", mr: 1, width: "7%" }}
+              />
+              <CustomLocationPicker
+                onLocationChange={handleLocationChange}
+                error={error}
+                InputProps={{ disableUnderline: true }}
+                sx={{
+                  flexGrow: 1,
+                  backgroundColor: "background.default",
+                  borderRadius: "5px",
+                  padding: "5px 10px",
+                }}
+              />
+            </Box>
+            <Box
+              sx={{
+                width: "1px",
+                backgroundColor: "primary.main",
+                height: "24px",
+                mx: 1,
               }}
             />
+            <CustomDatePicker
+              startDate={dateRange[0]}
+              endDate={dateRange[1]}
+              onDateRangeChange={handleDateRangeChange}
+            />
+            <Box
+              sx={{
+                width: "1px",
+                backgroundColor: "primary.main",
+                height: "24px",
+                mx: 1,
+              }}
+            />
+            <TextField
+              label={
+                <span style={{ display: "flex", alignItems: "center" }}>
+                  <SearchOutlinedIcon sx={{ size: "small" }} />
+                  Keyword
+                </span>
+              }
+              variant="outlined"
+              value={keyword}
+              onChange={handleKeywordChange}
+              InputProps={{ sx: { fontSize: "0.9rem" } }}
+              InputLabelProps={{ sx: { fontSize: "0.9rem" } }}
+              sx={{ width: "45%" }}
+            />
+            {/* Search Icon */}
+            <IconButton
+              onClick={handleSearch}
+              sx={{
+                color: "primary.main",
+                mx: 0.5,
+                backgroundColor: "primary.main",
+                marginLeft: "8px",
+              }}
+            >
+              <SearchIcon sx={{ color: "primary.contrastText" }} />
+            </IconButton>
           </Box>
-          <Box
-            sx={{
-              width: "1px",
-              backgroundColor: "primary.main",
-              height: "24px",
-              mx: 1,
-            }}
-          />
-          <CustomDatePicker
-            startDate={dateRange[0]}
-            endDate={dateRange[1]}
-            onDateRangeChange={handleDateRangeChange}
-          />
-          <Box
-            sx={{
-              width: "1px",
-              backgroundColor: "primary.main",
-              height: "24px",
-              mx: 1,
-            }}
-          />
-          <TextField
-            label={
-              <span style={{ display: "flex", alignItems: "center" }}>
-                <SearchOutlinedIcon sx={{ size: "small" }} />
-                Keyword
-              </span>
-            }
-            variant="outlined"
-            value={keyword}
-            onChange={handleKeywordChange}
-            InputProps={{ sx: { fontSize: "0.9rem" } }}
-            InputLabelProps={{ sx: { fontSize: "0.9rem" } }}
-            sx={{ width: "45%" }}
-          />
-          {/* Search Icon */}
-          <IconButton
-            onClick={handleSearch}
-            sx={{
-              color: "primary.main",
-              mx: 0.5,
-              backgroundColor: "primary.main",
-              marginLeft: "8px",
-            }}
-          >
-            <SearchIcon sx={{ color: "primary.contrastText" }} />
-          </IconButton>
         </Box>
+        {/* Middle Icons and Location Picker */}
+
         {!isLoggedIn && (
           <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
-            <Typography
+            {/* <Typography
               variant="body1"
               sx={{
                 color: "text.primary",
@@ -246,20 +256,25 @@ const NavBar = ({ title }) => {
                 cursor: "pointer",
                 paddingLeft: "1rem",
               }}
-            ></Typography>
+            ></Typography> */}
             <Link href="/login" variant="body2" style={{ color: "white" }}>
               Login
             </Link>
             <Button
               variant="contained"
               sx={{
+                whiteSpace: "nowrap",
                 backgroundColor: "background.paper",
                 color: "text.primary",
                 textTransform: "none",
                 ml: 2,
-                px: 3,
+                px: 4,
+                // py: 1.5,
                 borderRadius: "25px",
                 "&:hover": { backgroundColor: "#323232" },
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
               <Link href="/signup" variant="body2" style={{ color: "white" }}>
@@ -273,11 +288,12 @@ const NavBar = ({ title }) => {
             <Typography
               variant="body1"
               sx={{
+                whiteSpace: "nowrap",
                 color: "text.primary",
                 mx: 2,
                 fontSize: "1rem",
                 cursor: "pointer",
-                paddingLeft: "1rem",
+                // paddingLeft: "1rem",
               }}
             >
               <Button
@@ -298,7 +314,7 @@ const NavBar = ({ title }) => {
               variant="body1"
               sx={{
                 color: "text.primary",
-                mx: 3,
+                // mx: 3,
                 fontSize: ".5rem",
                 cursor: "pointer",
                 borderLeft: "1px solid white",
