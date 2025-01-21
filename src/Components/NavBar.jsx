@@ -92,8 +92,8 @@ const NavBar = ({ title }) => {
       const inputData = {
         city: location.city,
         state: location.state,
-        token: token,
-        name: name,
+        token: data?.token,
+        name: name?.name,
         events: response,
         isLoggedIn: isLoggedIn,
       };
