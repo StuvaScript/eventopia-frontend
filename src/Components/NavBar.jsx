@@ -90,8 +90,8 @@ const NavBar = ({ title }) => {
       const inputData = {
         city: location.city,
         state: location.state,
-        token: data.token,
-        name: data.name,
+        token: data?.token,
+        name: data?.name,
         events: response,
         isLoggedIn: isLoggedIn,
       };
@@ -137,19 +137,21 @@ const NavBar = ({ title }) => {
             flexGrow: 1,
           }}
         >
-          <Typography variant="h4">{title || getTitle()}</Typography>
-          <IconButton
-            sx={{
-              backgroundColor: "background.paper",
-              p: 1,
-              borderRadius: "50%",
-              mx: 2,
-            }}
-          >
-            <MusicNoteIcon
-              sx={{ color: "primary.contrastText", fontSize: "1.5rem" }}
-            />
-          </IconButton>
+          <Box sx={{ marginRight: "2%", display: "flex" }}>
+            <Typography variant="h4">{title || getTitle()}</Typography>
+            <IconButton
+              sx={{
+                backgroundColor: "background.paper",
+                p: 1,
+                borderRadius: "50%",
+                mx: 2,
+              }}
+            >
+              <MusicNoteIcon
+                sx={{ color: "primary.contrastText", fontSize: "1.5rem" }}
+              />
+            </IconButton>
+          </Box>
           <Box
             sx={{
               display: "flex",
@@ -161,7 +163,7 @@ const NavBar = ({ title }) => {
               py: 0.6,
               flexGrow: 1,
               margin: "5px",
-              maxWidth: "65%",
+              maxWidth: "70%",
             }}
           >
             {/* Location Picker */}
@@ -241,7 +243,7 @@ const NavBar = ({ title }) => {
 
         {!isLoggedIn && (
           <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
-            <Typography
+            {/* <Typography
               variant="body1"
               sx={{
                 color: "text.primary",
@@ -250,20 +252,25 @@ const NavBar = ({ title }) => {
                 cursor: "pointer",
                 paddingLeft: "1rem",
               }}
-            ></Typography>
+            ></Typography> */}
             <Link href="/login" variant="body2" style={{ color: "white" }}>
               Login
             </Link>
             <Button
               variant="contained"
               sx={{
+                whiteSpace: "nowrap",
                 backgroundColor: "background.paper",
                 color: "text.primary",
                 textTransform: "none",
                 ml: 2,
-                px: 3,
+                px: 4,
+                // py: 1.5,
                 borderRadius: "25px",
                 "&:hover": { backgroundColor: "#323232" },
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
               <Link href="/signup" variant="body2" style={{ color: "white" }}>
@@ -277,11 +284,12 @@ const NavBar = ({ title }) => {
             <Typography
               variant="body1"
               sx={{
+                whiteSpace: "nowrap",
                 color: "text.primary",
                 mx: 2,
                 fontSize: "1rem",
                 cursor: "pointer",
-                paddingLeft: "1rem",
+                // paddingLeft: "1rem",
               }}
             >
               <Button
@@ -302,7 +310,7 @@ const NavBar = ({ title }) => {
               variant="body1"
               sx={{
                 color: "text.primary",
-                mx: 3,
+                // mx: 3,
                 fontSize: ".5rem",
                 cursor: "pointer",
                 borderLeft: "1px solid white",
