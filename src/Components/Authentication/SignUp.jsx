@@ -209,8 +209,8 @@ function SignUp() {
         name: data.user.name,
         token: data.token,
         isLoggedIn: true,
-        city: data.user.city,
-        state: data.user.state,
+        city: cityInput,
+        state: selectedState,
       };
       navigate("/myplanner", { state: inputData });
     } else {
