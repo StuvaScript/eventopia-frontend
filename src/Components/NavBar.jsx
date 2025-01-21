@@ -24,6 +24,7 @@ const NavBar = ({ title }) => {
   const [error, setError] = useState({ city: false, state: false });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [token, setToken] = useState("");
+  const [name, setName] = useState("");
   const [keyword, setKeyword] = useState("");
   const loc = useLocation();
   const data = loc.state;
@@ -33,6 +34,7 @@ const NavBar = ({ title }) => {
     if (data) {
       setIsLoggedIn(data.isLoggedIn);
       setToken(data.token);
+      setName(data.name);
     } else {
       setIsLoggedIn(false);
     }
@@ -90,8 +92,8 @@ const NavBar = ({ title }) => {
       const inputData = {
         city: location.city,
         state: location.state,
-        token: data.token,
-        name: data.name,
+        token: token,
+        name: name,
         events: response,
         isLoggedIn: isLoggedIn,
       };
@@ -113,6 +115,8 @@ const NavBar = ({ title }) => {
   const handleLogout = () => {
     setIsLoggedIn(false);
     data.isLoggedIn = null;
+    data.city = null;
+    data.state = null;
     navigate("/home", { state: [] });
   };
 

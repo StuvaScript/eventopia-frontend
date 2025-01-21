@@ -48,6 +48,8 @@ function Login() {
         name: data.user.name,
         token: data.token,
         isLoggedIn: true,
+        city: data.user.city,
+        state: data.user.state,
       };
       navigate("/myplanner", { state: inputData });
     } else {
