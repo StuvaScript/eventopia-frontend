@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import states from "../../util/states";
 import {
   TextField,
@@ -10,10 +10,24 @@ import {
   OutlinedInput,
   createTheme,
 } from "@mui/material";
+import { useLocation } from "react-router-dom";
 
 const CustomLocationPicker = ({ onLocationChange, error }) => {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
+  const loc = useLocation();
+  const data = loc.state;
+
+  useEffect(() => {
+    // Set the value of city and state
+    if (data) {
+      setCity(data.city ?? "");
+      setState(data.state ?? "");
+      onLocationChange(data.city ?? "", data.state ?? "");
+    } else {
+      onLocationChange("", "");
+    }
+  }, [data]);
 
   const handleCityChange = (event) => {
     const selectedCity = event.target.value;
@@ -47,7 +61,15 @@ const CustomLocationPicker = ({ onLocationChange, error }) => {
         }}
       />
       <FormControl fullWidth>
-        <InputLabel sx={{ fontSize: "0.9rem", color: error.state ? "error.main" : "text.paper"}} required>State</InputLabel>
+        <InputLabel
+          sx={{
+            fontSize: "0.9rem",
+            color: error.state ? "error.main" : "text.paper",
+          }}
+          required
+        >
+          State
+        </InputLabel>
         <Select
           required
           value={state}
@@ -58,7 +80,7 @@ const CustomLocationPicker = ({ onLocationChange, error }) => {
             PaperProps: {
               sx: {
                 maxHeight: "220px",
-                scrollbarWidth: "none", 
+                scrollbarWidth: "none",
               },
             },
           }}

@@ -58,6 +58,7 @@ function Forgot() {
     setFormValid(null);
     const inputData = {
       email: emailInput,
+      url: "http://localhost:5173/resetpassword/",
     };
     resetPassword(inputData);
   };
@@ -177,7 +178,6 @@ function Forgot() {
                   borderRadius: "1rem !important",
                   "&:-webkit-autofill": {
                     color: "#000000",
-                    //fontSize: "18px",
                     backgroundColor: "white !important",
                     borderRadius: "1rem !important",
                     WebkitBoxShadow: "0 0 0 100px white inset",

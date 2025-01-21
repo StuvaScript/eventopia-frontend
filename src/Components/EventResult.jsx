@@ -200,9 +200,9 @@ const EventResult = () => {
                   </Box>
 
                   <Box>
-                    {/* <IconButton aria-label="add to favorites" color="inherit">
+                    <IconButton aria-label="add to favorites" color="inherit">
                       <FavoriteBorderIcon />
-                    </IconButton> */}
+                    </IconButton>
                     <IconButton aria-label="bookmark" color="inherit">
                       <BookmarkBorderIcon />
                     </IconButton>
@@ -243,18 +243,10 @@ const EventResult = () => {
               <Typography variant="body1" sx={{ marginBottom: 2 }}>
                 {selectedEvent.info}
               </Typography>
-              <Typography
-                variant="body2"
-                color="textSecondary"
-                // sx={{ marginBottom: 1 }}
-              >
+              <Typography variant="body2" color="textSecondary">
                 <strong>Date:</strong> {selectedEvent.dates.startDate}
               </Typography>
-              <Typography
-                variant="body2"
-                color="textSecondary"
-                // sx={{ marginBottom: 1 }}
-              >
+              <Typography variant="body2" color="textSecondary">
                 <strong>Time:</strong> {selectedEvent.dates.startTime}
               </Typography>
               <Typography color="textSecondary" sx={{ marginBottom: 2 }}>
