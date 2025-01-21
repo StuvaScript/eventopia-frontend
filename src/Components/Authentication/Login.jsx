@@ -108,7 +108,7 @@ function Login() {
       console.log(myData);
       return true;
     } catch (error) {
-      setFormValid("Invalid email or password, login failed");
+      setFormValid(error.message ?? "Invalid email or password, login failed");
       return false;
     }
   }
@@ -225,7 +225,6 @@ function Login() {
                   borderRadius: "1rem !important",
                   "&:-webkit-autofill": {
                     color: "#000000",
-                    //fontSize: "18px",
                     backgroundColor: "white !important",
                     borderRadius: "1rem !important",
                     WebkitBoxShadow: "0 0 0 100px white inset",
@@ -236,24 +235,6 @@ function Login() {
                   fontWeight: "100",
                   lineHeight: "1em",
                 },
-                //border: "white",
-                // backgroundColor: "white",
-                //borderRadius: "1rem",
-                //"& .MuiInputBase-input": {
-                // color: (theme) => theme.palette.text.tertiary,
-                //fontSize: (theme) => theme.typography.body2.fontSize,
-                //},
-                /*"& .MuiInputBase-root": {
-                  "&:before": {
-                    borderBottom: "none",
-                  },
-                  "&:hover:before": {
-                    borderBottom: "none",
-                  },
-                  "&:after": {
-                    borderBottom: "none",
-                  },
-                },*/
               }}
               id="email"
               error={emailError}

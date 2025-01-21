@@ -6,7 +6,6 @@ import Footer from "../Footer";
 const EventResultPage = () => {
   return (
     <div>
-      {/* <NavBar /> */}
       <EventResult />
       <Footer />
     </div>

@@ -17,7 +17,6 @@ import {
   Select,
   MenuItem,
   SvgIcon,
-  OutlinedInput,
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import CloseIcon from "@mui/icons-material/Close";
