@@ -47,8 +47,9 @@ function Login() {
         id: data.user.id,
         name: data.user.name,
         token: data.token,
+        isLoggedIn: true,
       };
-      navigate("/userhome", { state: inputData });
+      navigate("/myplanner", { state: inputData });
     } else {
       navigate("/home");
     }

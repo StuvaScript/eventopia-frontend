@@ -5,15 +5,17 @@ import {
   IconButton,
   Typography,
   Button,
+  TextField,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import CustomLocationPicker from "./Shared/LocationPicker";
 import CustomDatePicker from "./Shared/DatePicker";
 import Link from "@mui/material/Link";
 import { getData } from "../util";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 
 const NavBar = ({ title }) => {
@@ -21,11 +23,20 @@ const NavBar = ({ title }) => {
   const [dateRange, setDateRange] = useState([]);
   const [error, setError] = useState({ city: false, state: false });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [token, setToken] = useState("");
+  const [keyword, setKeyword] = useState("");
+  const loc = useLocation();
+  const data = loc.state;
 
-  const handleLogin = () => {
-    // Perform your login logic here
-    setIsLoggedIn(true);
-  };
+  useEffect(() => {
+    //Set the logged in status
+    if (data) {
+      setIsLoggedIn(data.isLoggedIn);
+      setToken(data.token);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [data]);
 
   const handleLocationChange = (city, state) => {
     setLocation({ city, state });
@@ -33,6 +44,11 @@ const NavBar = ({ title }) => {
 
   const handleDateRangeChange = (newDateRange) => {
     setDateRange(newDateRange);
+  };
+
+  const handleKeywordChange = (event) => {
+    const keyword = event.target.value;
+    setKeyword(keyword);
   };
 
   const navigate = useNavigate();
@@ -46,6 +62,7 @@ const NavBar = ({ title }) => {
       params: {
         dateRangeStart: dateRange[0],
         dateRangeEnd: dateRange[1],
+        keyword: keyword,
       },
     };
 
@@ -73,7 +90,10 @@ const NavBar = ({ title }) => {
       const inputData = {
         city: location.city,
         state: location.state,
+        token: data.token,
+        name: data.name,
         events: response,
+        isLoggedIn: isLoggedIn,
       };
       navigate("/eventresult", { state: inputData });
     } catch (error) {
@@ -90,6 +110,15 @@ const NavBar = ({ title }) => {
     }
   };
 
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    data.isLoggedIn = null;
+    navigate("/home", { state: [] });
+  };
+
+  const handleMyPlanner = () => {
+    navigate("/myplanner", { state: data });
+  };
   return (
     <AppBar position="fixed" color="primary" sx={{ padding: 0, top: 0 }}>
       <Toolbar
@@ -127,7 +156,7 @@ const NavBar = ({ title }) => {
             py: 0.6,
             flexGrow: 1,
             margin: "5px",
-            maxWidth: "55%",
+            maxWidth: "65%",
           }}
         >
           {/* Location Picker */}
@@ -167,61 +196,41 @@ const NavBar = ({ title }) => {
             endDate={dateRange[1]}
             onDateRangeChange={handleDateRangeChange}
           />
+          <Box
+            sx={{
+              width: "1px",
+              backgroundColor: "primary.main",
+              height: "24px",
+              mx: 1,
+            }}
+          />
+          <TextField
+            label={
+              <span style={{ display: "flex", alignItems: "center" }}>
+                <SearchOutlinedIcon sx={{ size: "small" }} />
+                Keyword
+              </span>
+            }
+            variant="outlined"
+            value={keyword}
+            onChange={handleKeywordChange}
+            InputProps={{ sx: { fontSize: "0.9rem" } }}
+            InputLabelProps={{ sx: { fontSize: "0.9rem" } }}
+            sx={{ width: "45%" }}
+          />
           {/* Search Icon */}
           <IconButton
             onClick={handleSearch}
-            sx={{ color: "primary.main", mx: 0.5 }}
+            sx={{
+              color: "primary.main",
+              mx: 0.5,
+              backgroundColor: "primary.main",
+              marginLeft: "8px",
+            }}
           >
-            <SearchIcon />
+            <SearchIcon sx={{ color: "primary.contrastText" }} />
           </IconButton>
         </Box>
-
-        {/* Navigation Links */}
-        {/* <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
-          <Typography
-            variant="body1"
-            sx={{
-              color: "text.primary",
-              mx: 2,
-              fontSize: "1rem",
-              cursor: "pointer",
-              paddingLeft: "1rem",
-            }}
-          >
-            Create Your Event
-          </Typography>
-          <Typography
-            variant="body1"
-            sx={{
-              color: "text.primary",
-              mx: 2,
-              fontSize: "1rem",
-              cursor: "pointer",
-              borderLeft: "1px solid white",
-              paddingLeft: "1rem",
-            }}
-          >
-            <Link href="/login" variant="body2" style={{ color: "white" }}>
-              Login
-            </Link>
-          </Typography>
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: "background.paper",
-              color: "text.primary",
-              textTransform: "none",
-              ml: 2,
-              px: 3,
-              borderRadius: "25px",
-              "&:hover": { backgroundColor: "#323232" },
-            }}
-          >
-            <Link href="/signup" variant="body2" style={{ color: "white" }}>
-              Sign Up
-            </Link>
-          </Button>
-        </Box> */}
         {!isLoggedIn && (
           <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
             <Typography
@@ -233,24 +242,10 @@ const NavBar = ({ title }) => {
                 cursor: "pointer",
                 paddingLeft: "1rem",
               }}
-            >
-              Create Your Event
-            </Typography>
-            <Typography
-              variant="body1"
-              sx={{
-                color: "text.primary",
-                mx: 2,
-                fontSize: "1rem",
-                cursor: "pointer",
-                borderLeft: "1px solid white",
-                paddingLeft: "1rem",
-              }}
-            >
-              <Link href="/login" variant="body2" style={{ color: "white" }}>
-                Login
-              </Link>
-            </Typography>
+            ></Typography>
+            <Link href="/login" variant="body2" style={{ color: "white" }}>
+              Login
+            </Link>
             <Button
               variant="contained"
               sx={{
@@ -281,7 +276,44 @@ const NavBar = ({ title }) => {
                 paddingLeft: "1rem",
               }}
             >
-              Create Your Event
+              <Button
+                onClick={handleMyPlanner}
+                variant="body2"
+                sx={{
+                  color: "white",
+                  "&.MuiButton-root": {
+                    textTransform: "none",
+                    fontSize: "1.2rem",
+                  },
+                }}
+              >
+                My Planner
+              </Button>
+            </Typography>
+            <Typography
+              variant="body1"
+              sx={{
+                color: "text.primary",
+                mx: 3,
+                fontSize: ".5rem",
+                cursor: "pointer",
+                borderLeft: "1px solid white",
+                paddingLeft: "1rem",
+              }}
+            >
+              <Button
+                onClick={handleLogout}
+                variant="body2"
+                sx={{
+                  color: "white",
+                  "&.MuiButton-root": {
+                    textTransform: "none",
+                    fontSize: "1.2rem",
+                  },
+                }}
+              >
+                Logout
+              </Button>
             </Typography>
           </Box>
         )}
