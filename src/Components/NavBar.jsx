@@ -15,7 +15,7 @@ import CustomLocationPicker from "./Shared/LocationPicker";
 import CustomDatePicker from "./Shared/DatePicker";
 import Link from "@mui/material/Link";
 import { getData } from "../util";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link as RouterLink } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 
 const NavBar = ({ title }) => {
@@ -257,7 +257,12 @@ const NavBar = ({ title }) => {
                 paddingLeft: "1rem",
               }}
             ></Typography> */}
-            <Link href="/login" variant="body2" style={{ color: "white" }}>
+            <Link
+              component={RouterLink}
+              to="/login"
+              variant="body2"
+              style={{ color: "white" }}
+            >
               Login
             </Link>
             <Button
@@ -277,7 +282,12 @@ const NavBar = ({ title }) => {
                 justifyContent: "center",
               }}
             >
-              <Link href="/signup" variant="body2" style={{ color: "white" }}>
+              <Link
+                component={RouterLink}
+                to="/signup"
+                variant="body2"
+                style={{ color: "white" }}
+              >
                 Sign Up
               </Link>
             </Button>
