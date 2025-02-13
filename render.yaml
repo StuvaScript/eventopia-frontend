@@ -1,8 +1,8 @@
-version: 1
-static:
-  buildCommand: npm run build
-  publishPath: dist
-  redirects:
-    - source: /*
-      destination: /
-      status: 200
+# version: 1
+# static:
+#   buildCommand: npm run build
+#   publishPath: dist
+#   redirects:
+#     - source: /*
+#       destination: /
+#       status: 200
