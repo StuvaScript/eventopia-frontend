@@ -51,7 +51,7 @@ function Login() {
         city: data.user.city,
         state: data.user.state,
       };
-      navigate("/myplanner", { state: inputData });
+      navigate("/eventresult", { state: inputData });
     } else {
       navigate("/home");
     }
