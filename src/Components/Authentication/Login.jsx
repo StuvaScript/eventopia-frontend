@@ -18,7 +18,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import { useNavigate } from "react-router-dom";
-import { postData } from "../../util/index";
+import { getData, postData } from "../../util/index";
 
 // User login Url
 const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/user/login`;
@@ -41,8 +41,14 @@ function Login() {
   const [open, setOpen] = useState(true);
   const navigate = useNavigate();
 
-  const handleClose = (data) => {
+  const handleClose = async (data) => {
     if (data && data.user) {
+      const URL = `${
+        import.meta.env.VITE_API_BASE_URL
+      }/api/ticketmaster/events/${data.user.city}/${data.user.state}`;
+
+      const response = await getData(URL);
+
       const inputData = {
         id: data.user.id,
         name: data.user.name,
@@ -50,7 +56,9 @@ function Login() {
         isLoggedIn: true,
         city: data.user.city,
         state: data.user.state,
+        events: response,
       };
+
       navigate("/eventresult", { state: inputData });
     } else {
       navigate("/home");
