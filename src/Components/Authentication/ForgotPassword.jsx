@@ -58,7 +58,7 @@ function Forgot() {
     setFormValid(null);
     const inputData = {
       email: emailInput,
-      url: `${import.meta.env.VITE_API_BASE_URL}/resetpassword/`,
+      url: "http://localhost:5173/resetpassword/",
     };
     resetPassword(inputData);
   };
