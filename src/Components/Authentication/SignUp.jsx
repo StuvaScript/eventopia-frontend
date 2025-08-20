@@ -38,7 +38,7 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-// User login Url
+// User register Url
 const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/user/register`;
 
 // Optional config
@@ -182,12 +182,14 @@ function SignUp() {
 
   async function registerUser(URL, requestBody) {
     try {
+      console.log("url:", url);
+
       const myData = await postData(URL, requestBody);
       //setMessage("Signup completed");
       handleClose(myData);
       console.log(myData);
     } catch (error) {
-      setFormValid("Singup failed, please check your input");
+      setFormValid("Sign up failed, please check your input");
       return false;
     }
     return true;
