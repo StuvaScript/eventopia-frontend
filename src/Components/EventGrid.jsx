@@ -3,7 +3,7 @@ import { Box, Typography } from "@mui/material";
 import EventCard from "./Shared/EventCard";
 import { fetchEvents } from "../util/LocationHelper";
 
-const EventGrid = () => {
+const EventGrid = ({ user, token }) => {
   const [events, setEvents] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -74,6 +74,25 @@ const EventGrid = () => {
     fetchEventsByLocation();
   }, []);
 
+  const handleSave = async (event) => {
+    if (!user || !token) return; // only allow if logged in
+    try {
+      await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/v1/itinerary`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(event),
+      });
+      setEvents((prev) =>
+        prev.map((e) => (e.id === event.id ? { ...e, isSaved: true } : e))
+      );
+    } catch (err) {
+      console.error("Error saving event:", err);
+    }
+  };
+
   if (loading) return <Typography>Loading events ...</Typography>;
   if (error) return <Typography>{error}</Typography>;
 
@@ -101,11 +120,21 @@ const EventGrid = () => {
           <EventCard
             key={event.id}
             event={event}
+            user={user} // pass user down
             actions={{
-              onSave: () => console.log(`Saved: ${event.title}`),
+              onSave: () => handleSave(event),
               onShare: () => console.log(`Shared: ${event.title}`),
             }}
           />
+
+          // <EventCard
+          //   key={event.id}
+          //   event={event}
+          //   actions={{
+          //     onSave: () => console.log(`Saved: ${event.title}`),
+          //     onShare: () => console.log(`Shared: ${event.title}`),
+          //   }}
+          // />
         ))}
       </Box>
     </Box>

@@ -53,12 +53,16 @@ const MyPlanner = () => {
   //   return <div>Error: Token is missing</div>;
   // }
 
-  const { user } = useAuth();
+  const { token, user } = useAuth();
   const firstName = user?.name ? user.name.split(" ")[0] : "";
 
   const fetchItineraries = async () => {
     try {
-      const response = await getData(URL); // remove Authorization header
+      const response = await getData(URL, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }); // remove Authorization header
       const itineraryItems = response?.itineraryItems || [];
       setItineraries(itineraryItems);
       setLoading(false);
@@ -86,15 +90,15 @@ const MyPlanner = () => {
   //   }
   // };
 
-  // useEffect(() => {
-  //   if (token) {
-  //     fetchItineraries();
-  //   }
-  // }, [token]);
-
   useEffect(() => {
-    fetchItineraries();
-  }, []);
+    if (token) {
+      fetchItineraries();
+    }
+  }, [token]);
+
+  // useEffect(() => {
+  //   fetchItineraries();
+  // }, []);
 
   useEffect(() => {
     if (itineraries.length > 0) {

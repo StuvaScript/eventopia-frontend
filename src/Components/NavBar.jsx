@@ -20,27 +20,30 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
 
 const NavBar = ({ title }) => {
-  const [location, setLocation] = React.useState({ city: "", state: "" });
+  const { isLoggedIn, user, logout } = useAuth();
+  const [location, setLocation] = React.useState({
+    city: user?.city || "",
+    state: user?.state || "",
+  });
   const [dateRange, setDateRange] = useState([]);
   const [error, setError] = useState({ city: false, state: false });
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [token, setToken] = useState("");
-  const [name, setName] = useState("");
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [token, setToken] = useState("");
+  // const [name, setName] = useState("");
   const [keyword, setKeyword] = useState("");
-  const loc = useLocation();
-  const data = loc.state;
-  const { logout } = useAuth();
+  // const loc = useLocation();
+  // const data = loc.state;
 
-  useEffect(() => {
-    //Set the logged in status
-    if (data) {
-      setIsLoggedIn(data.isLoggedIn);
-      setToken(data.token);
-      setName(data.name);
-    } else {
-      setIsLoggedIn(false);
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   //Set the logged in status
+  //   if (data) {
+  //     setIsLoggedIn(data.isLoggedIn);
+  //     setToken(data.token);
+  //     setName(data.name);
+  //   } else {
+  //     setIsLoggedIn(false);
+  //   }
+  // }, [data]);
 
   const handleLocationChange = (city, state) => {
     setLocation({ city, state });
@@ -127,9 +130,14 @@ const NavBar = ({ title }) => {
   //   navigate("/home", { state: [] });
   // };
 
+  // const handleMyPlanner = () => {
+  //   navigate("/myplanner", { state: data });
+  // };
+
   const handleMyPlanner = () => {
-    navigate("/myplanner", { state: data });
+    navigate("/myplanner");
   };
+
   return (
     <AppBar position="fixed" color="primary" sx={{ padding: 0, top: 0 }}>
       <Toolbar
@@ -157,11 +165,25 @@ const NavBar = ({ title }) => {
                 borderRadius: "50%",
                 mx: 2,
               }}
+              onClick={() => navigate("/")}
             >
               <MusicNoteIcon
                 sx={{ color: "primary.contrastText", fontSize: "1.5rem" }}
               />
             </IconButton>
+
+            {/* <IconButton
+              sx={{
+                backgroundColor: "background.paper",
+                p: 1,
+                borderRadius: "50%",
+                mx: 2,
+              }}
+            >
+              <MusicNoteIcon
+                sx={{ color: "primary.contrastText", fontSize: "1.5rem" }}
+              />
+            </IconButton> */}
           </Box>
           <Box
             sx={{
@@ -191,6 +213,7 @@ const NavBar = ({ title }) => {
               />
               <CustomLocationPicker
                 onLocationChange={handleLocationChange}
+                value={{ city: location.city, state: location.state }}
                 error={error}
                 InputProps={{ disableUnderline: true }}
                 sx={{

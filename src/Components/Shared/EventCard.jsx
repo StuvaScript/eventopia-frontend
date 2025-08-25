@@ -11,16 +11,22 @@ import {
 } from "@mui/material";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+
 import ShareIcon from "@mui/icons-material/Share";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import { useAuth } from "../../context/AuthContext.jsx";
 
 const EventCard = ({ event, actions }) => {
   const [saved, setSaved] = useState(false);
   const [open, setOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    Boolean(localStorage.getItem("token"))
-  );
+  // const [isLoggedIn, setIsLoggedIn] = useState(
+  //   Boolean(localStorage.getItem("token"))
+  // );
+  const { token, user } = useAuth();
+  const isLoggedIn = Boolean(token);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -31,15 +37,18 @@ const EventCard = ({ event, actions }) => {
     actions?.onSave?.();
   };
 
+  //todo **`` Saving events on the homepage doesn't save to my planner page. But events do save when you search for them. Not sure what the deal is.
+
   const handleSaveEvent = async () => {
     if (!isLoggedIn) {
       alert("Please log in to save events!");
       return;
     }
+    console.log("Event being saved:", event);
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/api/v1/itinerary/${event._id}`,
+        `${import.meta.env.VITE_API_BASE_URL}/api/v1/itinerary/`,
         {
           method: "POST",
           headers: {
@@ -47,28 +56,47 @@ const EventCard = ({ event, actions }) => {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           body: JSON.stringify({
-            name: event.name,
-            startDateTime: event.startDateTime,
-            ticketmasterId: event.ticketmasterId,
+            ticketmasterId: event.id,
+            name: event.title,
+            startDateTime: event.date + "T" + (event.time || "00:00:00"),
             venue: {
-              name: event.venue.name,
-              address: event.venue.address || "Unknown address",
-              city: event.venue.city || "Unknown city",
-              state: event.venue.state || "Unknown state",
-              postalCode: event.venue.postalCode || "00000",
-              coordinates: {
-                lat: event.venue.coordinates?.lat || 0,
-                lng: event.venue.coordinates?.lng || 0,
-              },
+              name: event.venue || "Unknown Venue",
+              address: event.venue || "Unknown address",
+              city: "Unknown City", // placeholder
+              state: "Unknown State", // placeholder
+              postalCode: "00000", // placeholder
+              coordinates: { lat: 0, lng: 0 },
             },
-            url: event.url || "",
-            imageURL: event.imageURL || "",
-            info: event.info || "",
-            user: localStorage.getItem("userId"),
+            url: event.link || "",
+            imageURL: event.image || "",
+            info: event.classification || "",
+            user: user?._id,
           }),
+
+          // body: JSON.stringify({
+          //   name: event.name,
+          //   startDateTime: event.startDateTime,
+          //   ticketmasterId: event.ticketmasterId,
+          //   venue: {
+          //     name: event.venue.name,
+          //     address: event.venue.address || "Unknown address",
+          //     city: event.venue.city || "Unknown city",
+          //     state: event.venue.state || "Unknown state",
+          //     postalCode: event.venue.postalCode || "00000",
+          //     coordinates: {
+          //       lat: event.venue.coordinates?.lat || 0,
+          //       lng: event.venue.coordinates?.lng || 0,
+          //     },
+          //   },
+          //   url: event.url || "",
+          //   imageURL: event.imageURL || "",
+          //   info: event.info || "",
+          //   // user: localStorage.getItem("userId"),
+          //   user: user?._id,
+          // }),
         }
       );
-      console.log(event.venue.city);
+      console.log(event.venue.venue.city);
       if (response.ok) {
         alert("Event saved successfully!");
       } else {
@@ -148,7 +176,21 @@ const EventCard = ({ event, actions }) => {
         <Box
           sx={{ display: "flex", justifyContent: "space-around", marginTop: 2 }}
         >
-          <IconButton
+          {isLoggedIn && (
+            <IconButton
+              onClick={(e) => {
+                e.stopPropagation();
+                setSaved(!saved);
+                handleSaveEvent();
+              }}
+              color="inherit"
+            >
+              {/* {saved ? <BookmarkIcon /> : <BookmarkBorderIcon />} */}
+              {saved ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+            </IconButton>
+          )}
+
+          {/* <IconButton
             onClick={(e) => {
               e.stopPropagation();
               if (isLoggedIn) {
@@ -161,7 +203,7 @@ const EventCard = ({ event, actions }) => {
             color="inherit"
           >
             {saved && isLoggedIn ? <BookmarkIcon /> : <BookmarkBorderIcon />}
-          </IconButton>
+          </IconButton> */}
 
           <IconButton
             onClick={(e) => {
@@ -218,7 +260,20 @@ const EventCard = ({ event, actions }) => {
         </DialogContent>
 
         <DialogActions sx={{ justifyContent: "center", marginBottom: 2 }}>
-          <IconButton
+          {isLoggedIn && (
+            <IconButton
+              onClick={(e) => {
+                e.stopPropagation();
+                setSaved(!saved);
+                handleSaveEvent();
+              }}
+              color="inherit"
+            >
+              {saved ? <BookmarkIcon /> : <BookmarkBorderIcon />}
+            </IconButton>
+          )}
+
+          {/* <IconButton
             onClick={(e) => {
               e.stopPropagation();
               if (isLoggedIn) {
@@ -230,7 +285,7 @@ const EventCard = ({ event, actions }) => {
             color="inherit"
           >
             {saved && isLoggedIn ? <BookmarkIcon /> : <BookmarkBorderIcon />}
-          </IconButton>
+          </IconButton> */}
 
           <IconButton onClick={actions?.onShare} color="inherit">
             <ShareIcon />
