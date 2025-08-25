@@ -40,6 +40,7 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
 
 // User register Url
 const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/user/register`;
+// const URL = `http://localhost:8000/api/v1/user/register`;
 
 // Optional config
 const config = {
@@ -182,18 +183,38 @@ function SignUp() {
 
   async function registerUser(URL, requestBody) {
     try {
-      console.log("url:", url);
+      console.log("Request URL:", URL);
+      console.log("Request Body:", requestBody);
 
       const myData = await postData(URL, requestBody);
-      //setMessage("Signup completed");
+      console.log("Response Data:", myData);
+
       handleClose(myData);
-      console.log(myData);
     } catch (error) {
+      console.error(
+        "Axios error response:",
+        error.response?.data || error.message
+      );
       setFormValid("Sign up failed, please check your input");
       return false;
     }
     return true;
   }
+
+  // async function registerUser(URL, requestBody) {
+  //   try {
+  //     console.log("url:", url);
+
+  //     const myData = await postData(URL, requestBody);
+  //     //setMessage("Signup completed");
+  //     handleClose(myData);
+  //     console.log(myData);
+  //   } catch (error) {
+  //     setFormValid("Sign up failed, please check your input");
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 

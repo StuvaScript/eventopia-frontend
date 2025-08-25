@@ -17,6 +17,7 @@ import Link from "@mui/material/Link";
 import { getData } from "../util";
 import { useNavigate, useLocation, Link as RouterLink } from "react-router-dom";
 import React, { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext.jsx";
 
 const NavBar = ({ title }) => {
   const [location, setLocation] = React.useState({ city: "", state: "" });
@@ -28,6 +29,7 @@ const NavBar = ({ title }) => {
   const [keyword, setKeyword] = useState("");
   const loc = useLocation();
   const data = loc.state;
+  const { logout } = useAuth();
 
   useEffect(() => {
     //Set the logged in status
@@ -113,12 +115,17 @@ const NavBar = ({ title }) => {
   };
 
   const handleLogout = () => {
-    setIsLoggedIn(false);
-    data.isLoggedIn = null;
-    data.city = null;
-    data.state = null;
-    navigate("/home", { state: [] });
+    logout();
+    navigate("/home");
   };
+
+  // const handleLogout = () => {
+  //   setIsLoggedIn(false);
+  //   data.isLoggedIn = null;
+  //   data.city = null;
+  //   data.state = null;
+  //   navigate("/home", { state: [] });
+  // };
 
   const handleMyPlanner = () => {
     navigate("/myplanner", { state: data });

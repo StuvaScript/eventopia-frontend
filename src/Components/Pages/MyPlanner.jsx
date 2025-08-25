@@ -22,6 +22,7 @@ import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
 import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getData } from "../../util/index";
+import { useAuth } from "../../context/AuthContext.jsx";
 
 const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/itinerary`;
 // const token =
@@ -37,32 +38,29 @@ const MyPlanner = () => {
   const [openDialog, setOpenDialog] = useState(false);
 
   //Get token from the login
-  const { state } = useLocation();
+  // const { state } = useLocation();
 
-  if (!state) {
-    console.error("No state found, possibly a navigation issue");
-    return <div>Error: State not found</div>;
-  }
+  // if (!state) {
+  //   console.error("No state found, possibly a navigation issue");
+  //   return <div>Error: State not found</div>;
+  // }
 
-  const { name, id, token } = state;
-  const firstName = name ? name.split(" ")[0] : "";
+  // const { name, id, token } = state;
+  // const firstName = name ? name.split(" ")[0] : "";
 
-  if (!token) {
-    console.error("Token is missing");
-    return <div>Error: Token is missing</div>;
-  }
+  // if (!token) {
+  //   console.error("Token is missing");
+  //   return <div>Error: Token is missing</div>;
+  // }
+
+  const { user } = useAuth();
+  const firstName = user?.name ? user.name.split(" ")[0] : "";
 
   const fetchItineraries = async () => {
     try {
-      const response = await getData(URL, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log(JSON.stringify(response));
+      const response = await getData(URL); // remove Authorization header
       const itineraryItems = response?.itineraryItems || [];
       setItineraries(itineraryItems);
-      console.log("Itineraries after fetching:", itineraryItems);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching itineraries:", error);
@@ -70,11 +68,33 @@ const MyPlanner = () => {
     }
   };
 
+  // const fetchItineraries = async () => {
+  //   try {
+  //     const response = await getData(URL, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //     console.log(JSON.stringify(response));
+  //     const itineraryItems = response?.itineraryItems || [];
+  //     setItineraries(itineraryItems);
+  //     console.log("Itineraries after fetching:", itineraryItems);
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.error("Error fetching itineraries:", error);
+  //     setLoading(false);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   if (token) {
+  //     fetchItineraries();
+  //   }
+  // }, [token]);
+
   useEffect(() => {
-    if (token) {
-      fetchItineraries();
-    }
-  }, [token]);
+    fetchItineraries();
+  }, []);
 
   useEffect(() => {
     if (itineraries.length > 0) {

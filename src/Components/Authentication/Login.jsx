@@ -19,6 +19,7 @@ import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import { useNavigate } from "react-router-dom";
 import { postData } from "../../util/index";
+import { useAuth } from "../../context/AuthContext.jsx";
 
 // User login Url
 const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/user/login`;
@@ -41,21 +42,32 @@ function Login() {
   const [open, setOpen] = useState(true);
   const navigate = useNavigate();
 
+  const { login } = useAuth();
+
   const handleClose = (data) => {
     if (data && data.user) {
-      const inputData = {
-        id: data.user.id,
-        name: data.user.name,
-        token: data.token,
-        isLoggedIn: true,
-        city: data.user.city,
-        state: data.user.state,
-      };
-      navigate("/myplanner", { state: inputData });
+      login({ token: data.token, user: data.user });
+      navigate("/myplanner"); // no need to pass token in state anymore
     } else {
       navigate("/home");
     }
   };
+
+  // const handleClose = (data) => {
+  //   if (data && data.user) {
+  //     const inputData = {
+  //       id: data.user.id,
+  //       name: data.user.name,
+  //       token: data.token,
+  //       isLoggedIn: true,
+  //       city: data.user.city,
+  //       state: data.user.state,
+  //     };
+  //     navigate("/myplanner", { state: inputData });
+  //   } else {
+  //     navigate("/home");
+  //   }
+  // };
 
   const handleLoginEmail = () => {
     if (!isEmail(emailInput)) {

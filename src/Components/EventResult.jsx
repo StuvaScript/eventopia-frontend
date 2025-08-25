@@ -18,6 +18,8 @@ import { useLocation } from "react-router-dom";
 import { Stack } from "@mui/material";
 import { Button } from "@mui/material";
 import EmptyList from "./Shared/EmptyList";
+import { getData } from "../util/index";
+import { useAuth } from "../context/AuthContext.jsx";
 
 const EventResult = () => {
   const [allEvents, setAllEvents] = useState([]);
@@ -28,6 +30,7 @@ const EventResult = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
 
+  const { token } = useAuth();
   const location = useLocation();
   const data = location.state;
   const city = data.city;
@@ -92,6 +95,57 @@ const EventResult = () => {
   const closeDetailDialog = () => {
     setOpenDialog(false);
     setSelectedEvent(null);
+  };
+
+  //todo Fetching search results isn't working now
+
+  const handleSaveToPlanner = async (event) => {
+    try {
+      // const token = localStorage.getItem("token"); // or get from state
+
+      const body = {
+        ticketmasterId: event.ticketmasterId,
+        name: event.name,
+        startDateTime: `${event.dates.startDate}T${event.dates.startTime}Z`,
+        venue: {
+          name: event.venue.name,
+          address: event.venue.address,
+          city: event.venue.city,
+          state: event.venue.state,
+          postalCode: event.venue.postalCode,
+        },
+        url: event.url,
+        imageURL: event.images[0],
+        info: event.info,
+      };
+
+      // Only add coordinates if they exist
+      if (event.venue.coordinates) {
+        body.venue.coordinates = {
+          lat: event.venue.coordinates.lat,
+          lng: event.venue.coordinates.lng,
+        };
+      }
+
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/api/v1/itinerary`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(body),
+        }
+      );
+
+      if (!response.ok) throw new Error("Failed to save event");
+
+      setSavedEvents((prev) => [...prev, event.ticketmasterId]);
+      console.log("Saved to planner:", event.name);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -200,7 +254,14 @@ const EventResult = () => {
                   </Box>
 
                   <Box>
-                    <IconButton aria-label="add to favorites" color="inherit">
+                    <IconButton
+                      aria-label="add to favorites"
+                      color="inherit"
+                      onClick={(e) => {
+                        e.stopPropagation(); // prevent opening the dialog
+                        handleSaveToPlanner(event);
+                      }}
+                    >
                       <FavoriteBorderIcon />
                     </IconButton>
                     <IconButton aria-label="bookmark" color="inherit">
