@@ -44,7 +44,25 @@ const EventCard = ({ event, actions }) => {
       alert("Please log in to save events!");
       return;
     }
+
     console.log("Event being saved:", event);
+
+    // Prepare the payload
+    const payload = {
+      ticketmasterId: event.ticketmasterId || event.id,
+      name: event.name || "Untitled Event",
+      startDateTime: event.startDateTime || new Date().toISOString(),
+      venue: {
+        name: event.venueRaw?.name || "Unknown Venue",
+        address: event.venueRaw?.address || "Unknown Address",
+        city: event.venueRaw?.city || "Unknown City",
+        state: event.venueRaw?.state || "Unknown State",
+        postalCode: event.venueRaw?.postalCode || "00000",
+      },
+      url: event.url || "",
+      imageURL: event.imageURL || "",
+      info: event.info || "",
+    };
 
     try {
       const response = await fetch(
@@ -53,62 +71,154 @@ const EventCard = ({ event, actions }) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${token}`, // Use token from AuthContext
           },
-          body: JSON.stringify({
-            ticketmasterId: event.id,
-            name: event.title,
-            startDateTime: event.date + "T" + (event.time || "00:00:00"),
-            venue: {
-              name: event.venue || "Unknown Venue",
-              address: event.venue || "Unknown address",
-              city: "Unknown City", // placeholder
-              state: "Unknown State", // placeholder
-              postalCode: "00000", // placeholder
-              coordinates: { lat: 0, lng: 0 },
-            },
-            url: event.link || "",
-            imageURL: event.image || "",
-            info: event.classification || "",
-            user: user?._id,
-          }),
-
-          // body: JSON.stringify({
-          //   name: event.name,
-          //   startDateTime: event.startDateTime,
-          //   ticketmasterId: event.ticketmasterId,
-          //   venue: {
-          //     name: event.venue.name,
-          //     address: event.venue.address || "Unknown address",
-          //     city: event.venue.city || "Unknown city",
-          //     state: event.venue.state || "Unknown state",
-          //     postalCode: event.venue.postalCode || "00000",
-          //     coordinates: {
-          //       lat: event.venue.coordinates?.lat || 0,
-          //       lng: event.venue.coordinates?.lng || 0,
-          //     },
-          //   },
-          //   url: event.url || "",
-          //   imageURL: event.imageURL || "",
-          //   info: event.info || "",
-          //   // user: localStorage.getItem("userId"),
-          //   user: user?._id,
-          // }),
+          body: JSON.stringify(payload),
         }
       );
-      console.log(event.venue.venue.city);
+
       if (response.ok) {
+        setSaved(true); // mark as saved
         alert("Event saved successfully!");
       } else {
         const errorData = await response.json();
         console.error("Failed to save event:", errorData);
-        alert(`Failed to save event! Error: ${errorData.message}`);
+        alert(
+          `Failed to save event! Error: ${errorData.error || "Unknown error"}`
+        );
       }
     } catch (error) {
       console.error("Error saving event:", error);
       alert("An error occurred. Please try again.");
     }
   };
+
+  // const handleSaveEvent = async () => {
+  //   if (!isLoggedIn) {
+  //     alert("Please log in to save events!");
+  //     return;
+  //   }
+
+  //   try {
+  //     const response = await fetch(
+  //       `${import.meta.env.VITE_API_BASE_URL}/api/v1/itinerary/`,
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //         body: JSON.stringify({
+  //           ticketmasterId: event.ticketmasterId,
+  //           name: event.name,
+  //           startDateTime: event.startDateTime,
+  //           venue: {
+  //             name: event.venueRaw?.name || "Unknown",
+  //             address: event.venueRaw?.address || "Unknown",
+  //             city: event.venueRaw?.city || "Unknown",
+  //             state: event.venueRaw?.state || "Unknown",
+  //             postalCode: event.venueRaw?.postalCode || "00000",
+  //           },
+  //           url: event.url || "",
+  //           imageURL: event.imageURL || "",
+  //           info: event.info || "",
+  //         }),
+  //       }
+  //     );
+
+  //     if (response.ok) {
+  //       alert("Event saved successfully!");
+  //     } else {
+  //       const errorData = await response.json();
+  //       console.error("Failed to save event:", errorData);
+  //       alert(
+  //         `Failed to save event! Error: ${errorData.error || errorData.message}`
+  //       );
+  //     }
+  //   } catch (error) {
+  //     console.error("Error saving event:", error);
+  //     alert("An error occurred. Please try again.");
+  //   }
+  // };
+
+  // const handleSaveEvent = async () => {
+  //   if (!isLoggedIn) {
+  //     alert("Please log in to save events!");
+  //     return;
+  //   }
+  //   console.log("Event being saved:", event);
+
+  //   try {
+  //     const response = await fetch(
+  //       `${import.meta.env.VITE_API_BASE_URL}/api/v1/itinerary/`,
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //         },
+  //         body: JSON.stringify({
+  //           ticketmasterId: event.ticketmasterId,
+  //           name: event.name,
+  //           startDateTime: event.startDateTime,
+  //           venue: event.venueRaw,
+  //           url: event.url,
+  //           imageURL: event.imageURL,
+  //           info: event.info,
+  //           user: user?._id,
+
+  //           // ticketmasterId: event.id,
+  //           // name: event.name,
+  //           // startDateTime: {event.startDateTime?.split("T")[0]} + "T" + (event.startDateTime?.split("T")[1] || "" || "00:00:00"),
+  //           // venue: {
+  //           //   name: event.venue || "Unknown Venue",
+  //           //   address: event.venue || "Unknown address",
+  //           //   city: "Unknown City", // placeholder
+  //           //   state: "Unknown State", // placeholder
+  //           //   postalCode: "00000", // placeholder
+  //           //   coordinates: { lat: 0, lng: 0 },
+  //           // },
+  //           // url: event.url || "",
+  //           // imageURL: event.image || "",
+  //           // info: event.classification || "",
+  //           // user: user?._id,
+  //         }),
+
+  //         // body: JSON.stringify({
+  //         //   name: event.name,
+  //         //   startDateTime: event.startDateTime,
+  //         //   ticketmasterId: event.ticketmasterId,
+  //         //   venue: {
+  //         //     name: event.venue.name,
+  //         //     address: event.venue.address || "Unknown address",
+  //         //     city: event.venue.city || "Unknown city",
+  //         //     state: event.venue.state || "Unknown state",
+  //         //     postalCode: event.venue.postalCode || "00000",
+  //         //     coordinates: {
+  //         //       lat: event.venue.coordinates?.lat || 0,
+  //         //       lng: event.venue.coordinates?.lng || 0,
+  //         //     },
+  //         //   },
+  //         //   url: event.url || "",
+  //         //   imageURL: event.imageURL || "",
+  //         //   info: event.info || "",
+  //         //   // user: localStorage.getItem("userId"),
+  //         //   user: user?._id,
+  //         // }),
+  //       }
+  //     );
+  //     if (response.ok) {
+  //       alert("Event saved successfully!");
+  //     } else {
+  //       const errorData = await response.json();
+  //       console.error("Failed to save event:", errorData);
+  //       alert(`Failed to save event! Error: ${errorData.message}`);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error saving event:", error);
+  //     alert("An error occurred. Please try again.");
+  //   }
+  // };
 
   return (
     <>
@@ -131,8 +241,8 @@ const EventCard = ({ event, actions }) => {
         onClick={handleOpen}
       >
         <img
-          src={event.image}
-          alt={event.title}
+          src={event.imageURL}
+          alt={event.name}
           style={{
             width: "100%",
             height: "180px",
@@ -142,10 +252,10 @@ const EventCard = ({ event, actions }) => {
         />
         <Box sx={{ textAlign: "center", marginTop: 1 }}>
           <Typography variant="body2" color="textSecondary">
-            {event.date}
+            {event.startDateTime?.split("T")[0]}
           </Typography>
           <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-            {event.title}
+            {event.name}
           </Typography>
           <Box
             sx={{
@@ -156,7 +266,9 @@ const EventCard = ({ event, actions }) => {
             }}
           >
             <AccessTimeIcon sx={{ fontSize: "1rem", marginRight: "4px" }} />
-            <Typography variant="body2">{event.time}</Typography>
+            <Typography variant="body2">
+              {event.startDateTime?.split("T")[1] || ""}
+            </Typography>
           </Box>
           <Box
             sx={{
@@ -218,11 +330,11 @@ const EventCard = ({ event, actions }) => {
       </Box>
 
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
-        <DialogTitle>{event.title}</DialogTitle>
+        <DialogTitle>{event.name}</DialogTitle>
         <DialogContent>
           <img
             src={event.image}
-            alt={event.title}
+            alt={event.name}
             style={{
               width: "100%",
               height: "auto",
@@ -238,7 +350,7 @@ const EventCard = ({ event, actions }) => {
             color="textSecondary"
             sx={{ marginBottom: 1 }}
           >
-            <strong>Date:</strong> {event.date}
+            <strong>Date:</strong> {event.startDateTime?.split("T")[0]}
           </Typography>
           <Typography
             variant="body2"
@@ -254,7 +366,7 @@ const EventCard = ({ event, actions }) => {
           >
             <strong>Location:</strong> {event.venue}
           </Typography>
-          <Button href={event.link} target="_blank" sx={{ marginBottom: 2 }}>
+          <Button href={event.url} target="_blank" sx={{ marginBottom: 2 }}>
             More Info Here
           </Button>
         </DialogContent>

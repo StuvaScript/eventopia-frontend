@@ -25,6 +25,7 @@ import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
 import { postData } from "../../util/index";
 import states from "../../util/states";
+import { useAuth } from "../../context/AuthContext";
 
 const isEmail = (email) =>
   /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email);
@@ -224,21 +225,31 @@ function SignUp() {
 
   const [open, setOpen] = useState(true);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleClose = (data) => {
-    if (data && data.user) {
-      const inputData = {
-        id: data.user.id,
-        name: data.user.name,
-        token: data.token,
-        isLoggedIn: true,
-        city: cityInput,
-        state: selectedState,
-      };
-      navigate("/myplanner", { state: inputData });
+    if (data && data.user && data.token) {
+      // setUser(data.user);
+      // setToken(data.token);
+      login({ token: data.token, user: data.user });
+      navigate("/myplanner");
     } else {
       navigate("/home");
     }
+
+    // if (data && data.user) {
+    //   const inputData = {
+    //     id: data.user.id,
+    //     name: data.user.name,
+    //     token: data.token,
+    //     isLoggedIn: true,
+    //     city: cityInput,
+    //     state: selectedState,
+    //   };
+    //   navigate("/myplanner", { state: inputData });
+    // } else {
+    //   navigate("/home");
+    // }
   };
 
   return (

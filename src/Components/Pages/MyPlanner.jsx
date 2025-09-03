@@ -23,6 +23,7 @@ import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getData } from "../../util/index";
 import { useAuth } from "../../context/AuthContext.jsx";
+import { normalizeEvent } from "../../util/normalizeEvent.js";
 
 const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/itinerary`;
 // const token =
@@ -64,7 +65,11 @@ const MyPlanner = () => {
         },
       }); // remove Authorization header
       const itineraryItems = response?.itineraryItems || [];
-      setItineraries(itineraryItems);
+
+      const normalized = itineraryItems.map(normalizeEvent);
+
+      setItineraries(normalized);
+
       setLoading(false);
     } catch (error) {
       console.error("Error fetching itineraries:", error);

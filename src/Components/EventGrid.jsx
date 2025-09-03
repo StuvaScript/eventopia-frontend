@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
 import EventCard from "./Shared/EventCard";
 import { fetchEvents } from "../util/LocationHelper";
+import { normalizeEvent } from "../util/normalizeEvent";
 
 const EventGrid = ({ user, token }) => {
   const [events, setEvents] = useState([]);
@@ -42,7 +43,8 @@ const EventGrid = ({ user, token }) => {
                 if (fetchedEvents.message === "No Events Returned") {
                   setError("No events for your location.");
                 } else {
-                  setEvents(fetchedEvents.slice(0, 3));
+                  // setEvents(fetchedEvents.slice(0, 3));
+                  setEvents(fetchedEvents.map(normalizeEvent).slice(0, 3));
                 }
                 setLoading(false);
               } catch (err) {
@@ -54,14 +56,16 @@ const EventGrid = ({ user, token }) => {
             async (err) => {
               console.warn("Geolocation permission denied:", err);
               const fetchedEvents = await fetchEvents(city, state);
-              setEvents(fetchedEvents.slice(0, 3));
+              // setEvents(fetchedEvents.slice(0, 3));
+              setEvents(fetchedEvents.map(normalizeEvent).slice(0, 3));
               setLoading(false);
             }
           );
         } else {
           console.warn("Geolocation not supported. Using default location.");
           const fetchedEvents = await fetchEvents(city, state);
-          setEvents(fetchedEvents.slice(0, 3));
+          // setEvents(fetchedEvents.slice(0, 3));
+          setEvents(fetchedEvents.map(normalizeEvent).slice(0, 3));
           setLoading(false);
         }
       } catch (err) {
@@ -85,8 +89,13 @@ const EventGrid = ({ user, token }) => {
         },
         body: JSON.stringify(event),
       });
+      // setEvents((prev) =>
+      //   prev.map((e) => (e.id === event.id ? { ...e, isSaved: true } : e))
+      // );
       setEvents((prev) =>
-        prev.map((e) => (e.id === event.id ? { ...e, isSaved: true } : e))
+        prev.map((e) =>
+          e.id === event.id ? normalizeEvent({ ...e, isSaved: true }) : e
+        )
       );
     } catch (err) {
       console.error("Error saving event:", err);
