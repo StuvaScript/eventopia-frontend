@@ -12,71 +12,27 @@ const EventGrid = ({ user, token }) => {
   useEffect(() => {
     const fetchEventsByLocation = async () => {
       try {
-        let city = "New York";
-        let state = "NY";
+        // ✅ If logged in, use user’s city/state. Otherwise, fallback to NYC
+        const city = user?.city || "New York";
+        const state = user?.state || "NY";
 
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            async (position) => {
-              const { latitude, longitude } = position.coords;
-              try {
-                const locationResponse = await fetch(
-                  `https://geocode.xyz/${latitude},${longitude}?geoit=json`
-                );
-                const locationData = await locationResponse.json();
+        const fetchedEvents = await fetchEvents(city, state);
 
-                // Fallback to default location if API fails or throttles
-                if (
-                  locationData.error ||
-                  locationData.city === "Throttled!" ||
-                  !locationData.city
-                ) {
-                  console.warn(
-                    "Geocode API throttled. Using default location."
-                  );
-                } else {
-                  city = locationData.city;
-                  state = locationData.state;
-                }
-
-                const fetchedEvents = await fetchEvents(city, state);
-                if (fetchedEvents.message === "No Events Returned") {
-                  setError("No events for your location.");
-                } else {
-                  // setEvents(fetchedEvents.slice(0, 3));
-                  setEvents(fetchedEvents.map(normalizeEvent).slice(0, 3));
-                }
-                setLoading(false);
-              } catch (err) {
-                console.error("Geocoding API Error:", err);
-                setError("Server error");
-                setLoading(false);
-              }
-            },
-            async (err) => {
-              console.warn("Geolocation permission denied:", err);
-              const fetchedEvents = await fetchEvents(city, state);
-              // setEvents(fetchedEvents.slice(0, 3));
-              setEvents(fetchedEvents.map(normalizeEvent).slice(0, 3));
-              setLoading(false);
-            }
-          );
+        if (fetchedEvents.message === "No Events Returned") {
+          setError("No events for your location.");
         } else {
-          console.warn("Geolocation not supported. Using default location.");
-          const fetchedEvents = await fetchEvents(city, state);
-          // setEvents(fetchedEvents.slice(0, 3));
           setEvents(fetchedEvents.map(normalizeEvent).slice(0, 3));
-          setLoading(false);
         }
       } catch (err) {
         console.error("Error fetching events by location:", err);
         setError("Unable to fetch events.");
+      } finally {
         setLoading(false);
       }
     };
 
     fetchEventsByLocation();
-  }, []);
+  }, [user]);
 
   const handleSave = async (event) => {
     if (!user || !token) return; // only allow if logged in
@@ -89,9 +45,7 @@ const EventGrid = ({ user, token }) => {
         },
         body: JSON.stringify(event),
       });
-      // setEvents((prev) =>
-      //   prev.map((e) => (e.id === event.id ? { ...e, isSaved: true } : e))
-      // );
+
       setEvents((prev) =>
         prev.map((e) =>
           e.id === event.id ? normalizeEvent({ ...e, isSaved: true }) : e
@@ -107,13 +61,7 @@ const EventGrid = ({ user, token }) => {
 
   return (
     <Box sx={{ padding: 4 }}>
-      <Typography
-        variant="h5"
-        sx={{
-          marginBottom: 3,
-          textAlign: "center",
-        }}
-      >
+      <Typography variant="h5" sx={{ marginBottom: 3, textAlign: "center" }}>
         Popular Events Near You
       </Typography>
       <Box
@@ -129,21 +77,12 @@ const EventGrid = ({ user, token }) => {
           <EventCard
             key={event.id}
             event={event}
-            user={user} // pass user down
+            user={user}
             actions={{
               onSave: () => handleSave(event),
               onShare: () => console.log(`Shared: ${event.title}`),
             }}
           />
-
-          // <EventCard
-          //   key={event.id}
-          //   event={event}
-          //   actions={{
-          //     onSave: () => console.log(`Saved: ${event.title}`),
-          //     onShare: () => console.log(`Shared: ${event.title}`),
-          //   }}
-          // />
         ))}
       </Box>
     </Box>

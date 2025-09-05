@@ -3,12 +3,8 @@ import Testimonials from "../Testimonials";
 import EventGrid from "../EventGrid";
 import { useAuth } from "../../context/AuthContext.jsx";
 
-const HomePage = ({ setHeaderTitle }) => {
+const HomePage = ({}) => {
   const { user, token } = useAuth();
-  // console.log(setHeaderTitle);
-  // useEffect(() => {
-  //   setHeaderTitle(""); //Do we need Title on the home page?
-  // }, [setHeaderTitle]);
 
   return (
     <div
@@ -16,7 +12,6 @@ const HomePage = ({ setHeaderTitle }) => {
         paddingTop: "80px",
       }}
     >
-      {/* <EventGrid /> */}
       <EventGrid user={user} token={token} />
       <Testimonials />
     </div>

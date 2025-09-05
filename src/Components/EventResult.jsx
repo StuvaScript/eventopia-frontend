@@ -98,8 +98,6 @@ const EventResult = () => {
     setSelectedEvent(null);
   };
 
-  //todo Fetching search results isn't working now
-
   const handleSaveToPlanner = async (event) => {
     if (!token) {
       console.error("No token found. User may not be logged in.");
@@ -107,8 +105,6 @@ const EventResult = () => {
     }
 
     try {
-      // const token = localStorage.getItem("token"); // or get from state
-
       const body = {
         ticketmasterId: event.ticketmasterId,
         name: event.name,
@@ -137,30 +133,6 @@ const EventResult = () => {
         };
       }
 
-      // const body = {
-      //   ticketmasterId: event.ticketmasterId,
-      //   name: event.name,
-      //   startDateTime: `${event.dates.startDate}T${event.dates.startTime}Z`,
-      //   venue: {
-      //     name: event.venue.name,
-      //     address: event.venue.address,
-      //     city: event.venue.city,
-      //     state: event.venue.state,
-      //     postalCode: event.venue.postalCode,
-      //   },
-      //   url: event.url,
-      //   imageURL: event.images[0],
-      //   info: event.info,
-      // };
-
-      // // Only add coordinates if they exist
-      // if (event.venue.coordinates) {
-      //   body.venue.coordinates = {
-      //     lat: event.venue.coordinates.lat,
-      //     lng: event.venue.coordinates.lng,
-      //   };
-      // }
-
       const response = await fetch(
         `${import.meta.env.VITE_API_BASE_URL}/api/v1/itinerary`,
         {
@@ -173,15 +145,12 @@ const EventResult = () => {
         }
       );
 
-      // if (!response.ok) throw new Error("Failed to save event");
-
       if (!response.ok) {
         const errText = await response.text();
         throw new Error(`Failed to save event: ${errText}`);
       }
 
       setSavedEvents((prev) => [...prev, event.ticketmasterId]);
-      console.log("Saved to planner:", event.name);
     } catch (err) {
       console.error(err);
     }
@@ -265,6 +234,11 @@ const EventResult = () => {
                   height: "100%",
                   backgroundColor: "#1A1A1A",
                   color: "#fff",
+                  transition: "transform 0.2s",
+                  "&:hover": {
+                    transform: "translateY(-5px)",
+                    boxShadow: "0px 8px 20px rgba(30,144,255,0.3)",
+                  },
                 }}
                 onClick={() => handleEventClick(event)}
               >

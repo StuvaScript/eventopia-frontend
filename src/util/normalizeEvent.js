@@ -1,5 +1,3 @@
-// src/utils/normalizeEvent.js
-
 export function normalizeEvent(event) {
   // ensure we always have a stable unique id
   const id =
@@ -12,7 +10,7 @@ export function normalizeEvent(event) {
     typeof event.venue === "object" && event.venue !== null ? event.venue : {};
 
   return {
-    id, // ✅ unique key for React
+    id,
     ticketmasterId: event.ticketmasterId || event.id || "",
     name: event.name || event.title || "Untitled Event",
     startDateTime:
@@ -21,10 +19,10 @@ export function normalizeEvent(event) {
         ? `${event.date}T${event.time}`
         : event.date || ""),
 
-    // ✅ venue string for display
+    //  venue string for display
     venue: venueObj.name || event.venue || "Unknown Venue",
 
-    // ✅ keep full venue object if needed
+    //  keep full venue object if needed
     venueRaw: {
       name:
         venueObj.name || (typeof event.venue === "string" ? event.venue : ""),

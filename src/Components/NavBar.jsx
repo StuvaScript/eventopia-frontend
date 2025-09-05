@@ -7,6 +7,7 @@ import {
   Button,
   TextField,
 } from "@mui/material";
+import { alpha, useTheme } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -27,23 +28,9 @@ const NavBar = ({ title }) => {
   });
   const [dateRange, setDateRange] = useState([]);
   const [error, setError] = useState({ city: false, state: false });
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // const [token, setToken] = useState("");
-  // const [name, setName] = useState("");
   const [keyword, setKeyword] = useState("");
-  // const loc = useLocation();
-  // const data = loc.state;
 
-  // useEffect(() => {
-  //   //Set the logged in status
-  //   if (data) {
-  //     setIsLoggedIn(data.isLoggedIn);
-  //     setToken(data.token);
-  //     setName(data.name);
-  //   } else {
-  //     setIsLoggedIn(false);
-  //   }
-  // }, [data]);
+  const theme = useTheme();
 
   const handleLocationChange = (city, state) => {
     setLocation({ city, state });
@@ -65,40 +52,43 @@ const NavBar = ({ title }) => {
       location.city
     }/${location.state}`;
 
+    // Default: today → 14 days later
+    const now = new Date();
+    const twoWeeksLater = new Date();
+    twoWeeksLater.setDate(now.getDate() + 14);
+
+    const dateRangeStart = dateRange[0]
+      ? new Date(dateRange[0]).toISOString()
+      : now.toISOString();
+    const dateRangeEnd = dateRange[1]
+      ? new Date(dateRange[1]).toISOString()
+      : twoWeeksLater.toISOString();
+
     const config = {
       params: {
-        dateRangeStart: dateRange[0],
-        dateRangeEnd: dateRange[1],
-        keyword: keyword,
+        dateRangeStart,
+        dateRangeEnd,
+        keyword: keyword || "",
       },
     };
 
-    console.log("Request URL:", URL);
-    console.log("Request Config:", config);
-
-    // Validate if city and state are filled
     if (!location.city || !location.state) {
       setError({
         city: !location.city,
         state: !location.state,
       });
-      return; //early exit if validation fails
+      return;
     } else {
-      setError({
-        city: false,
-        state: false,
-      });
+      setError({ city: false, state: false });
     }
 
-    // Add API call to execute the search
     try {
       const response = await getData(URL, config);
-      console.log(response);
       const inputData = {
         city: location.city,
         state: location.state,
-        token: data?.token,
-        name: name?.name,
+        token: user?.token,
+        name: user?.name,
         events: response,
         isLoggedIn: isLoggedIn,
       };
@@ -122,24 +112,21 @@ const NavBar = ({ title }) => {
     navigate("/home");
   };
 
-  // const handleLogout = () => {
-  //   setIsLoggedIn(false);
-  //   data.isLoggedIn = null;
-  //   data.city = null;
-  //   data.state = null;
-  //   navigate("/home", { state: [] });
-  // };
-
-  // const handleMyPlanner = () => {
-  //   navigate("/myplanner", { state: data });
-  // };
-
   const handleMyPlanner = () => {
     navigate("/myplanner");
   };
 
   return (
-    <AppBar position="fixed" color="primary" sx={{ padding: 0, top: 0 }}>
+    <AppBar
+      position="fixed"
+      color="primary"
+      sx={{
+        backdropFilter: "blur(8px)",
+        backgroundColor: alpha(theme.palette.primary.main, 0.7),
+        padding: 0,
+        top: 0,
+      }}
+    >
       <Toolbar
         disableGutters // Disable default gutters
         sx={{
@@ -171,19 +158,6 @@ const NavBar = ({ title }) => {
                 sx={{ color: "primary.contrastText", fontSize: "1.5rem" }}
               />
             </IconButton>
-
-            {/* <IconButton
-              sx={{
-                backgroundColor: "background.paper",
-                p: 1,
-                borderRadius: "50%",
-                mx: 2,
-              }}
-            >
-              <MusicNoteIcon
-                sx={{ color: "primary.contrastText", fontSize: "1.5rem" }}
-              />
-            </IconButton> */}
           </Box>
           <Box
             sx={{
@@ -277,16 +251,6 @@ const NavBar = ({ title }) => {
 
         {!isLoggedIn && (
           <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
-            {/* <Typography
-              variant="body1"
-              sx={{
-                color: "text.primary",
-                mx: 2,
-                fontSize: "1rem",
-                cursor: "pointer",
-                paddingLeft: "1rem",
-              }}
-            ></Typography> */}
             <Link
               component={RouterLink}
               to="/login"
@@ -304,7 +268,6 @@ const NavBar = ({ title }) => {
                 textTransform: "none",
                 ml: 2,
                 px: 4,
-                // py: 1.5,
                 borderRadius: "25px",
                 "&:hover": { backgroundColor: "#323232" },
                 display: "flex",
@@ -333,7 +296,6 @@ const NavBar = ({ title }) => {
                 mx: 2,
                 fontSize: "1rem",
                 cursor: "pointer",
-                // paddingLeft: "1rem",
               }}
             >
               <Button
@@ -354,7 +316,6 @@ const NavBar = ({ title }) => {
               variant="body1"
               sx={{
                 color: "text.primary",
-                // mx: 3,
                 fontSize: ".5rem",
                 cursor: "pointer",
                 borderLeft: "1px solid white",

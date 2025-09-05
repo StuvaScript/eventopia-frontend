@@ -47,27 +47,11 @@ function Login() {
   const handleClose = (data) => {
     if (data && data.user) {
       login({ token: data.token, user: data.user });
-      navigate("/myplanner"); // no need to pass token in state anymore
+      navigate("/myplanner");
     } else {
       navigate("/home");
     }
   };
-
-  // const handleClose = (data) => {
-  //   if (data && data.user) {
-  //     const inputData = {
-  //       id: data.user.id,
-  //       name: data.user.name,
-  //       token: data.token,
-  //       isLoggedIn: true,
-  //       city: data.user.city,
-  //       state: data.user.state,
-  //     };
-  //     navigate("/myplanner", { state: inputData });
-  //   } else {
-  //     navigate("/home");
-  //   }
-  // };
 
   const handleLoginEmail = () => {
     if (!isEmail(emailInput)) {
@@ -114,10 +98,8 @@ function Login() {
     try {
       const myData = await postData(URL, requestBody);
       if (myData) {
-        // TODO Set User, City and State
         handleClose(myData);
       }
-      console.log(myData);
       return true;
     } catch (error) {
       setFormValid(error.message ?? "Invalid email or password, login failed");

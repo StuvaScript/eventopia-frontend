@@ -41,15 +41,6 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
 
 // User register Url
 const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/user/register`;
-// const URL = `http://localhost:8000/api/v1/user/register`;
-
-// Optional config
-const config = {
-  params: {
-    startDateTime: "",
-    endDateTime: "",
-  },
-};
 
 function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
@@ -164,12 +155,6 @@ function SignUp() {
 
     setFormValid(null);
 
-    console.log("First Name:" + firstnameInput);
-    console.log("Last Name:" + lastnameInput);
-    console.log("Email:" + emailInput);
-    console.log("Password:" + passwordInput);
-    console.log("City:" + cityInput);
-    console.log("State:" + selectedState);
     // Call to server to post the data
     const requestBody = {
       firstName: firstnameInput,
@@ -184,11 +169,7 @@ function SignUp() {
 
   async function registerUser(URL, requestBody) {
     try {
-      console.log("Request URL:", URL);
-      console.log("Request Body:", requestBody);
-
       const myData = await postData(URL, requestBody);
-      console.log("Response Data:", myData);
 
       handleClose(myData);
     } catch (error) {
@@ -202,21 +183,6 @@ function SignUp() {
     return true;
   }
 
-  // async function registerUser(URL, requestBody) {
-  //   try {
-  //     console.log("url:", url);
-
-  //     const myData = await postData(URL, requestBody);
-  //     //setMessage("Signup completed");
-  //     handleClose(myData);
-  //     console.log(myData);
-  //   } catch (error) {
-  //     setFormValid("Sign up failed, please check your input");
-  //     return false;
-  //   }
-  //   return true;
-  // }
-
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleMouseDownPassword = (event) => {
@@ -229,27 +195,11 @@ function SignUp() {
 
   const handleClose = (data) => {
     if (data && data.user && data.token) {
-      // setUser(data.user);
-      // setToken(data.token);
       login({ token: data.token, user: data.user });
       navigate("/myplanner");
     } else {
       navigate("/home");
     }
-
-    // if (data && data.user) {
-    //   const inputData = {
-    //     id: data.user.id,
-    //     name: data.user.name,
-    //     token: data.token,
-    //     isLoggedIn: true,
-    //     city: cityInput,
-    //     state: selectedState,
-    //   };
-    //   navigate("/myplanner", { state: inputData });
-    // } else {
-    //   navigate("/home");
-    // }
   };
 
   return (
@@ -592,7 +542,7 @@ function SignUp() {
                     }}
                   >
                     {stateItem.name}
-                  </MenuItem> //value(stateCode) will be sent to backend
+                  </MenuItem>
                 ))}
               </Select>
             </FormControl>

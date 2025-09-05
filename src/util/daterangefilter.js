@@ -74,16 +74,6 @@ const getNextMonthRange = () => {
   return { start: startOfNextMonth, end: endOfNextMonth };
 };
 
-// Function to filter the data based on the selected range
-const filterData = (range) => {
-  const { start, end } = range;
-
-  return data.filter((item) => {
-    const itemDate = new Date(item.date); // assuming the data items have a 'date' field
-    return itemDate >= start && itemDate <= end;
-  });
-};
-
 // Function to get the date range for given filter
 const getRangeFilter = (filter) => {
   // Define the range based on the selected filter
@@ -107,5 +97,4 @@ const getRangeFilter = (filter) => {
   return range;
 };
 
-// export default getRangeFilter;
 export { getRangeFilter };

@@ -3,7 +3,7 @@ import "@fontsource/inter/400.css";
 
 const theme = createTheme({
   palette: {
-    primary: { main: "#3271D6", contrastText: "#FFFFFF" },
+    primary: { main: "#2c65c0ff", contrastText: "#FFFFFF" },
     secondary: { main: "#F59E0B" },
     background: { default: "#1B1D23", paper: "#23252C" },
     text: { primary: "#FFFFFF", secondary: "#B3B3B3", tertiary: "#000000" },

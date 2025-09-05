@@ -11,8 +11,6 @@ import EventResultPage from "./Components/Pages/EventResultPage";
 import MyPlanner from "./Components/Pages/MyPlanner";
 import { AuthProvider } from "./context/AuthContext.jsx";
 
-// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
 function App() {
   return (
     <div className="app">

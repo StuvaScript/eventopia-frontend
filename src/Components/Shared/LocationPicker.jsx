@@ -19,7 +19,6 @@ const CustomLocationPicker = ({ onLocationChange, error }) => {
   const data = loc.state;
 
   useEffect(() => {
-    // Set the value of city and state
     if (data) {
       setCity(data.city ?? "");
       setState(data.state ?? "");
@@ -93,7 +92,7 @@ const CustomLocationPicker = ({ onLocationChange, error }) => {
               sx={{ fontSize: "0.9rem" }}
             >
               {stateItem.name}
-            </MenuItem> //value(stateCode) will be sent to backend
+            </MenuItem>
           ))}
         </Select>
       </FormControl>

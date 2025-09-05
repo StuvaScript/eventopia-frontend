@@ -22,30 +22,17 @@ import { useAuth } from "../../context/AuthContext.jsx";
 const EventCard = ({ event, actions }) => {
   const [saved, setSaved] = useState(false);
   const [open, setOpen] = useState(false);
-  // const [isLoggedIn, setIsLoggedIn] = useState(
-  //   Boolean(localStorage.getItem("token"))
-  // );
-  const { token, user } = useAuth();
+  const { token } = useAuth();
   const isLoggedIn = Boolean(token);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const handleSave = (e) => {
-    e.stopPropagation();
-    setSaved(!saved);
-    actions?.onSave?.();
-  };
-
-  //todo **`` Saving events on the homepage doesn't save to my planner page. But events do save when you search for them. Not sure what the deal is.
 
   const handleSaveEvent = async () => {
     if (!isLoggedIn) {
       alert("Please log in to save events!");
       return;
     }
-
-    console.log("Event being saved:", event);
 
     // Prepare the payload
     const payload = {
@@ -71,14 +58,14 @@ const EventCard = ({ event, actions }) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // Use token from AuthContext
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(payload),
         }
       );
 
       if (response.ok) {
-        setSaved(true); // mark as saved
+        setSaved(true);
         alert("Event saved successfully!");
       } else {
         const errorData = await response.json();
@@ -92,133 +79,6 @@ const EventCard = ({ event, actions }) => {
       alert("An error occurred. Please try again.");
     }
   };
-
-  // const handleSaveEvent = async () => {
-  //   if (!isLoggedIn) {
-  //     alert("Please log in to save events!");
-  //     return;
-  //   }
-
-  //   try {
-  //     const response = await fetch(
-  //       `${import.meta.env.VITE_API_BASE_URL}/api/v1/itinerary/`,
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //         body: JSON.stringify({
-  //           ticketmasterId: event.ticketmasterId,
-  //           name: event.name,
-  //           startDateTime: event.startDateTime,
-  //           venue: {
-  //             name: event.venueRaw?.name || "Unknown",
-  //             address: event.venueRaw?.address || "Unknown",
-  //             city: event.venueRaw?.city || "Unknown",
-  //             state: event.venueRaw?.state || "Unknown",
-  //             postalCode: event.venueRaw?.postalCode || "00000",
-  //           },
-  //           url: event.url || "",
-  //           imageURL: event.imageURL || "",
-  //           info: event.info || "",
-  //         }),
-  //       }
-  //     );
-
-  //     if (response.ok) {
-  //       alert("Event saved successfully!");
-  //     } else {
-  //       const errorData = await response.json();
-  //       console.error("Failed to save event:", errorData);
-  //       alert(
-  //         `Failed to save event! Error: ${errorData.error || errorData.message}`
-  //       );
-  //     }
-  //   } catch (error) {
-  //     console.error("Error saving event:", error);
-  //     alert("An error occurred. Please try again.");
-  //   }
-  // };
-
-  // const handleSaveEvent = async () => {
-  //   if (!isLoggedIn) {
-  //     alert("Please log in to save events!");
-  //     return;
-  //   }
-  //   console.log("Event being saved:", event);
-
-  //   try {
-  //     const response = await fetch(
-  //       `${import.meta.env.VITE_API_BASE_URL}/api/v1/itinerary/`,
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //         },
-  //         body: JSON.stringify({
-  //           ticketmasterId: event.ticketmasterId,
-  //           name: event.name,
-  //           startDateTime: event.startDateTime,
-  //           venue: event.venueRaw,
-  //           url: event.url,
-  //           imageURL: event.imageURL,
-  //           info: event.info,
-  //           user: user?._id,
-
-  //           // ticketmasterId: event.id,
-  //           // name: event.name,
-  //           // startDateTime: {event.startDateTime?.split("T")[0]} + "T" + (event.startDateTime?.split("T")[1] || "" || "00:00:00"),
-  //           // venue: {
-  //           //   name: event.venue || "Unknown Venue",
-  //           //   address: event.venue || "Unknown address",
-  //           //   city: "Unknown City", // placeholder
-  //           //   state: "Unknown State", // placeholder
-  //           //   postalCode: "00000", // placeholder
-  //           //   coordinates: { lat: 0, lng: 0 },
-  //           // },
-  //           // url: event.url || "",
-  //           // imageURL: event.image || "",
-  //           // info: event.classification || "",
-  //           // user: user?._id,
-  //         }),
-
-  //         // body: JSON.stringify({
-  //         //   name: event.name,
-  //         //   startDateTime: event.startDateTime,
-  //         //   ticketmasterId: event.ticketmasterId,
-  //         //   venue: {
-  //         //     name: event.venue.name,
-  //         //     address: event.venue.address || "Unknown address",
-  //         //     city: event.venue.city || "Unknown city",
-  //         //     state: event.venue.state || "Unknown state",
-  //         //     postalCode: event.venue.postalCode || "00000",
-  //         //     coordinates: {
-  //         //       lat: event.venue.coordinates?.lat || 0,
-  //         //       lng: event.venue.coordinates?.lng || 0,
-  //         //     },
-  //         //   },
-  //         //   url: event.url || "",
-  //         //   imageURL: event.imageURL || "",
-  //         //   info: event.info || "",
-  //         //   // user: localStorage.getItem("userId"),
-  //         //   user: user?._id,
-  //         // }),
-  //       }
-  //     );
-  //     if (response.ok) {
-  //       alert("Event saved successfully!");
-  //     } else {
-  //       const errorData = await response.json();
-  //       console.error("Failed to save event:", errorData);
-  //       alert(`Failed to save event! Error: ${errorData.message}`);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error saving event:", error);
-  //     alert("An error occurred. Please try again.");
-  //   }
-  // };
 
   return (
     <>
@@ -235,8 +95,12 @@ const EventCard = ({ event, actions }) => {
           height: "520px",
           backgroundColor: "background.paper",
           cursor: "pointer",
-          "&:hover": { boxShadow: 3 },
           overflow: "hidden",
+          transition: "transform 0.2s",
+          "&:hover": {
+            transform: "translateY(-5px)",
+            boxShadow: "0px 8px 20px rgba(30,144,255,0.3)",
+          },
         }}
         onClick={handleOpen}
       >
@@ -297,25 +161,9 @@ const EventCard = ({ event, actions }) => {
               }}
               color="inherit"
             >
-              {/* {saved ? <BookmarkIcon /> : <BookmarkBorderIcon />} */}
               {saved ? <FavoriteIcon /> : <FavoriteBorderIcon />}
             </IconButton>
           )}
-
-          {/* <IconButton
-            onClick={(e) => {
-              e.stopPropagation();
-              if (isLoggedIn) {
-                setSaved(!saved);
-                handleSaveEvent();
-              } else {
-                alert("Please log in to save events!");
-              }
-            }}
-            color="inherit"
-          >
-            {saved && isLoggedIn ? <BookmarkIcon /> : <BookmarkBorderIcon />}
-          </IconButton> */}
 
           <IconButton
             onClick={(e) => {
@@ -384,20 +232,6 @@ const EventCard = ({ event, actions }) => {
               {saved ? <BookmarkIcon /> : <BookmarkBorderIcon />}
             </IconButton>
           )}
-
-          {/* <IconButton
-            onClick={(e) => {
-              e.stopPropagation();
-              if (isLoggedIn) {
-                handleSave(e);
-              } else {
-                alert("Please log in to save events!");
-              }
-            }}
-            color="inherit"
-          >
-            {saved && isLoggedIn ? <BookmarkIcon /> : <BookmarkBorderIcon />}
-          </IconButton> */}
 
           <IconButton onClick={actions?.onShare} color="inherit">
             <ShareIcon />

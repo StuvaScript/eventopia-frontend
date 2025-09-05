@@ -1,14 +1,18 @@
 import React from "react";
 import { Box, Typography, IconButton } from "@mui/material";
+import { alpha, useTheme } from "@mui/material/styles";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import TwitterIcon from "@mui/icons-material/Twitter";
 
 const Footer = () => {
+  const theme = useTheme();
   return (
     <Box
       sx={{
-        backgroundColor: "primary.main",
+        backdropFilter: "blur(8px)",
+        backgroundColor: alpha(theme.palette.primary.main, 0.7),
+        // backgroundColor: "primary.main",
         color: "primary.contrastText",
         textAlign: "center",
         padding: 2,
