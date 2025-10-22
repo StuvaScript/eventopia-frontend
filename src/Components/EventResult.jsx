@@ -18,6 +18,8 @@ import { useLocation } from "react-router-dom";
 import { Stack } from "@mui/material";
 import { Button } from "@mui/material";
 import EmptyList from "./Shared/EmptyList";
+import { getData } from "../util/index";
+import { useAuth } from "../context/AuthContext.jsx";
 
 const EventResult = () => {
   const [allEvents, setAllEvents] = useState([]);
@@ -27,7 +29,9 @@ const EventResult = () => {
   const [selectedFilter, setSelectedFilter] = useState("all");
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
+  const [savedEvents, setSavedEvents] = useState([]);
 
+  const { token } = useAuth();
   const location = useLocation();
   const data = location.state;
   const city = data.city;
@@ -92,6 +96,64 @@ const EventResult = () => {
   const closeDetailDialog = () => {
     setOpenDialog(false);
     setSelectedEvent(null);
+  };
+
+  const handleSaveToPlanner = async (event) => {
+    if (!token) {
+      console.error("No token found. User may not be logged in.");
+      return;
+    }
+
+    try {
+      const body = {
+        ticketmasterId: event.ticketmasterId,
+        name: event.name,
+        startDateTime: `${event.dates.startDate}T${event.dates.startTime}Z`,
+        venue: {
+          name: event.venue.name || "Unknown",
+          address: event.venue.address || "Unknown",
+          city: event.venue.city || "Unknown",
+          state: event.venue.state || "Unknown",
+          postalCode: event.venue.postalCode || "00000", // fallback
+        },
+        url: event.url,
+        imageURL: event.images[0] || "",
+        info: event.info || "",
+      };
+
+      // only attach coordinates if both exist
+      if (
+        event.venue.coordinates &&
+        event.venue.coordinates.lat !== undefined &&
+        event.venue.coordinates.lng !== undefined
+      ) {
+        body.venue.coordinates = {
+          lat: event.venue.coordinates.lat,
+          lng: event.venue.coordinates.lng,
+        };
+      }
+
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/api/v1/itinerary`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(body),
+        }
+      );
+
+      if (!response.ok) {
+        const errText = await response.text();
+        throw new Error(`Failed to save event: ${errText}`);
+      }
+
+      setSavedEvents((prev) => [...prev, event.ticketmasterId]);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -172,6 +234,11 @@ const EventResult = () => {
                   height: "100%",
                   backgroundColor: "#1A1A1A",
                   color: "#fff",
+                  transition: "transform 0.2s",
+                  "&:hover": {
+                    transform: "translateY(-5px)",
+                    boxShadow: "0px 8px 20px rgba(30,144,255,0.3)",
+                  },
                 }}
                 onClick={() => handleEventClick(event)}
               >
@@ -200,7 +267,14 @@ const EventResult = () => {
                   </Box>
 
                   <Box>
-                    <IconButton aria-label="add to favorites" color="inherit">
+                    <IconButton
+                      aria-label="add to favorites"
+                      color="inherit"
+                      onClick={(e) => {
+                        e.stopPropagation(); // prevent opening the dialog
+                        handleSaveToPlanner(event);
+                      }}
+                    >
                       <FavoriteBorderIcon />
                     </IconButton>
                     <IconButton aria-label="bookmark" color="inherit">

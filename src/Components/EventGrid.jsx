@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
 import EventCard from "./Shared/EventCard";
 import { fetchEvents } from "../util/LocationHelper";
+import { normalizeEvent } from "../util/normalizeEvent";
 
-const EventGrid = () => {
+const EventGrid = ({ user, token }) => {
   const [events, setEvents] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -11,81 +12,56 @@ const EventGrid = () => {
   useEffect(() => {
     const fetchEventsByLocation = async () => {
       try {
-        let city = "New York";
-        let state = "NY";
+        // ✅ If logged in, use user’s city/state. Otherwise, fallback to NYC
+        const city = user?.city || "New York";
+        const state = user?.state || "NY";
 
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            async (position) => {
-              const { latitude, longitude } = position.coords;
-              try {
-                const locationResponse = await fetch(
-                  `https://geocode.xyz/${latitude},${longitude}?geoit=json`
-                );
-                const locationData = await locationResponse.json();
+        const fetchedEvents = await fetchEvents(city, state);
 
-                // Fallback to default location if API fails or throttles
-                if (
-                  locationData.error ||
-                  locationData.city === "Throttled!" ||
-                  !locationData.city
-                ) {
-                  console.warn(
-                    "Geocode API throttled. Using default location."
-                  );
-                } else {
-                  city = locationData.city;
-                  state = locationData.state;
-                }
-
-                const fetchedEvents = await fetchEvents(city, state);
-                if (fetchedEvents.message === "No Events Returned") {
-                  setError("No events for your location.");
-                } else {
-                  setEvents(fetchedEvents.slice(0, 3));
-                }
-                setLoading(false);
-              } catch (err) {
-                console.error("Geocoding API Error:", err);
-                setError("Server error");
-                setLoading(false);
-              }
-            },
-            async (err) => {
-              console.warn("Geolocation permission denied:", err);
-              const fetchedEvents = await fetchEvents(city, state);
-              setEvents(fetchedEvents.slice(0, 3));
-              setLoading(false);
-            }
-          );
+        if (fetchedEvents.message === "No Events Returned") {
+          setError("No events for your location.");
         } else {
-          console.warn("Geolocation not supported. Using default location.");
-          const fetchedEvents = await fetchEvents(city, state);
-          setEvents(fetchedEvents.slice(0, 3));
-          setLoading(false);
+          setEvents(fetchedEvents.map(normalizeEvent).slice(0, 3));
         }
       } catch (err) {
         console.error("Error fetching events by location:", err);
         setError("Unable to fetch events.");
+      } finally {
         setLoading(false);
       }
     };
 
     fetchEventsByLocation();
-  }, []);
+  }, [user]);
+
+  const handleSave = async (event) => {
+    if (!user || !token) return; // only allow if logged in
+    try {
+      await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/v1/itinerary`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(event),
+      });
+
+      setEvents((prev) =>
+        prev.map((e) =>
+          e.id === event.id ? normalizeEvent({ ...e, isSaved: true }) : e
+        )
+      );
+    } catch (err) {
+      console.error("Error saving event:", err);
+    }
+  };
 
   if (loading) return <Typography>Loading events ...</Typography>;
   if (error) return <Typography>{error}</Typography>;
 
   return (
     <Box sx={{ padding: 4 }}>
-      <Typography
-        variant="h5"
-        sx={{
-          marginBottom: 3,
-          textAlign: "center",
-        }}
-      >
+      <Typography variant="h5" sx={{ marginBottom: 3, textAlign: "center" }}>
         Popular Events Near You
       </Typography>
       <Box
@@ -101,8 +77,9 @@ const EventGrid = () => {
           <EventCard
             key={event.id}
             event={event}
+            user={user}
             actions={{
-              onSave: () => console.log(`Saved: ${event.title}`),
+              onSave: () => handleSave(event),
               onShare: () => console.log(`Shared: ${event.title}`),
             }}
           />

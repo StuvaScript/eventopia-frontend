@@ -54,7 +54,6 @@ function Forgot() {
       setFormValid("Email is invalid.Please enter Email");
       return;
     }
-    console.log("Email:" + emailInput);
     setFormValid(null);
     const inputData = {
       email: emailInput,

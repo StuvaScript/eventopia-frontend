@@ -25,6 +25,7 @@ import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
 import { postData } from "../../util/index";
 import states from "../../util/states";
+import { useAuth } from "../../context/AuthContext";
 
 const isEmail = (email) =>
   /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email);
@@ -40,14 +41,6 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
 
 // User register Url
 const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/user/register`;
-
-// Optional config
-const config = {
-  params: {
-    startDateTime: "",
-    endDateTime: "",
-  },
-};
 
 function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
@@ -162,12 +155,6 @@ function SignUp() {
 
     setFormValid(null);
 
-    console.log("First Name:" + firstnameInput);
-    console.log("Last Name:" + lastnameInput);
-    console.log("Email:" + emailInput);
-    console.log("Password:" + passwordInput);
-    console.log("City:" + cityInput);
-    console.log("State:" + selectedState);
     // Call to server to post the data
     const requestBody = {
       firstName: firstnameInput,
@@ -182,13 +169,14 @@ function SignUp() {
 
   async function registerUser(URL, requestBody) {
     try {
-      console.log("url:", url);
-
       const myData = await postData(URL, requestBody);
-      //setMessage("Signup completed");
+
       handleClose(myData);
-      console.log(myData);
     } catch (error) {
+      console.error(
+        "Axios error response:",
+        error.response?.data || error.message
+      );
       setFormValid("Sign up failed, please check your input");
       return false;
     }
@@ -203,18 +191,12 @@ function SignUp() {
 
   const [open, setOpen] = useState(true);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleClose = (data) => {
-    if (data && data.user) {
-      const inputData = {
-        id: data.user.id,
-        name: data.user.name,
-        token: data.token,
-        isLoggedIn: true,
-        city: cityInput,
-        state: selectedState,
-      };
-      navigate("/myplanner", { state: inputData });
+    if (data && data.user && data.token) {
+      login({ token: data.token, user: data.user });
+      navigate("/myplanner");
     } else {
       navigate("/home");
     }
@@ -560,7 +542,7 @@ function SignUp() {
                     }}
                   >
                     {stateItem.name}
-                  </MenuItem> //value(stateCode) will be sent to backend
+                  </MenuItem>
                 ))}
               </Select>
             </FormControl>

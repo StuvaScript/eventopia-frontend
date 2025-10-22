@@ -22,10 +22,10 @@ import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
 import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getData } from "../../util/index";
+import { useAuth } from "../../context/AuthContext.jsx";
+import { normalizeEvent } from "../../util/normalizeEvent.js";
 
 const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/itinerary`;
-// const token =
-//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzhiZGJhZTlhMDc5N2EzMGI1ZGQ2ZWQiLCJmaXJzdE5hbWUiOiJuaWhhbCIsImxhc3ROYW1lIjoiZWhkZmgiLCJpYXQiOjE3MzcyMTg5OTEsImV4cCI6MTczNzgyMzc5MX0.GYVwiITKNdFi42YIltcrN4OU8_S1Uw0G19IsmJ_16vU";
 const today = new Date();
 
 const MyPlanner = () => {
@@ -36,21 +36,8 @@ const MyPlanner = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
 
-  //Get token from the login
-  const { state } = useLocation();
-
-  if (!state) {
-    console.error("No state found, possibly a navigation issue");
-    return <div>Error: State not found</div>;
-  }
-
-  const { name, id, token } = state;
-  const firstName = name ? name.split(" ")[0] : "";
-
-  if (!token) {
-    console.error("Token is missing");
-    return <div>Error: Token is missing</div>;
-  }
+  const { token, user } = useAuth();
+  const firstName = user?.name ? user.name.split(" ")[0] : "";
 
   const fetchItineraries = async () => {
     try {
@@ -59,10 +46,12 @@ const MyPlanner = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(JSON.stringify(response));
       const itineraryItems = response?.itineraryItems || [];
-      setItineraries(itineraryItems);
-      console.log("Itineraries after fetching:", itineraryItems);
+
+      const normalized = itineraryItems.map(normalizeEvent);
+
+      setItineraries(normalized);
+
       setLoading(false);
     } catch (error) {
       console.error("Error fetching itineraries:", error);
@@ -117,7 +106,6 @@ const MyPlanner = () => {
         )[0] || null;
 
     setFilteredItineraries(nextEvent ? [nextEvent] : []);
-    console.log("filter next event =", nextEvent);
   };
 
   const filterPastEvents = () => {
@@ -125,12 +113,10 @@ const MyPlanner = () => {
       (event) => new Date(event.startDateTime) < today
     );
     setFilteredItineraries(pastEvents);
-    console.log("filter past event =", pastEvents);
   };
 
   const filterAllEvents = () => {
     setFilteredItineraries(itineraries);
-    console.log("filter all events =", itineraries);
   };
 
   return (
@@ -194,7 +180,6 @@ const MyPlanner = () => {
               All
             </Button>
           </Box>
-          {/* <Grid container spacing={2} sx={{height:"30px"}}> */}
           {filteredItineraries.map((event) => (
             <Grid item xs={12} key={event.ticketmasterId} marginBottom={5}>
               <Card
@@ -205,6 +190,11 @@ const MyPlanner = () => {
                   marginRight: "50%",
                   display: "flex",
                   position: "relative",
+                  transition: "transform 0.2s",
+                  "&:hover": {
+                    transform: "translateY(-5px)",
+                    boxShadow: "0px 8px 20px rgba(30,144,255,0.3)",
+                  },
                 }}
                 onClick={() => handleEventClick(event)}
               >
@@ -262,7 +252,6 @@ const MyPlanner = () => {
               </Card>
             </Grid>
           ))}
-          {/* </Grid> */}
         </Box>
       )}
 
@@ -282,18 +271,10 @@ const MyPlanner = () => {
               <Typography variant="body1" sx={{ marginBottom: 2 }}>
                 {selectedEvent.info}
               </Typography>
-              <Typography
-                variant="body2"
-                color="textSecondary"
-                // sx={{ marginBottom: 1 }}
-              >
+              <Typography variant="body2" color="textSecondary">
                 <strong>Date:</strong> {formatDate(selectedEvent.startDateTime)}
               </Typography>
-              <Typography
-                variant="body2"
-                color="textSecondary"
-                // sx={{ marginBottom: 1 }}
-              >
+              <Typography variant="body2" color="textSecondary">
                 <strong>Time:</strong> {formatTime(selectedEvent.startDateTime)}
               </Typography>
               <Typography

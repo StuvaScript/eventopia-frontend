@@ -82,7 +82,6 @@ function ResetPassword() {
       return;
     }
     setFormValid(null);
-    console.log("Password:" + newPasswordInput);
     const requestBody = {
       resetToken: resetToken,
       newPassword: newPasswordInput,

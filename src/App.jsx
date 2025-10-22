@@ -9,28 +9,29 @@ import NavBar from "./Components/NavBar";
 import Footer from "./Components/Footer";
 import EventResultPage from "./Components/Pages/EventResultPage";
 import MyPlanner from "./Components/Pages/MyPlanner";
-
-// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext.jsx";
 
 function App() {
   return (
     <div className="app">
       <BrowserRouter>
-        <NavBar />
-        <Routes>
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/forgotpassword" element={<Forgot />} />
-          <Route
-            path="/resetpassword/:resetToken"
-            element={<ResetPassword />}
-          />
-          <Route path="/" element={<Navigate to="/home" />} />
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/eventresult" element={<EventResultPage />} />
-          <Route path="/myplanner" element={<MyPlanner />} />
-        </Routes>
-        <Footer />
+        <AuthProvider>
+          <NavBar />
+          <Routes>
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/forgotpassword" element={<Forgot />} />
+            <Route
+              path="/resetpassword/:resetToken"
+              element={<ResetPassword />}
+            />
+            <Route path="/" element={<Navigate to="/home" />} />
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/eventresult" element={<EventResultPage />} />
+            <Route path="/myplanner" element={<MyPlanner />} />
+          </Routes>
+          <Footer />
+        </AuthProvider>
       </BrowserRouter>
     </div>
   );

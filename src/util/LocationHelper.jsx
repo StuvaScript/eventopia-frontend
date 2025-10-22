@@ -1,4 +1,14 @@
-export const getLocationData = async (defaultCity, defaultState) => {
+import { useAuth } from "../context/AuthContext";
+
+export const getLocationData = async (user) => {
+  const defaultCity = "New York City";
+  const defaultState = "NY";
+
+  // ✅ If user has a city/state saved, use that first
+  if (user?.city && user?.state) {
+    return { city: user.city, state: user.state };
+  }
+
   try {
     if (navigator.geolocation) {
       return new Promise((resolve) => {
@@ -10,8 +20,16 @@ export const getLocationData = async (defaultCity, defaultState) => {
                 `https://geocode.xyz/${latitude},${longitude}?geoit=json`
               );
               const data = await response.json();
-              if (data.error || data.city === "Throttled!") {
-                console.warn("Geocode API throttled. Using default location.");
+
+              if (
+                data.error ||
+                data.city === "Throttled!" ||
+                !data.city ||
+                !data.state
+              ) {
+                console.warn(
+                  "Geocode API failed or throttled. Using default NYC."
+                );
                 resolve({ city: defaultCity, state: defaultState });
               } else {
                 resolve({
@@ -19,16 +37,20 @@ export const getLocationData = async (defaultCity, defaultState) => {
                   state: data.state || defaultState,
                 });
               }
-            } catch {
+            } catch (err) {
+              console.warn("Error contacting geocode API:", err.message);
               resolve({ city: defaultCity, state: defaultState });
             }
           },
-          () => resolve({ city: defaultCity, state: defaultState })
+          () => {
+            resolve({ city: defaultCity, state: defaultState });
+          }
         );
       });
     }
     return { city: defaultCity, state: defaultState };
-  } catch {
+  } catch (err) {
+    console.warn("Error in getLocationData:", err.message);
     return { city: defaultCity, state: defaultState };
   }
 };

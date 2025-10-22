@@ -11,25 +11,22 @@ import {
 } from "@mui/material";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+
 import ShareIcon from "@mui/icons-material/Share";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import { useAuth } from "../../context/AuthContext.jsx";
 
 const EventCard = ({ event, actions }) => {
   const [saved, setSaved] = useState(false);
   const [open, setOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    Boolean(localStorage.getItem("token"))
-  );
+  const { token } = useAuth();
+  const isLoggedIn = Boolean(token);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const handleSave = (e) => {
-    e.stopPropagation();
-    setSaved(!saved);
-    actions?.onSave?.();
-  };
 
   const handleSaveEvent = async () => {
     if (!isLoggedIn) {
@@ -37,44 +34,45 @@ const EventCard = ({ event, actions }) => {
       return;
     }
 
+    // Prepare the payload
+    const payload = {
+      ticketmasterId: event.ticketmasterId || event.id,
+      name: event.name || "Untitled Event",
+      startDateTime: event.startDateTime || new Date().toISOString(),
+      venue: {
+        name: event.venueRaw?.name || "Unknown Venue",
+        address: event.venueRaw?.address || "Unknown Address",
+        city: event.venueRaw?.city || "Unknown City",
+        state: event.venueRaw?.state || "Unknown State",
+        postalCode: event.venueRaw?.postalCode || "00000",
+      },
+      url: event.url || "",
+      imageURL: event.imageURL || "",
+      info: event.info || "",
+    };
+
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/api/v1/itinerary/${event._id}`,
+        `${import.meta.env.VITE_API_BASE_URL}/api/v1/itinerary/`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({
-            name: event.name,
-            startDateTime: event.startDateTime,
-            ticketmasterId: event.ticketmasterId,
-            venue: {
-              name: event.venue.name,
-              address: event.venue.address || "Unknown address",
-              city: event.venue.city || "Unknown city",
-              state: event.venue.state || "Unknown state",
-              postalCode: event.venue.postalCode || "00000",
-              coordinates: {
-                lat: event.venue.coordinates?.lat || 0,
-                lng: event.venue.coordinates?.lng || 0,
-              },
-            },
-            url: event.url || "",
-            imageURL: event.imageURL || "",
-            info: event.info || "",
-            user: localStorage.getItem("userId"),
-          }),
+          body: JSON.stringify(payload),
         }
       );
-      console.log(event.venue.city);
+
       if (response.ok) {
+        setSaved(true);
         alert("Event saved successfully!");
       } else {
         const errorData = await response.json();
         console.error("Failed to save event:", errorData);
-        alert(`Failed to save event! Error: ${errorData.message}`);
+        alert(
+          `Failed to save event! Error: ${errorData.error || "Unknown error"}`
+        );
       }
     } catch (error) {
       console.error("Error saving event:", error);
@@ -97,14 +95,18 @@ const EventCard = ({ event, actions }) => {
           height: "520px",
           backgroundColor: "background.paper",
           cursor: "pointer",
-          "&:hover": { boxShadow: 3 },
           overflow: "hidden",
+          transition: "transform 0.2s",
+          "&:hover": {
+            transform: "translateY(-5px)",
+            boxShadow: "0px 8px 20px rgba(30,144,255,0.3)",
+          },
         }}
         onClick={handleOpen}
       >
         <img
-          src={event.image}
-          alt={event.title}
+          src={event.imageURL}
+          alt={event.name}
           style={{
             width: "100%",
             height: "180px",
@@ -114,10 +116,10 @@ const EventCard = ({ event, actions }) => {
         />
         <Box sx={{ textAlign: "center", marginTop: 1 }}>
           <Typography variant="body2" color="textSecondary">
-            {event.date}
+            {event.startDateTime?.split("T")[0]}
           </Typography>
           <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-            {event.title}
+            {event.name}
           </Typography>
           <Box
             sx={{
@@ -128,7 +130,9 @@ const EventCard = ({ event, actions }) => {
             }}
           >
             <AccessTimeIcon sx={{ fontSize: "1rem", marginRight: "4px" }} />
-            <Typography variant="body2">{event.time}</Typography>
+            <Typography variant="body2">
+              {event.startDateTime?.split("T")[1] || ""}
+            </Typography>
           </Box>
           <Box
             sx={{
@@ -148,20 +152,18 @@ const EventCard = ({ event, actions }) => {
         <Box
           sx={{ display: "flex", justifyContent: "space-around", marginTop: 2 }}
         >
-          <IconButton
-            onClick={(e) => {
-              e.stopPropagation();
-              if (isLoggedIn) {
+          {isLoggedIn && (
+            <IconButton
+              onClick={(e) => {
+                e.stopPropagation();
                 setSaved(!saved);
                 handleSaveEvent();
-              } else {
-                alert("Please log in to save events!");
-              }
-            }}
-            color="inherit"
-          >
-            {saved && isLoggedIn ? <BookmarkIcon /> : <BookmarkBorderIcon />}
-          </IconButton>
+              }}
+              color="inherit"
+            >
+              {saved ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+            </IconButton>
+          )}
 
           <IconButton
             onClick={(e) => {
@@ -176,11 +178,11 @@ const EventCard = ({ event, actions }) => {
       </Box>
 
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
-        <DialogTitle>{event.title}</DialogTitle>
+        <DialogTitle>{event.name}</DialogTitle>
         <DialogContent>
           <img
             src={event.image}
-            alt={event.title}
+            alt={event.name}
             style={{
               width: "100%",
               height: "auto",
@@ -196,7 +198,7 @@ const EventCard = ({ event, actions }) => {
             color="textSecondary"
             sx={{ marginBottom: 1 }}
           >
-            <strong>Date:</strong> {event.date}
+            <strong>Date:</strong> {event.startDateTime?.split("T")[0]}
           </Typography>
           <Typography
             variant="body2"
@@ -212,25 +214,24 @@ const EventCard = ({ event, actions }) => {
           >
             <strong>Location:</strong> {event.venue}
           </Typography>
-          <Button href={event.link} target="_blank" sx={{ marginBottom: 2 }}>
+          <Button href={event.url} target="_blank" sx={{ marginBottom: 2 }}>
             More Info Here
           </Button>
         </DialogContent>
 
         <DialogActions sx={{ justifyContent: "center", marginBottom: 2 }}>
-          <IconButton
-            onClick={(e) => {
-              e.stopPropagation();
-              if (isLoggedIn) {
-                handleSave(e);
-              } else {
-                alert("Please log in to save events!");
-              }
-            }}
-            color="inherit"
-          >
-            {saved && isLoggedIn ? <BookmarkIcon /> : <BookmarkBorderIcon />}
-          </IconButton>
+          {isLoggedIn && (
+            <IconButton
+              onClick={(e) => {
+                e.stopPropagation();
+                setSaved(!saved);
+                handleSaveEvent();
+              }}
+              color="inherit"
+            >
+              {saved ? <BookmarkIcon /> : <BookmarkBorderIcon />}
+            </IconButton>
+          )}
 
           <IconButton onClick={actions?.onShare} color="inherit">
             <ShareIcon />

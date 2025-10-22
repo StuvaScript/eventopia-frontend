@@ -19,6 +19,7 @@ import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import { useNavigate } from "react-router-dom";
 import { postData } from "../../util/index";
+import { useAuth } from "../../context/AuthContext.jsx";
 
 // User login Url
 const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/user/login`;
@@ -41,17 +42,12 @@ function Login() {
   const [open, setOpen] = useState(true);
   const navigate = useNavigate();
 
+  const { login } = useAuth();
+
   const handleClose = (data) => {
     if (data && data.user) {
-      const inputData = {
-        id: data.user.id,
-        name: data.user.name,
-        token: data.token,
-        isLoggedIn: true,
-        city: data.user.city,
-        state: data.user.state,
-      };
-      navigate("/myplanner", { state: inputData });
+      login({ token: data.token, user: data.user });
+      navigate("/myplanner");
     } else {
       navigate("/home");
     }
@@ -102,10 +98,8 @@ function Login() {
     try {
       const myData = await postData(URL, requestBody);
       if (myData) {
-        // TODO Set User, City and State
         handleClose(myData);
       }
-      console.log(myData);
       return true;
     } catch (error) {
       setFormValid(error.message ?? "Invalid email or password, login failed");
